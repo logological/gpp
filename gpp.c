@@ -20,7 +20,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.7 2003-11-21 15:53:42 psy Exp $
+** $Id: gpp.c,v 1.8 2003-11-21 15:55:05 psy Exp $
 ** 
 **
 ** To fix:
@@ -348,7 +348,7 @@ void newmacro(char *s,int len,int hasspecs)
 {
   if (nmacros==nalloced) {
     nalloced=2*nalloced+1;
-    macros=(struct MACRO *)realloc((char *)macros,nalloced*sizeof(struct MACRO));
+    macros=realloc(macros,nalloced*sizeof *macros);
     if (macros==NULL)
       bug("Out of memory");
   }
@@ -514,7 +514,7 @@ void parseCmdlineDefine(char *s)
       if (s[i]!=',' && s[i]!=')') bug("invalid syntax in -D declaration");
       if (i>l) argc++;
       macros[nmacros].argnames =
-        (char **)realloc(macros[nmacros].argnames, (argc+1)*sizeof(char *));
+        realloc(macros[nmacros].argnames, (argc+1)*sizeof(char *));
       if (i>l) {
         macros[nmacros].argnames[argc-1]=malloc(i-l+1);
         memcpy(macros[nmacros].argnames[argc-1], s+l, i-l);
