@@ -1,5 +1,5 @@
-BINDIR=/u/psy/local/bin
-MANDIR=/u/psy/local/man/man1
+BINDIR=/usr/local/bin
+MANDIR=/usr/local/man/man1
 
 all: gpp gpp.1 gpp.html
 
