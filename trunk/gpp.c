@@ -20,7 +20,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.8 2003-11-21 15:55:05 psy Exp $
+** $Id: gpp.c,v 1.9 2003-11-21 15:56:02 psy Exp $
 ** 
 **
 ** To fix:
@@ -2438,7 +2438,7 @@ static void getDirname(char *fname, char *dirname)
 static FILE *openInCurrentDir(char *incfile)
 {
   char *absfile =
-    (char *)calloc(strlen(C->filename)+strlen(incfile)+1, sizeof(char));
+    calloc(strlen(C->filename)+strlen(incfile)+1, 1);
   FILE *f;
   getDirname(C->filename,absfile);
   strcat(absfile,incfile);
