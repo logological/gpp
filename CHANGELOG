@@ -1,3 +1,57 @@
+NOTE: GPP 2.1a is an incompletely documented and dead branch of the
+GPP development tree.  Most of the differences from the previous
+version, 2.1, are internal changes to speed up performance when
+processing particularly complicated macros.  These changes will
+probably eventually be merged with the main development tree (version
+2.12 and beyond).
+
+CHANGES IN VERSION 2.1a (from 2.1):
+
+- Macro definitions are stored in a hash table instead of a stupid
+array.  This makes it much faster to look up whether a given macro
+exists, and therefore speeds up evaluation by a large factor in
+cpp-like modes where potentially every word in the file could be a
+macro.
+
+- When evaluating a macro, the output context is duplicated only if
+the macro is recursive. (This speeds up evaluation somewhat.)
+
+- There's a #elif directive (so an alternative with several cases can
+be handled by <#if ...> ... <#elif ...> ... <#else> ... <#endif>,
+nicer than having to stack a bunch of #endif's at the end and easily
+forgetting a few of them).
+
+- For further speedup, there's a new #deffast directive which can be
+used to define more restrictive types of macros. It works almost like
+#define or #defeval except that the macro is pre-substituted and never
+evaluated again. This means that things become much faster (in
+examples with only two simple macros being called many times, the
+processing time drops by 30-40%; in the case where the definition of
+the macro is more complicated you gain much more).
+
+Restrictions:
+
+1. there may be no more than 8 arguments to a macro defined by
+   #deffast
+
+2. All the other macros involved in the definition must be already
+   defined before the #deffast: i.e., #define x 3, #deffast y x will make
+   y=3, while #deffast y x, #define x 3 will make y=x (unlike in the case
+   of a #define or #defeval which still sees the subsequent definitions).
+
+3. The macro definition must ultimately depend on its arguments purely
+   by stupid substitutions and must have no side effects (i.e., the
+   definition acts purely as a constant template with just placeholders
+   for the arguments: it does not perform conditional tests on the
+   arguments or anything nontrivial like that).
+
+How this works: #deffast evaluates the definition (essentially like
+#defeval, except that for further speedup the argument names are
+converted back to numbers in this specific case), and marks it with a
+special flag indicating that, when evaluating the macro, one must not
+do anything except replace argument references by their values.
+
+
 CHANGES IN VERSION 2.1 (from 2.0):
 
 Bugfixes:
