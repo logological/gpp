@@ -19,7 +19,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.6 2004-02-14 14:35:00 psy Exp $
+** $Id: gpp.c,v 1.7 2004-07-05 17:34:29 psy Exp $
 ** 
 */
 
@@ -2422,14 +2422,15 @@ int ParsePossibleMeta(void)
      
   case 18: /* ERROR */ 
     replace_directive_with_blank_line(C->out->f);
-    bug(ProcessText(C->buf + p1start,
-		    (nparam == 2 ? p2end : p1end) - p1start,
-		    FLAG_META));
+    if (!commented[iflevel])
+      bug(ProcessText(C->buf + p1start,
+		      (nparam == 2 ? p2end : p1end) - p1start,
+		      FLAG_META));
     break;
 
   case 19: /* WARNING */ 
     replace_directive_with_blank_line(C->out->f);
-    {
+    if (!commented[iflevel]) {
       char *s;
       s=ProcessText(C->buf + p1start,
 		    (nparam == 2 ? p2end : p1end) - p1start,
