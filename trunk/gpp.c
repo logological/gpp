@@ -1,7 +1,7 @@
 /* File:      gpp.c  -- generic preprocessor
 ** Author:    Denis Auroux
 ** Contact:   auroux@math.polytechnique.fr
-** Version:   2.11
+** Version:   2.12
 ** 
 ** Copyright (C) Denis Auroux 1996, 1999, 2001
 ** Copyright (C) Tristan Miller 2003
@@ -20,7 +20,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.11 2003-11-21 16:43:03 psy Exp $
+** $Id: gpp.c,v 1.12 2003-11-21 16:43:33 psy Exp $
 ** 
 **
 ** To fix:
