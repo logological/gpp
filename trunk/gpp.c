@@ -20,13 +20,18 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.13 2003-11-21 16:43:50 psy Exp $
+** $Id: gpp.c,v 1.14 2003-11-22 19:04:47 psy Exp $
 ** 
 **
 ** To fix:
 **
 ** - many function names are not ANSI/ISO-compliant (e.g., str...)
 ** - return values from malloc(), calloc(), realloc(), strdup() rarely checked
+** - pretty-print code:
+**   - more whitespace needed, e.g., between arguments
+**   - add function prototypes
+**   - add comments dividing code into sections
+** - static keyword seems to be used with no apparent purpose
 **
 */
 
@@ -221,6 +226,10 @@ int findIdent(const char *b,int l);
 void delete_macro(int i);
 
 /* various recent additions */
+void usage(void);
+void display_version(void);
+void bug(const char *s);
+void warning(const char *s);
 static void getDirname(const char *fname, char *dirname);
 static FILE *openInCurrentDir(const char *incfile);
 char *ArithmEval(int pos1,int pos2);
@@ -296,19 +305,26 @@ void PopSpecs(void)
   if (S==NULL) bug("#mode restore without #mode save");
 }
 
-void usage(void) {
+void display_version(void) {
   fprintf(stderr,"GPP Version 2.12 - Generic Preprocessor\n");
-  fprintf(stderr,"(C) Denis Auroux 1996-2001, Tristan Miller 2003\n");
+  fprintf(stderr,"Copyright (C) Denis Auroux 1996-2001, Tristan Miller 2003\n");
+  fprintf(stderr,
+	  "This is free software; see the source for copying conditions.  There is NO\n"
+	  "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
+	  );
+}
+
+void usage(void) {
   fprintf(stderr,"Usage : gpp [-{o|O} outfile] [-I/include/path] [-Dname=val ...] [-z] [-x] [-m]\n");
   fprintf(stderr,"            [-n] [-C | -T | -H | -X | -P | -U ... [-M ...]] [+c<n> str1 str2]\n");
   fprintf(stderr,"            [+s<n> str1 str2 c] [infile]\n\n");
   fprintf(stderr,"      default:    #define x y           macro(arg,...)\n");
   fprintf(stderr," -C : maximum cpp compatibility (includes -n, +c, +s, ...)\n");
-  fprintf(stderr," -T : tex-like    \\define{x}{y}         \\macro{arg}{...}\n");
-  fprintf(stderr," -H : html-like   <#define x|y>         <#macro arg|...>\n");
-  fprintf(stderr," -X : xhtml-like  <#define x|y />       <#macro arg|... />\n");
+  fprintf(stderr," -T : TeX-like    \\define{x}{y}         \\macro{arg}{...}\n");
+  fprintf(stderr," -H : HTML-like   <#define x|y>         <#macro arg|...>\n");
+  fprintf(stderr," -X : XHTML-like  <#define x|y/>        <#macro arg|.../>\n");
   fprintf(stderr," -P : prolog compatible cpp-like mode\n");
-  fprintf(stderr," -U : user-defined syntax (specified in 9 following args, see manual)\n");
+  fprintf(stderr," -U : user-defined syntax (specified in 9 following args; see manual)\n");
   fprintf(stderr," -M : user-defined syntax for meta-macros (specified in 7 following args)\n\n");
   fprintf(stderr," -o : output to outfile\n");
   fprintf(stderr," -O : output to outfile and stdout\n");
@@ -323,7 +339,8 @@ void usage(void) {
   fprintf(stderr," -curdirinclast : search the current directory last\n");
   fprintf(stderr," -warninglevel n : set warning level\n");
   fprintf(stderr," -includemarker formatstring : keep track of #include directives in output\n\n");
-  exit(EXIT_FAILURE);
+  fprintf(stderr," -version : display version information\n");
+  fprintf(stderr," -help : display this message\n\n");
 }
 
 int isdelim(unsigned char c)
@@ -1017,6 +1034,14 @@ void initthings(int argc, char **argv)
   dosmode=DEFAULT_CRLF;
   
   for (arg=argv+1;*arg;arg++) {
+    if (strcmp(*arg, "-help") == 0) {
+      usage();
+      exit(EXIT_SUCCESS);
+    }
+    if (strcmp(*arg, "-version") == 0) {
+      display_version();
+      exit(EXIT_SUCCESS);
+    }
     if (strcmp(*arg, "-nostdinc") == 0) {
       NoStdInc = 1;
       continue;
@@ -1031,13 +1056,16 @@ void initthings(int argc, char **argv)
       continue;
     }
     if (strcmp(*arg, "-includemarker") == 0) {
-      if (!(*(++arg))) usage();
+      if (!(*(++arg))) {
+	usage(); 
+	exit(EXIT_FAILURE);
+      }
       construct_include_directive_marker(&include_directive_marker, *arg);
       continue;
     }
 
     if (strcmp(*arg, "-warninglevel") == 0) {
-      if (!(*(++arg))) usage();
+      if (!(*(++arg))) {usage(); exit(EXIT_FAILURE);}
       WarningLevel = atoi(*arg);
       continue;
     }
@@ -1047,16 +1075,16 @@ void initthings(int argc, char **argv)
       case 'c':
 	s=(*arg)+2;
 	if (*s==0) s="ccc";
-	if (!(*(++arg))) usage();
-	if (!(*(++arg))) usage();
+	if (!(*(++arg))) {usage(); exit(EXIT_FAILURE);}
+	if (!(*(++arg))) {usage(); exit(EXIT_FAILURE);}
 	add_comment(S,s,strnl(*(arg-1)),strnl(*arg),0,0);
 	break;
       case 's':
 	s=(*arg)+2;
 	if (*s==0) s="sss";
-	if (!(*(++arg))) usage();
-	if (!(*(++arg))) usage();
-	if (!(*(++arg))) usage();
+	if (!(*(++arg))) {usage(); exit(EXIT_FAILURE);}
+	if (!(*(++arg))) {usage(); exit(EXIT_FAILURE);}
+	if (!(*(++arg))) {usage(); exit(EXIT_FAILURE);}
 	add_comment(S,s,strnl(*(arg-2)),strnl(*(arg-1)),**arg,0);
 	break;
       case 'z': 
@@ -1079,7 +1107,7 @@ void initthings(int argc, char **argv)
       if (nincludedirs==MAXINCL) 
 	bug("too many include directories");
       if ((*arg)[2]==0) {
-	if (!(*(++arg))) usage();
+	if (!(*(++arg))) {usage(); exit(EXIT_FAILURE);}
 	includedir[nincludedirs++]=strdup(*arg);
       }
       else includedir[nincludedirs++]=strdup((*arg)+2);
@@ -1120,21 +1148,21 @@ void initthings(int argc, char **argv)
     case 'U':
       ishelp|=ismode|usrmode; usrmode=1;
       if (!readModeDescription(arg,&(S->User),0))
-	  usage();
+	  {usage(); exit(EXIT_FAILURE);}
       arg+=9;
       if (!hasmeta) S->Meta=S->User;
       break;
     case 'M':
       ishelp|=ismode|hasmeta; hasmeta=1;
       if (!readModeDescription(arg,&(S->Meta),1))
-	  usage();
+	  {usage(); exit(EXIT_FAILURE);}
       arg+=7;
       break;
     case 'O':
       file_and_stdout = 1;
     case 'o':
       if (!(*(++arg)))
-	  usage();
+	  {usage(); exit(EXIT_FAILURE);}
       ishelp|=isoutput; isoutput=1;
       C->out->f=fopen(*arg,"w");
       if (C->out->f==NULL) bug("Cannot create output file");
@@ -1142,7 +1170,7 @@ void initthings(int argc, char **argv)
     case 'D':
       if ((*arg)[2]==0) {
 	if (!(*(++arg)))
-	  usage();
+	  {usage(); exit(EXIT_FAILURE);}
 	s=strnl0(*arg);
       }
       else s=strnl0((*arg)+2);
@@ -1159,7 +1187,7 @@ void initthings(int argc, char **argv)
     case 'c':
     case 's':
       if (!(*(++arg)))
-	  usage();
+	  {usage(); exit(EXIT_FAILURE);}
       delete_comment(S,strnl(*arg));
       break;
     case 'm':
@@ -1167,8 +1195,8 @@ void initthings(int argc, char **argv)
     default:
       ishelp=1;
     }
-    if (hasmeta&&!usrmode) usage();
-    if (ishelp) usage();
+    if (hasmeta&&!usrmode) {usage(); exit(EXIT_FAILURE);}
+    if (ishelp) {usage(); exit(EXIT_FAILURE);}
   }
 
 #ifndef WIN_NT
