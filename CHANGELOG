@@ -16,6 +16,7 @@ Miscellaneous internal issues:
   where appropriate, replaced null argument lists with (void) where
   appropriate, added const qualifiers to non-modified function parameters,
   used standard return values provided by <stdlib.h>
+- distribution now includes copy of the licence
 
 
 CHANGES IN VERSION 2.1 (from 2.0):
