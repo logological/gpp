@@ -1,22 +1,20 @@
 <#mode preservelf|off><#mode comment|"%%%" "\n">%%%
 %%%%
-%%%% $Id: gpphelp.pp,v 1.11 2003-11-22 23:50:49 psy Exp $
+%%%% $Id: gpp.pp,v 1.1 2003-12-31 00:10:41 psy Exp $
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% GPP 2.12 documentation source file (C) 2001 Denis Auroux %%%%
+%%%% GPP documentation source file                            %%%%
+%%%% (C) 2001 Denis Auroux                                    %%%%
 %%%% (C) 2003 Tristan Miller                                  %%%%
 %%%%                                                          %%%%
 %%%% to get the man page, run:                                %%%%
-%%%%    gpp -H -Dman gpphelp.pp -o gpp.1                      %%%%
+%%%%    gpp -H -Dman gpp.pp -o gpp.1                          %%%%
 %%%% to get the html page, run:                               %%%%
-%%%%    gpp -H -Dhtml gpphelp.pp -o gpp.html                  %%%%
+%%%%    gpp -H -Dhtml gpp.pp -o gpp.html                      %%%%
 %%%% to get a latex version, run:                             %%%%
-%%%%    gpp -H -Dlatex gpphelp.pp -o gpp.tex                  %%%%
+%%%%    gpp -H -Dlatex gpp.pp -o gpp.tex                      %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%
-%%%% To fix:
-%%%%
-%%%% - nicer LaTeX output (fix quote characters, make - nonbreakable)
 %%%%
 <#mode user|"$" "$" "{" "}{" "}$" "{" "}" "@@@" "~">%%%
 <#mode meta|"$" "$\w\n" "{" "}{" "}$\w\n" "{" "}">%%%
@@ -25,6 +23,7 @@
 $ifdef{html}$
 $define{P}{<P>}$
 $define{p}{<P>}$
+$define{BR}{<BR>}$
 $define{I}{<I>@@@1</I>}$
 $define{S}{<P><HR><H2>@@@1</H2>}$
 $define{B}{<B>@@@1</B>}$
@@ -47,6 +46,7 @@ $define{bra}{~{}$
 $define{ket}{~}}$
 $define{dz}{#}$
 $define{und}{_}$
+$define{copy}{&copy;}$
 $define{nbsp}{&nbsp;}$
 $define{TeX}{TeX}$
 $define{ldots}{&hellip;}$
@@ -60,6 +60,8 @@ $ifdef{man}$
 $define{P}{
 .P}$
 $define{p}{}$
+$define{BR}{
+.P}$
 $define{I}{\fI@@@1\fP}$
 $define{S}{
 .SH @@@1}$
@@ -84,7 +86,8 @@ $define{bra}{~{}$
 $define{ket}{~}}$
 $define{dz}{#}$
 $define{und}{_}$
-$define{nbsp}{ }$
+$define{copy}{(C)}$
+$define{nbsp}{\ }$
 $define{TeX}{TeX}$
 $define{ldots}{...}$
 $define{mdash}{ -- }$
@@ -97,6 +100,8 @@ $ifdef{latex}$
 $define{P}{
 }$
 $define{p}{
+}$
+$define{BR}{
 }$
 $define{I}{$isverb{@@@1}{{\it @@@1}}$}$
 $define{S}{\subsection{@@@1}}$
@@ -127,6 +132,7 @@ $define{ket}{$isverb{~}}{\~}}$}$
 $define{dz}{$isverb{#}{\#}$}$
 $define{TeX}{\TeX}$
 $define{und}{$isverb{_}{\_}$}$
+$define{copy}{\copyright}$
 $define{nbsp}{~~}$
 $define{ldots}{\ldots}$
 $define{mdash}{---}$
@@ -135,23 +141,23 @@ $define{exp}{$isverb{^}{\^{}}$}$
 $define{pipe}{$isverb{|}{$|$}$}$
 $else$
 
-This is the gpp 2.12 help file.
+This is the gpp help file.
 
  to get the man page, run:              
-    gpp -H -Dman gpphelp.pp -o gpp.1    
+    gpp -H -Dman gpp.pp -o gpp.1    
 
  to get the HTML page, run:             
-    gpp -H -Dhtml gpphelp.pp -o gpp.html
+    gpp -H -Dhtml gpp.pp -o gpp.html
 
  to get a LaTeX version, run:           
-    gpp -H -Dlatex gpphelp.pp -o gpp.tex
+    gpp -H -Dlatex gpp.pp -o gpp.tex
 $mode{comment}{"!!!" "!!!"}$
 !!!
 $endif$
 $endif$
 $endif$
 %%%%%%%%%%%%%%%%% some headers %%%%%%%%%%%%%%%%%%%
-$define{version}{2.12}$
+$define{version}{2.13}$
 $define{SYNTAX}{
 $pre$
   gpp [$d$$bra$o$pipe$O$ket$ $I{outfile}$] [$d$I$I{/include/path}$] [$d$D$I{name=val}$ ...]
@@ -159,33 +165,32 @@ $pre$
       [$d$n$pipe$+n] [+c$I{$l$n$g$}$ $I{str1}$ $I{str2}$] [+s$I{$l$n$g$}$ $I{str1}$ $I{str2}$ $I{c}$] 
       [$d$c $I{str1}$] [$d$$d$nostdinc] [$d$$d$nocurinc]
       [$d$$d$curdirinclast] [$d$$d$warninglevel $I{n}$]
-      [$d$$d$includemarker $I{str}$] [$I{infile}$]$nopre$
+      [$d$$d$includemarker $I{str}$] [$I{infile}$]
 
   gpp $d$$d$help
 
-  gpp $d$$d$version
+  gpp $d$$d$version$nopre$
 }$
 $ifdef{html}$
-<HTML><HEAD><TITLE>GPP $mdash$ Generic Preprocessor</TITLE>
+<HTML><HEAD><TITLE>GPP $version$ $mdash$ Generic Preprocessor</TITLE>
 </HEAD><BODY BGCOLOR="#FFFFFF">
-<CENTER><H1>GPP &mdash; Generic Preprocessor</H1>
-Version $version$ &mdash; &copy; 1996$ndash$2001 Denis Auroux, 2003 Tristan Miller</CENTER>
-<P><B>
-<a href="http://www.nothingisreal.com/gpp/">GPP home page</a></B>
+<CENTER><H1>GPP $version$ &mdash; Generic Preprocessor</H1></CENTER>
+<P>
+N.B. $mdash$ The latest version of GPP and this manual are available from the <B><a href="http://www.nothingisreal.com/gpp/">GPP home page</a></B>.
 $else$
 $ifdef{man}$
 .TH GPP 1 \" -*- nroff -*-
 
 .SH NAME
-GPP \- Generic Preprocessor \- version $version$ (C) 1996$ndash$2001 Denis Auroux, 2003 Tristan Miller
+GPP \- Generic Preprocessor
 
 .SH SYNOPSIS
 $SYNTAX$%%%
 $else$
 \documentclass[12pt]{article}
-\title{GPP $mdash$ Generic Preprocessor}
-\author{\copyright 1996$ndash$2001 Denis Auroux, 2003 Tristan Miller}
-\date{Version $version$}
+\title{GPP$nbsp$$version$ $mdash$ Generic Preprocessor}
+\author{Denis Auroux, Tristan Miller}
+\date{}
 \renewcommand{\thesubsection}{\arabic{subsection}}
 \begin{document}
 \maketitle
@@ -194,28 +199,28 @@ $endif$
 %%%%%%%%%%%%%% description section %%%%%%%%%%%%%%%%%%%%
 $S{DESCRIPTION}$
 $P$
-$I{gpp}$ is a general-purpose preprocessor with customizable syntax,
+GPP is a general-purpose preprocessor with customizable syntax,
 suitable for a wide range of preprocessing tasks. Its independence from 
-any programming language makes it much more versatile than $I{cpp}$,
-while its syntax is lighter and more flexible than that of $I{m4}$.
+any programming language makes it much more versatile than cpp,
+while its syntax is lighter and more flexible than that of m4.
 $P$
-$I{gpp}$ is targeted at all common preprocessing tasks where $I{cpp}$ is not
+GPP is targeted at all common preprocessing tasks where cpp is not
 suitable and where no very sophisticated features are needed. In order to be
 able to process equally efficiently text files or source code in a variety
-of languages, the syntax used by $I{gpp}$ is fully customizable. The
+of languages, the syntax used by GPP is fully customizable. The
 handling of comments and strings is especially advanced.
 $P$
-Initially, gpp only understands a minimal set of built-in macros, called
+Initially, GPP only understands a minimal set of built-in macros, called
 $I{meta-macros}$. These meta-macros allow the definition of $I{user macros}$
 as well as some basic operations forming the core of the preprocessing
 system, including conditional tests, arithmetic evaluation, and syntax
 specification. All user macro definitions are global$mdash$$I{i.e.}$, they remain
 valid until explicitly removed; meta-macros cannot be redefined. With
-each user macro definition gpp keeps track of the corresponding syntax 
+each user macro definition GPP keeps track of the corresponding syntax 
 specification so that a macro can be safely invoked regardless of any
 subsequent change in operating mode.
 $P$
-In addition to macros, gpp understands comments and strings, whose syntax
+In addition to macros, GPP understands comments and strings, whose syntax
 and behavior can be widely customized to fit any particular purpose.
 Internally comments and strings are the same construction, so everything
 that applies to comments applies to strings as well.
@@ -226,7 +231,7 @@ $endif$
 %%%%%%%%%%%%%%%% command-line options %%%%%%%%%%%%%%%%%%%%
 $S{OPTIONS}$
 $P$
-$I{gpp}$ recognizes the following command-line switches and options.  Note that
+GPP recognizes the following command-line switches and options.  Note that
 the $d$nostdinc, $d$nocurinc, $d$curdirinclast, $d$warninglevel, and $d$includemarker
 options from version 2.1 and earlier are deprecated and should not be used.  Use
 the "long option" variants instead ($d$$d$nostdinc, $I{etc.}$).
@@ -269,7 +274,7 @@ $li$
 $BI{$d$z}$
 Set text mode to DOS mode (CR$ndash$LF terminator). In this mode all CR characters
 are removed from the input, and all output LF characters are converted to
-CR$ndash$LF. This is the default if gpp is compiled with the WIN$und$NT option. 
+CR$ndash$LF. This is the default if GPP is compiled with the WIN$und$NT option. 
 $li$
 $BI{$d$x}$
 Enable the use of the $I{$dz$exec}$ meta-macro. Since $I{$dz$exec}$ includes
@@ -317,7 +322,7 @@ more details.
 $li$
 $BI{(default mode)}$
 The default mode is a vaguely cpp-like mode, but it does not handle
-comments, and presents various incompatibilities with $I{cpp}$.
+comments, and presents various incompatibilities with cpp.
 Typical meta-macros and user macros look like this: $pre$
   $dz$define x y
   macro(arg,...)
@@ -328,7 +333,7 @@ This mode is equivalent to $pre$
 $nopre$
 $li$
 $BI{$d$C}$
-$I{cpp}$ compatibility mode. This is the mode where gpp's behavior is the
+cpp compatibility mode. This is the mode where GPP's behavior is the
 closest to that of cpp. Unlike in the default mode, meta-macro expansion
 occurs only at the beginning of lines, and C comments and strings are
 understood. This mode is equivalent to $pre$
@@ -427,12 +432,12 @@ output stream. The format of the marker is determined by $I{str}$, which
 must contain three occurrences of the character $I{$pc$}$ (or equivalently
 $I{?}$). The first occurrence is replaced with the line number, the second 
 with the file name, and the third with 1, 2 or blank. When this option
-is specified in default, cpp or Prolog mode, $I{gpp}$ does its best to 
+is specified in default, cpp or Prolog mode, GPP does its best to 
 ensure that line numbers are the same in the output as in the input by
 inserting blank lines in the place of definitions or comments.
 $li$
 $BI{infile}$
-Specify an input file from which gpp reads its input. If no input
+Specify an input file from which GPP reads its input. If no input
 file is specified, input is read from standard input.
 }$
 %%%%%%%%%%%%%%%%% syntax specification %%%%%%%%%%%%%%%%%%%
@@ -452,7 +457,7 @@ In all cases, the parameters of the current context$mdash$$I{i.e.}$, the argumen
 passed to the body being evaluated$mdash$can be referred to by using an
 $I{argument reference sequence}$ followed by a digit between 1 and 9.
 Alternatively, macro parameters may be named (see below). Furthermore, to
-avoid interference between the gpp syntax and the contents of the input file,
+avoid interference between the GPP syntax and the contents of the input file,
 a $I{quote character}$ is provided. The quote character can be used to
 prevent the interpretation of a macro call, comment, or string as anything
 but plain text. The quote character "protects" the following character, and
@@ -503,7 +508,7 @@ from output whereas the string-quote character is always output. Also note
 that under certain circumstances a comment/string specification can be
 $I{disabled}$, in which case the comment/string start sequence is simply
 ignored. Finally, it is possible to specify a $I{string warning character}$
-whose presence inside a comment/string will cause gpp to output a warning
+whose presence inside a comment/string will cause GPP to output a warning
 (this is useful to locate unterminated strings in cpp mode).
 Note that input files are not allowed to contain unterminated comments/strings.
 $P$
@@ -568,7 +573,7 @@ via another method than a standard Unix shell, then the shell behavior
 must be emulated$mdash$$I{i.e.}$, the surrounding "" quotes should be removed,
 all occurrences of '$b$$b$' should be replaced by a single backslash,
 and similarly '$b$"' should be replaced by '"'.
-Sequences like '$b$n' are recognized by gpp and should be left as is.
+Sequences like '$b$n' are recognized by GPP and should be left as is.
 $P$
 Special sequences matching certain subsets of the character set can be
 used. They are of the form '$b$$I{x}$', where $I{x}$ is one of:
@@ -647,7 +652,7 @@ $P$
 Second, if the end sequence (either for macros or comments) consists of a
 single newline character, and if delimitation rules lead 
 to evaluation in a context where the final newline character is absent,
-$I{gpp}$ silently ignores the missing newline instead of producing an
+GPP silently ignores the missing newline instead of producing an
 error. The main consequence is that meta-macro calls can now be nested
 in a simple way in standard, cpp and Prolog modes.
 
@@ -673,7 +678,7 @@ $P$
 Note that meta-macro arguments are passed to the meta-macro prior to
 any evaluation (although the meta-macro may choose to evaluate them,
 see meta-macro descriptions below). In the case of the $I{$dz$mode}$
-meta-macro, gpp temporarily adds a comment/string specification to
+meta-macro, GPP temporarily adds a comment/string specification to
 enable recognition of C strings ("$ldots$") and prevent any evaluation
 inside them, so no interference of the characters being put in the C
 string arguments to $I{$dz$mode}$ with the current syntax is to be feared.
@@ -682,7 +687,7 @@ On the other hand, the arguments to a user macro are systematically
 evaluated, and then passed as context parameters to the macro definition 
 body, which gets evaluated with that environment. The only exception is
 when the macro definition is empty, in which case its arguments are not
-evaluated. Note that gpp temporarily switches back to the mode in which
+evaluated. Note that GPP temporarily switches back to the mode in which
 the macro was defined in order to evaluate it, so it is perfectly safe
 to change the operating mode between the time a macro is defined
 and the time when it is called. Conversely, if a user macro wishes to
@@ -722,7 +727,7 @@ $list{
 $li$
 $BI{$dz$define }{x y}$
 This defines the user macro $I{x}$ as $I{y}$. $I{y}$ can be any valid
-gpp input, and may for example refer to other macros. $I{x}$ must
+GPP input, and may for example refer to other macros. $I{x}$ must
 be an identifier ($I{i.e.}$, a sequence of alphanumeric characters and '$und$'),
 unless named arguments are specified. If $I{x}$ is already defined, 
 the previous definition is overwritten. If no second argument is given, 
@@ -786,7 +791,7 @@ $BI{$dz$endif}$
 This ends a conditional block started by a $I{$dz$if$ldots$}$ meta-macro.
 $li$
 $BI{$dz$include }{file}$
-This causes gpp to open the specified file and evaluate its contents,
+This causes GPP to open the specified file and evaluate its contents,
 inserting the resulting text in the current output. All defined user macros
 are still available in the included file, and reciprocally all macros
 defined in the included file will be available in everything that
@@ -800,16 +805,16 @@ The order in which the various directories are searched for include files
 is affected by the $I{$d$nostdinc}$, $I{$d$nocurinc}$ and $I{$d$curdirinclast}$
 command-line options.
 $p$
-Upon including a file, gpp immediately saves a copy of the current operating
+Upon including a file, GPP immediately saves a copy of the current operating
 mode onto the mode stack, and restores the operating mode at the end of the
 included file. The included file may override this behavior by starting with
 a $I{$dz$mode restore}$ call and ending with a $I{$dz$mode push}$ call.
-Additionally, when the $I{$d$m}$ command line option is specified, gpp will
+Additionally, when the $I{$d$m}$ command line option is specified, GPP will
 automatically switch to the cpp compatibility mode upon including a file
 whose name ends with either '.c' or '.h'.
 $li$
 $BI{$dz$exec }{command}$
-This causes gpp to execute the specified command line and include
+This causes GPP to execute the specified command line and include
 its standard output in the current output. Note that, for security reasons,
 this meta-macro is disabled unless the $I{$d$x}$ command line flag was specified.
 If use of $I{$dz$exec}$ is not allowed, a warning message is printed
@@ -821,7 +826,7 @@ $I{$dz$defeval}$ (see above) to cause a double evaluation.
 $li$
 $BI{$dz$eval }{expr}$
 The $I{$dz$eval}$ meta-macro attempts to evaluate $I{expr}$ first by expanding
-macros (normal gpp evaluation) and then by performing arithmetic evaluation.
+macros (normal GPP evaluation) and then by performing arithmetic evaluation.
 The syntax and operator precedence for arithmetic expressions are the same
 as in C; the only missing operators are $l$$l$, $g$$g$, ?:, and the assignment
 operators. If unable to assign a numerical value to the result, the returned
@@ -844,11 +849,11 @@ order to begin a conditional block. In particular note that the logical
 value of $I{expr}$ is always true when it cannot be evaluated to a number.
 $li$
 $BI{$dz$mode }{keyword $ldots$}$
-This meta-macro controls gpp's operating mode. See below for a list of
+This meta-macro controls GPP's operating mode. See below for a list of
 $I{$dz$mode}$ commands.
 }$
 $P$
-The key to gpp's flexibility is the $I{$dz$mode}$ meta-macro. Its first
+The key to GPP's flexibility is the $I{$dz$mode}$ meta-macro. Its first
 argument is always one of a list of available keywords (see below); 
 its second argument is always a sequence of words separated by whitespace.
 Apart from possibly the first of them, each of these words is always a
@@ -1116,8 +1121,8 @@ $pre$
   $b$mode$bra$pop$ket$
   f($dollar$FOO$dollar$)
 $nopre$
-A good example where a user-defined mode becomes useful is the gpp 
-source of this document (available with gpp's source code distribution).
+A good example where a user-defined mode becomes useful is the GPP 
+source of this document (available with GPP's source code distribution).
 $P$
 Another interesting application is selectively forcing evaluation of macros 
 in C strings when in cpp mode. For example, consider the following input:
@@ -1169,15 +1174,15 @@ $nopre$
 %%%%%%%%%%%%%%%%%%%%%% advanced examples %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 $S{ADVANCED EXAMPLES}$
 $P$
-Here are some examples of advanced constructions using gpp. They tend to
-be pretty awkward and should be considered as evidence of gpp's limitations.
+Here are some examples of advanced constructions using GPP. They tend to
+be pretty awkward and should be considered as evidence of GPP's limitations.
 $P$
-The first example is a recursive macro. The main problem is that (since gpp
+The first example is a recursive macro. The main problem is that (since GPP
 evaluates everything) a recursive macro must be very careful about the way
 in which recursion is terminated in order to avoid undefined behavior (most
-of the time gpp will simply crash). In particular, relying on a
+of the time GPP will simply crash). In particular, relying on a
 $I{$dz$if/$dz$else/$dz$endif}$ construct to end recursion is not possible and results
-in an infinite loop, because gpp scans user macro calls even in the
+in an infinite loop, because GPP scans user macro calls even in the
 unevaluated branch of the conditional block. A safe way to proceed is for
 example as follows (we give the example in $TeX$$nbsp$mode):
 $pre$
@@ -1203,7 +1208,7 @@ $pre$
   triangle(20)
 $nopre$$P$
 The following is an (unfortunately very weak) attempt at implementing 
-functional abstraction in gpp (in standard mode). Understanding this
+functional abstraction in GPP (in standard mode). Understanding this
 example and why it can't be made much simpler is an exercise left to the 
 curious reader.
 $pre$
@@ -1271,14 +1276,15 @@ $nopre$
 %%%%%%%%%%%%%%%%%%%%%% misc stuff at the end %%%%%%%%%%%%%%%%%%%%%%%%
 $ifdef{man}$
 $S{SEE ALSO}$
-m4(1V), cpp(1)
+m4(1V), cpp(1)$P$
+GPP home page: http://www.nothingisreal.com/gpp/
 $endif$
 $S{AUTHOR}$
-Denis Auroux $l$auroux@math.mit.edu$g$ (to version 2.1)$P$
-Tristan Miller $l$psychonaut@nothingisreal.com$g$ (since version 2.12)$P$
-Please send e-mail for any comments, questions or suggestions. $P$
-Many thanks to Michael Kifer for valuable feedback and suggestions,
-and for contributing various patches included in version 2.1.
+GPP was written by Denis Auroux $l$auroux@math.mit.edu$g$.
+Since version 2.12 it has been maintained by Tristan Miller $l$psychonaut@nothingisreal.com$g$.
+$S{COPYRIGHT}$
+Copyright $copy$$nbsp$1996$ndash$2001 Denis Auroux.$BR$
+Copyright $copy$$nbsp$2003 Tristan Miller.$P$
 $ifdef{html}$
 </BODY></HTML>
 $endif$
