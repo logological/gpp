@@ -1,6 +1,6 @@
 <#mode preservelf|off><#mode comment|"%%%" "\n">%%%
 %%%%
-%%%% $Id: gpp.pp,v 1.5 2004-02-14 14:35:00 psy Exp $
+%%%% $Id: gpp.pp,v 1.6 2004-09-19 20:19:16 psy Exp $
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% GPP documentation source file                            %%%%
@@ -157,7 +157,7 @@ $endif$
 $endif$
 $endif$
 %%%%%%%%%%%%%%%%% some headers %%%%%%%%%%%%%%%%%%%
-$define{version}{2.22}$
+$define{version}{2.24}$
 $define{SYNTAX}{
 $pre$
   gpp [$d$$bra$o$pipe$O$ket$ $I{outfile}$] [$d$I$I{/include/path}$] [$d$D$I{name=val}$ ...]
@@ -285,7 +285,7 @@ security threat, and is thus disabled unless this option is specified.
 $li$
 $BI{$d$m}$
 Enable automatic mode switching to the cpp compatibility mode if the name
-of an included file ends in '.h' or '.c'. This makes it possible to
+of an included file ends in `.h' or `.c'. This makes it possible to
 include C header files with only minor modifications.
 $li$
 $BI{$d$n}$
@@ -568,7 +568,7 @@ $P$
 Important note: any occurrence of a comment/string start sequence inside
 another comment/string is always ignored, even if macro evaluation is
 enabled. In other words, comments/strings cannot be nested. In particular, 
-the 'Q' modifier can be a convenient way of defining a syntax for 
+the `Q' modifier can be a convenient way of defining a syntax for 
 temporarily disabling all comment and string specifications.
 $P$
 Syntax specification strings should always be provided as C strings, 
@@ -576,17 +576,17 @@ whether they are given as arguments to a $I{$dz$mode}$ meta-macro call or
 on the command-line of a Unix shell. If command-line arguments are given
 via another method than a standard Unix shell, then the shell behavior
 must be emulated$mdash$$I{i.e.}$, the surrounding "" quotes should be removed,
-all occurrences of '$b$$b$' should be replaced by a single backslash,
-and similarly '$b$"' should be replaced by '"'.
-Sequences like '$b$n' are recognized by GPP and should be left as is.
+all occurrences of `$b$$b$' should be replaced by a single backslash,
+and similarly `$b$"' should be replaced by `"'.
+Sequences like `$b$n' are recognized by GPP and should be left as is.
 $P$
 Special sequences matching certain subsets of the character set can be
-used. They are of the form '$b$$I{x}$', where $I{x}$ is one of:
+used. They are of the form `$b$$I{x}$', where $I{x}$ is one of:
 $list{
 $li$
 $bi{b}$
-matches any sequence of one or more spaces or tab characters ('$b$b' is 
-identical to '$nbsp$').
+matches any sequence of one or more spaces or tab characters (`$b$b' is 
+identical to `$nbsp$').
 $li$
 $bi{w}$
 matches any sequence of zero or more spaces or tab characters.
@@ -598,19 +598,19 @@ $bi{W}$
 matches any sequence of zero or more spaces, tabs or newline characters.
 $li$
 $bi{a}$
-an alphabetic character ('a' to 'z' and 'A' to 'Z').
+an alphabetic character (`a' to `z' and `A' to `Z').
 $li$
 $bi{A}$
 an alphabetic character, or a space, tab or newline.
 $li$
 $bi{$dz$}$
-a digit ('0' to '9').
+a digit (`0' to `9').
 $li$
 $bi{i}$
 an identifier character. The set of matched characters is customizable
 using the $I{$dz$mode charset id}$ command. The default setting matches
-alphanumeric characters and underscores ('a' to 'z', 'A' to 'Z', '0' to '9'
-and '$und$').
+alphanumeric characters and underscores (`a' to `z', `A' to `Z', `0' to `9'
+and `$und$').
 $li$
 $bi{t}$
 a tab character.
@@ -622,16 +622,16 @@ $bi{o}$
 an operator character. The set of matched characters is customizable
 using the $I{$dz$mode charset op}$ command. The default setting matches
 all characters in "+-*/$b$$exp$$l$$g$=`$tilde$:.?@$dz$$and$!$pc$$pipe$", except in Prolog mode
-where '!', '$pc$' and '$pipe$' are not matched.
+where `!', `$pc$' and `$pipe$' are not matched.
 $li$
 $bi{O}$
 an operator character or a parenthesis character. The set of additional
-matched characters in comparison with '$b$o' is customizable using the
+matched characters in comparison with `$b$o' is customizable using the
 $I{$dz$mode charset par}$ command. The default setting is to have the
 characters in "()[]$bra$$ket$" as parentheses.}$
 $P$
-Moreover, all of these matching subsets except '$b$w' and '$b$W' can be 
-negated by inserting a '!'$mdash$$I{i.e.}$, by writing '$b$!$I{x}$' instead of '$b$$I{x}$'.
+Moreover, all of these matching subsets except `$b$w' and `$b$W' can be 
+negated by inserting a `!'$mdash$$I{i.e.}$, by writing `$b$!$I{x}$' instead of `$b$$I{x}$'.
 $P$
 Note an important distinctive feature of $I{start sequences}$: when the
 first character of a macro or comment/string start sequence is '$nbsp$' or one 
@@ -883,7 +883,12 @@ $BI{$dz$file}$
 This meta-macro evaluates to the filename of the current input file as
 it appears on the command line or in the argument to $I{$dz$include}$.
 If GPP is reading its input from stdin, then $I{$dz$file}$ evaluates
-to 'stdin'.
+to `stdin'.
+$li$
+$BI{$dz$date }{fmt}$
+This meta-macro evaluates to the current date and time as formatted by
+the specified format string $I{fmt}$.  See the section $I{DATE AND
+TIME CONVERSION SPECIFIERS}$ below.
 $li$
 $BI{$dz$error }{msg}$
 This meta-macro causes an error message with the current filename and
@@ -985,6 +990,109 @@ characters inbetween (e.g. "A-Z" corresponds to all uppercase characters).
 To have '-' in the matched set, either put it in first or last position
 or place it next to a $b$x sequence.
 }$
+$S{DATE AND TIME CONVERSION SPECIFIERS}$
+Ordinary characters placed in the format string are copied to without
+conversion.  Conversion specifiers are introduced by a `$pc$'
+character, and are replaced as follows:
+$list{
+$li$
+$BI{$pc$a}$
+The abbreviated weekday name according to the  current locale.
+$li$
+$BI{$pc$A}$
+The  full  weekday  name  according  to the current
+locale.
+$li$
+$BI{$pc$b}$
+The abbreviated month name according to the current
+locale.
+$li$
+$BI{$pc$B}$
+The  full  month  name  according  to  the  current
+locale.
+$li$
+$BI{$pc$c}$
+The preferred date and time representation for  the
+current locale.
+$li$
+$BI{$pc$d}$
+The day of the month as a decimal number (range  01
+to 31).
+$li$
+$BI{$pc$F}$
+Equivalent to $pc$Y-$pc$m-$pc$d (the ISO 8601 date  format).
+$li$
+$BI{$pc$H}$
+The  hour as a decimal number using a 24-hour clock
+(range 00 to 23).
+$li$
+$BI{$pc$I}$
+The hour as a decimal number using a 12-hour  clock
+(range 01 to 12).
+$li$
+$BI{$pc$j}$
+The  day of the year as a decimal number (range 001
+to 366).
+$li$
+$BI{$pc$m}$
+The month as a decimal number (range 01 to 12).
+$li$
+$BI{$pc$M}$
+The minute as a decimal number (range 00 to 59).
+$li$
+$BI{$pc$p}$
+Either `AM' or `PM' according  to  the  given  time
+value, or the corresponding strings for the current
+locale.  Noon is treated as `pm'  and  midnight  as
+`am'.
+$li$
+$BI{$pc$R}$
+The  time  in  24-hour notation ($pc$H:$pc$M).
+$li$
+$BI{$pc$S}$
+The second as a decimal number (range 00 to 61).
+$li$
+$BI{$pc$U}$
+The week number of the current year  as  a  decimal
+number,  range  00  to  53, starting with the first
+Sunday as the first day of week 01.
+$li$
+$BI{$pc$w}$
+The  day  of  the  week as a decimal, range 0 to 6,
+Sunday being 0.
+$li$
+$BI{$pc$W}$
+The week number of the current year  as  a  decimal
+number,  range  00  to  53, starting with the first
+Monday as the first day of week 01.
+$li$
+$BI{$pc$x}$
+The preferred date representation for  the  current
+locale without the time.
+$li$
+$BI{$pc$X}$
+The  preferred  time representation for the current
+locale without the date.
+$li$
+$BI{$pc$y}$
+The year as a  decimal  number  without  a  century
+(range 00 to 99).
+$li$
+$BI{$pc$Y}$
+The year as a decimal number including the century.
+$li$
+$BI{$pc$Z}$
+The time zone or name or abbreviation.
+$li$
+$BI{$pc$$pc$}$
+A literal `$pc$' character.
+}$
+$P$
+Depending on the C compiler and library used to compile GPP, there
+may be more conversion specifiers available.  Consult your compiler's
+documentation for the $I{strftime()}$ function.  Note, however, that
+any conversion specifiers not listed above may not be portable
+across installations of GPP.
 $S{EXAMPLES}$
 Here is a basic self-explanatory example in standard or cpp mode:
 $pre$
@@ -1319,7 +1427,7 @@ $nopre$
 %%%%%%%%%%%%%%%%%%%%%% misc stuff at the end %%%%%%%%%%%%%%%%%%%%%%%%
 $ifdef{man}$
 $S{SEE ALSO}$
-glob(7), m4(1V), cpp(1)$P$
+strftime(3), glob(7), m4(1V), cpp(1)$P$
 GPP home page: http://www.nothingisreal.com/gpp/
 $endif$
 $S{AUTHOR}$

@@ -1,11 +1,16 @@
 GPP NEWS -- history of user-visible changes
-$Id: NEWS,v 1.7 2004-07-11 16:20:55 psy Exp $
+$Id: NEWS,v 1.8 2004-09-19 20:19:16 psy Exp $
 
 See the end of this file for copying conditions.
 
 Please send GPP bug reports to Tristan Miller
 <psychonaut@nothingisreal.com>.
 
+
+Version 2.24
+
+    * Added a #date meta-macro allowing for formatting of dates and
+      times
 
 Version 2.23
 
