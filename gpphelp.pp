@@ -1,6 +1,6 @@
 <#mode preservelf|off><#mode comment|"%%%" "\n">%%%
 %%%%
-%%%% $Id: gpphelp.pp,v 1.7 2003-11-22 18:28:21 psy Exp $
+%%%% $Id: gpphelp.pp,v 1.8 2003-11-22 19:09:35 psy Exp $
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% GPP 2.12 documentation source file (C) 2001 Denis Auroux %%%%
@@ -159,6 +159,10 @@ $pre$
       [$d$n$pipe$+n] [+c$I{$l$n$g$}$ $I{str1}$ $I{str2}$] [+s$I{$l$n$g$}$ $I{str1}$ $I{str2}$ $I{c}$] 
       [$d$c $I{str1}$] [$d$nostdinc] [$d$nocurinc] [$d$curdirinclast] 
       [$d$warninglevel $I{n}$] [$d$includemarker $I{str}$] [$I{infile}$]$nopre$
+
+  gpp $d$$d$help
+
+  gpp $d$$d$version
 }$
 $ifdef{html}$
 <HTML><HEAD><TITLE>GPP $mdash$ Generic Preprocessor</TITLE>
@@ -224,8 +228,11 @@ $S{OPTIONS}$
 $P$
 $I{gpp}$ recognizes the following command-line switches and options:
 $list{$li$
-$BI{$d$h}$
+$BI{$d$h $d$$d$help}$
 Print a short help message.
+$li$
+$BI{$d$$d$version}$
+Print version information.
 $li$
 $BI{$d$o }{outfile}$
 Specify a file to which all output should be sent (by default, everything
