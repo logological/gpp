@@ -1,7 +1,0 @@
-# $Id: .htaccess,v 1.1 2003-12-31 00:25:51 psy Exp $
-Redirect /gpp/gpp.tar.bz2 http://www.nothingisreal.com/gpp/gpp-2.13.tar.bz2
-Redirect seeother /gpp/gpp.tar.gz http://www.nothingisreal.com/gpp/gpp.tar.bz2
-Redirect seeother /gpp/gpp-2.0.tar.gz http://www.nothingisreal.com/gpp/gpp-2.0.tar.bz2
-Redirect seeother /gpp/gpp-2.12.tar.gz http://www.nothingisreal.com/gpp/gpp-2.12.tar.bz2
-Redirect seeother /gpp/gpp-2.1a.tar.gz http://www.nothingisreal.com/gpp/gpp-2.1a.tar.bz2
-Redirect seeother /gpp/gpp-2.1.tar.gz http://www.nothingisreal.com/gpp/gpp-2.1.tar.bz2
