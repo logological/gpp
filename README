@@ -1,0 +1,10 @@
+NOTE: GPP 2.1a is an incompletely documented and dead branch of the
+GPP development tree.  Most of the differences from the previous
+version, 2.1, are internal changes to speed up performance when
+processing particularly complicated macros.  These changes will
+probably eventually be merged with the main development tree (version
+2.12 and beyond).
+
+Unless you are using very tricky macros and are particularly concerned
+about execution speed, you would probably be better off with one of
+the stable, current releases.
