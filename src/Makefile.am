@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.2 2004-07-11 14:00:22 psy Exp $
+# $Id: Makefile.am,v 1.3 2004-07-11 16:15:20 psy Exp $
 #
 # Copyright (C) 2003 Tristan Miller <psychonaut@nothingisreal.com>
 #  
@@ -11,7 +11,4 @@
 # PURPOSE.
 
 bin_PROGRAMS = gpp
-gpp_SOURCES = gpp.c gettext.h
-localedir = $(datadir)/locale
-DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
-LIBS = @LIBINTL@ @LIBS@
+gpp_SOURCES = gpp.c
