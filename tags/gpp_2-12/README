@@ -1,0 +1,31 @@
+GPP is a general-purpose preprocessor with customizable syntax,
+suitable for a wide range of preprocessing tasks. Its independence
+from any programming language makes it much more versatile than cpp,
+while its syntax is lighter and more flexible than that of m4.
+
+
+COPYING
+=======
+
+This program is distributed under the GNU LGPL.  See the enclosed file
+LICENCE.
+
+
+INSTALLATION
+============
+
+To compile GPP, you need the GNU C Compiler (GCC).  The following
+instructions apply to most Unix systems.
+ 
+  1. Compile with "make".  
+     This creates the binary file "gpp", the man page "gpp.1", and the
+     HTML manual "gpp.html".
+
+  2. Install with "make install".  You may need superuser permissions.
+
+     (Note: for non-system-wide installations, you can simply copy the
+      binary and the documentation files to the directories of your
+      choice.)
+
+It is also possible to compile GPP on Windows using MS VC++.  In this
+case, you need to ensure that the preprocessor macro WIN_NT is defined.
