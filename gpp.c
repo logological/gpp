@@ -20,8 +20,12 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.4 2003-11-21 15:41:03 psy Exp $
+** $Id: gpp.c,v 1.5 2003-11-21 15:45:49 psy Exp $
 ** 
+**
+** To fix:
+**
+** - many function names are not ANSI-compliant (e.g., str...)
 */
 
 /* To compile under MS VC++, one must define WIN_NT */
@@ -209,7 +213,7 @@ struct INPUTCONTEXT *C;
   
 int commented[STACKDEPTH],iflevel;
 
-void ProcessContext(); /* the main loop */
+void ProcessContext(void); /* the main loop */
 
 int findIdent(char *b,int l);
 void delete_macro(int i);
@@ -2400,7 +2404,7 @@ void ParseText()
   shiftIn(l);
 }
 
-void ProcessContext()
+void ProcessContext(void)
 {
   if (C->len==0) { C->buf[0]='\n'; C->len++; }
   while (!C->eof) ParseText();
