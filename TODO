@@ -1,6 +1,12 @@
 TODO file for GPP.
-$Id: TODO,v 1.5 2004-02-14 14:35:00 psy Exp $
+$Id: TODO,v 1.6 2004-07-11 16:19:00 psy Exp $
 
 This file lists potential improvements and wish-list items for GPP.
 
 	* integrate code from the 2.1a ("fast") branch
+
+	* add CPP __DATE__-like macro
+
+	* add #cmd_line_args macro
+
+	* internationalize with GNU gettext
