@@ -1,10 +1,10 @@
 /* File:      gpp.c  -- generic preprocessor
-** Author:    Denis Auroux
-** Contact:   auroux@math.polytechnique.fr
+** Author:    Denis Auroux, Tristan Miller
+** Contact:   psychonaut@nothingisreal.com
 ** Version:   2.12
 ** 
-** Copyright (C) Denis Auroux 1996, 1999, 2001
-** Copyright (C) Tristan Miller 2003
+** Copyright (C) 1996, 1999, 2001 Denis Auroux
+** Copyright (C) 2003 Tristan Miller
 ** 
 ** GPP is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -20,7 +20,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.15 2003-11-22 19:13:47 psy Exp $
+** $Id: gpp.c,v 1.16 2003-11-22 22:20:33 psy Exp $
 ** 
 **
 ** To fix:
@@ -32,7 +32,6 @@
 **   - add function prototypes
 **   - add comments dividing code into sections
 ** - static keyword seems to be used with no apparent purpose
-** - migrate long options to -- style switches
 **
 */
 
@@ -308,7 +307,7 @@ void PopSpecs(void)
 
 void display_version(void) {
   fprintf(stderr,"GPP Version 2.12 - Generic Preprocessor\n");
-  fprintf(stderr,"Copyright (C) Denis Auroux 1996-2001, Tristan Miller 2003\n");
+  fprintf(stderr,"Copyright (C) 1996-2001 Denis Auroux, 2003 Tristan Miller\n");
   fprintf(stderr,
 	  "This is free software; see the source for copying conditions.  There is NO\n"
 	  "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"

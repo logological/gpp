@@ -1,6 +1,6 @@
 <#mode preservelf|off><#mode comment|"%%%" "\n">%%%
 %%%%
-%%%% $Id: gpphelp.pp,v 1.9 2003-11-22 19:19:49 psy Exp $
+%%%% $Id: gpphelp.pp,v 1.10 2003-11-22 22:25:06 psy Exp $
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% GPP 2.12 documentation source file (C) 2001 Denis Auroux %%%%
@@ -171,8 +171,7 @@ $ifdef{html}$
 <CENTER><H1>GPP &mdash; Generic Preprocessor</H1>
 Version $version$ &mdash; &copy; 1996$ndash$2001 Denis Auroux, 2003 Tristan Miller</CENTER>
 <P><B>
-<a href="http://math.polytechnique.fr/cmat/auroux/prog/gpp.html">GPP 2.1 home page (Denis Auroux)</a><br>
-<a href="http://www.nothingisreal.com/gpp/">GPP 2.12 home page (Tristan Miller)</a></B>
+<a href="http://www.nothingisreal.com/gpp/">GPP home page</a></B>
 $else$
 $ifdef{man}$
 .TH GPP 1 \" -*- nroff -*-
@@ -1275,9 +1274,8 @@ $S{SEE ALSO}$
 m4(1V), cpp(1)
 $endif$
 $S{AUTHOR}$
-Denis Auroux (auroux@math.polytechnique.fr).$P$
-XHTML mode and miscellaneous bug fixes in version 2.12 by 
-Tristan Miller (psychonaut@nothingisreal.com). $P$
+To version 2.1: Denis Auroux.$P$
+Since version 2.12: Tristan Miller (psychonaut@nothingisreal.com). $P$
 Please send e-mail for any comments, questions or suggestions. $P$
 Many thanks to Michael Kifer for valuable feedback and suggestions,
 and for contributing various patches included in version 2.1.
