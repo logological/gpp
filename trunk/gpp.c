@@ -20,7 +20,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.5 2003-11-21 15:45:49 psy Exp $
+** $Id: gpp.c,v 1.6 2003-11-21 15:46:58 psy Exp $
 ** 
 **
 ** To fix:
@@ -283,7 +283,7 @@ void PushSpecs(struct SPECS *X)
   S=P;
 }
 
-void PopSpecs()
+void PopSpecs(void)
 {
   struct SPECS *P;
   
@@ -294,7 +294,7 @@ void PopSpecs()
   if (S==NULL) bug("#mode restore without #mode save");
 }
 
-void usage() {
+void usage(void) {
   fprintf(stderr,"GPP Version 2.11 - Generic Preprocessor\n");
   fprintf(stderr,"(C) Denis Auroux 1996-2001, Tristan Miller 2003\n");
   fprintf(stderr,"Usage : gpp [-{o|O} outfile] [-I/include/path] [-Dname=val ...] [-z] [-x] [-m]\n");
@@ -1865,7 +1865,7 @@ void ProcessModeCommand(int p1start,int p1end,int p2start,int p2end)
   free(s);
 }
 
-int ParsePossibleMeta()
+int ParsePossibleMeta(void)
 {
   int cklen,nameend;
   int id,expparams,nparam,i,j;
@@ -2249,7 +2249,7 @@ int ParsePossibleMeta()
   return 0;
 }
 
-int ParsePossibleUser()
+int ParsePossibleUser(void)
 {
   int idstart,idend,sh_end,lg_end,macend;
   int argc,id,i,l;
@@ -2347,7 +2347,7 @@ int ParsePossibleUser()
   return 0;
 }
 
-void ParseText()
+void ParseText(void)
 {
   int l,cs,ce;
   char c,*s;
