@@ -1,6 +1,6 @@
 <#mode preservelf|off><#mode comment|"%%%" "\n">%%%
 %%%%
-%%%% $Id: gpphelp.pp,v 1.8 2003-11-22 19:09:35 psy Exp $
+%%%% $Id: gpphelp.pp,v 1.9 2003-11-22 19:19:49 psy Exp $
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% GPP 2.12 documentation source file (C) 2001 Denis Auroux %%%%
@@ -157,8 +157,9 @@ $pre$
   gpp [$d$$bra$o$pipe$O$ket$ $I{outfile}$] [$d$I$I{/include/path}$] [$d$D$I{name=val}$ ...]
       [$d$z$pipe$+z] [$d$x] [$d$m] [$d$C$pipe$$d$T$pipe$$d$H$pipe$$d$X$pipe$$d$P$pipe$$d$U ... [$d$M ...]]
       [$d$n$pipe$+n] [+c$I{$l$n$g$}$ $I{str1}$ $I{str2}$] [+s$I{$l$n$g$}$ $I{str1}$ $I{str2}$ $I{c}$] 
-      [$d$c $I{str1}$] [$d$nostdinc] [$d$nocurinc] [$d$curdirinclast] 
-      [$d$warninglevel $I{n}$] [$d$includemarker $I{str}$] [$I{infile}$]$nopre$
+      [$d$c $I{str1}$] [$d$$d$nostdinc] [$d$$d$nocurinc]
+      [$d$$d$curdirinclast] [$d$$d$warninglevel $I{n}$]
+      [$d$$d$includemarker $I{str}$] [$I{infile}$]$nopre$
 
   gpp $d$$d$help
 
@@ -226,7 +227,10 @@ $endif$
 %%%%%%%%%%%%%%%% command-line options %%%%%%%%%%%%%%%%%%%%
 $S{OPTIONS}$
 $P$
-$I{gpp}$ recognizes the following command-line switches and options:
+$I{gpp}$ recognizes the following command-line switches and options.  Note that
+the $d$nostdinc, $d$nocurinc, $d$curdirinclast, $d$warninglevel, and $d$includemarker
+options from version 2.1 and earlier are deprecated and should not be used.  Use
+the "long option" variants instead ($d$$d$nostdinc, $I{etc.}$).
 $list{$li$
 $BI{$d$h $d$$d$help}$
 Print a short help message.
@@ -405,20 +409,20 @@ $li$
 $BI{$d$s }{str1}$
 Un-specify comments or strings. Identical to $d$c.
 $li$
-$BI{$d$nostdinc}$
+$BI{$d$$d$nostdinc}$
 Do not look for include files in the standard directory /usr/include.
 $li$
-$BI{$d$nocurinc}$
+$BI{$d$$d$nocurinc}$
 Do not look for include files in the current directory.
 $li$
-$BI{$d$curdirinclast}$
+$BI{$d$$d$curdirinclast}$
 Look for include files in the current directory $I{after}$ the directories
 specified by $I{$d$I}$ rather than before them.
 $li$
-$BI{$d$warninglevel }{n}$
+$BI{$d$$d$warninglevel }{n}$
 Set warning level to $I{n}$ (0, 1 or 2). Default is 2 (most verbose).
 $li$
-$BI{$d$includemarker }{str}$
+$BI{$d$$d$includemarker }{str}$
 keep track of $I{$dz$include}$ directives by inserting a marker in the
 output stream. The format of the marker is determined by $I{str}$, which
 must contain three occurrences of the character $I{$pc$}$ (or equivalently
