@@ -20,7 +20,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.14 2003-11-22 19:04:47 psy Exp $
+** $Id: gpp.c,v 1.15 2003-11-22 19:13:47 psy Exp $
 ** 
 **
 ** To fix:
@@ -32,6 +32,7 @@
 **   - add function prototypes
 **   - add comments dividing code into sections
 ** - static keyword seems to be used with no apparent purpose
+** - migrate long options to -- style switches
 **
 */
 
@@ -334,13 +335,13 @@ void usage(void) {
   fprintf(stderr," -n : send LF characters serving as macro terminators to output\n");
   fprintf(stderr," +c : use next 2 args as comment start and comment end sequences\n");
   fprintf(stderr," +s : use next 3 args as string start, end and quote character\n\n");
-  fprintf(stderr," -nostdinc : don't search standard directories for files to include\n");
-  fprintf(stderr," -nocurinc : don't search the current directory for files to include\n");
-  fprintf(stderr," -curdirinclast : search the current directory last\n");
-  fprintf(stderr," -warninglevel n : set warning level\n");
-  fprintf(stderr," -includemarker formatstring : keep track of #include directives in output\n\n");
-  fprintf(stderr," -version : display version information\n");
-  fprintf(stderr," -help : display this message\n\n");
+  fprintf(stderr," --nostdinc : don't search standard directories for files to include\n");
+  fprintf(stderr," --nocurinc : don't search the current directory for files to include\n");
+  fprintf(stderr," --curdirinclast : search the current directory last\n");
+  fprintf(stderr," --warninglevel n : set warning level\n");
+  fprintf(stderr," --includemarker formatstring : keep track of #include directives in output\n\n");
+  fprintf(stderr," --version : display version information and exit\n");
+  fprintf(stderr," -h, --help : display this message and exit\n\n");
 }
 
 int isdelim(unsigned char c)
@@ -1034,28 +1035,28 @@ void initthings(int argc, char **argv)
   dosmode=DEFAULT_CRLF;
   
   for (arg=argv+1;*arg;arg++) {
-    if (strcmp(*arg, "-help") == 0) {
+    if (strcmp(*arg, "--help") == 0 || strcmp(*arg, "-h") == 0) {
       usage();
       exit(EXIT_SUCCESS);
     }
-    if (strcmp(*arg, "-version") == 0) {
+    if (strcmp(*arg, "--version") == 0) {
       display_version();
       exit(EXIT_SUCCESS);
     }
-    if (strcmp(*arg, "-nostdinc") == 0) {
+    if (strcmp(*arg, "--nostdinc") == 0 || strcmp(*arg, "-nostdinc") == 0) {
       NoStdInc = 1;
       continue;
     }
-    if (strcmp(*arg, "-nocurinc") == 0) {
+    if (strcmp(*arg, "--nocurinc") == 0 || strcmp(*arg, "-nocurinc") == 0) {
       NoCurIncFirst = 1;
       continue;
     }
-    if (strcmp(*arg, "-curdirinclast") == 0) {
+    if (strcmp(*arg, "--curdirinclast") == 0 || strcmp(*arg, "-curdirinclast") == 0) {
       CurDirIncLast = 1;
       NoCurIncFirst = 1;
       continue;
     }
-    if (strcmp(*arg, "-includemarker") == 0) {
+    if (strcmp(*arg, "--includemarker") == 0 || strcmp(*arg, "-includemarker") == 0) {
       if (!(*(++arg))) {
 	usage(); 
 	exit(EXIT_FAILURE);
@@ -1064,7 +1065,7 @@ void initthings(int argc, char **argv)
       continue;
     }
 
-    if (strcmp(*arg, "-warninglevel") == 0) {
+    if (strcmp(*arg, "--warninglevel") == 0 || strcmp(*arg, "-warninglevel") == 0) {
       if (!(*(++arg))) {usage(); exit(EXIT_FAILURE);}
       WarningLevel = atoi(*arg);
       continue;
