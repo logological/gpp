@@ -138,12 +138,13 @@ $pre$
       [$d$warninglevel $I{n}$] [$d$includemarker $I{str}$] [$I{infile}$]$nopre$
 }$
 $ifdef{html}$
-<HTML><HEAD><TITLE>GPP - Generic Preprocessor</TITLE>
+<HTML><HEAD><TITLE>GPP &mdash; Generic Preprocessor</TITLE>
 </HEAD><BODY BGCOLOR="#FFFFFF">
-<CENTER><H1>GPP - Generic Preprocessor</H1>
-Version $version$ - &copy; Denis Auroux 1996&ndash;2001, Tristan Miller 2003</CENTER>
+<CENTER><H1>GPP &mdash; Generic Preprocessor</H1>
+Version $version$ &mdash; &copy; Denis Auroux 1996&ndash;2001, Tristan Miller 2003</CENTER>
 <P><B>
-<A HREF="http://www.math.polytechnique.fr/cmat/auroux/prog/gpp.tar.gz">Download gpp now !</A></B>
+<a href="http://math.polytechnique.fr/cmat/auroux/prog/gpp.html">GPP 2.1 home page (Denis Auroux)</a><br>
+<a href="http://www.nothingisreal.com/gpp/">GPP 2.11 home page (Tristan Miller)</a></B>
 $else$
 $ifdef{man}$
 .TH GPP 1 \" -*- nroff -*-
@@ -155,7 +156,7 @@ GPP \- Generic Preprocessor \- version $version$ (C) Denis Auroux 1996-2001, Tri
 $SYNTAX$%%%
 $else$
 \documentclass[12pt]{article}
-\title{GPP - Generic Preprocessor}
+\title{GPP --- Generic Preprocessor}
 \author{\copyright Denis Auroux 1996--2001, Tristan Miller 2003}
 \date{Version $version$}
 \renewcommand{\thesubsection}{\arabic{subsection}}
