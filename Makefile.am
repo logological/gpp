@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.1 2003-12-31 00:10:40 psy Exp $
+# $Id: Makefile.am,v 1.2 2003-12-31 00:15:00 psy Exp $
 #
 # Copyright (C) 2003 Tristan Miller <psychonaut@nothingisreal.com>
 #  
@@ -13,4 +13,4 @@
 AUTOMAKE_OPTIONS = dist-bzip2
 SUBDIRS = src
 man_MANS = doc/gpp.1
-EXTRA_DIST = doc/gpp.html doc/gpp.pp $(man_MANS)
+EXTRA_DIST = BUGS TODO doc/gpp.html doc/gpp.pp $(man_MANS)
