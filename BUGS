@@ -1,5 +1,5 @@
 Bugs, limitations, and known issues for GPP.
-$Id: BUGS,v 1.2 2004-02-14 14:34:59 psy Exp $
+$Id: BUGS,v 1.3 2004-07-11 16:20:38 psy Exp $
 
 (POTENTIAL) BUGS:
 
@@ -8,6 +8,8 @@ $Id: BUGS,v 1.2 2004-02-14 14:34:59 psy Exp $
 * return values from malloc(), calloc(), realloc(), strdup() rarely checked
 
 * poor/misleading typography in LaTeX version of manual
+
+* spurious warning when comment on same line as #include directive
 
 AESTHETIC/STYLISTIC ISSUES WITH SOURCE CODE:
 
