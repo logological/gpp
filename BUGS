@@ -1,7 +1,7 @@
 Bugs, limitations, and known issues for GPP.
-$Id: BUGS,v 1.1 2003-12-31 00:10:40 psy Exp $
+$Id: BUGS,v 1.2 2004-02-14 14:34:59 psy Exp $
 
-BUGS:
+(POTENTIAL) BUGS:
 
 * many function names are not ANSI/ISO-compliant (e.g., str...)
 

@@ -1,17 +1,17 @@
 <#mode preservelf|off><#mode comment|"%%%" "\n">%%%
 %%%%
-%%%% $Id: gpp.pp,v 1.4 2004-02-07 15:21:35 psy Exp $
+%%%% $Id: gpp.pp,v 1.5 2004-02-14 14:35:00 psy Exp $
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% GPP documentation source file                            %%%%
 %%%% (C) 2001 Denis Auroux                                    %%%%
 %%%% (C) 2003, 2004 Tristan Miller                            %%%%
 %%%%                                                          %%%%
-%%%% to get the man page, run:                                %%%%
+%%%% To get the man page, run:                                %%%%
 %%%%    gpp -H -Dman gpp.pp -o gpp.1                          %%%%
-%%%% to get the html page, run:                               %%%%
+%%%% To get the html page, run:                               %%%%
 %%%%    gpp -H -Dhtml gpp.pp -o gpp.html                      %%%%
-%%%% to get a latex version, run:                             %%%%
+%%%% To get a latex version, run:                             %%%%
 %%%%    gpp -H -Dlatex gpp.pp -o gpp.tex                      %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%
@@ -143,13 +143,13 @@ $else$
 
 This is the gpp help file.
 
- to get the man page, run:              
+ To get the man page, run:              
     gpp -H -Dman gpp.pp -o gpp.1    
 
- to get the HTML page, run:             
+ To get the HTML page, run:             
     gpp -H -Dhtml gpp.pp -o gpp.html
 
- to get a LaTeX version, run:           
+ To get a LaTeX version, run:           
     gpp -H -Dlatex gpp.pp -o gpp.tex
 $mode{comment}{"!!!" "!!!"}$
 !!!
@@ -157,7 +157,7 @@ $endif$
 $endif$
 $endif$
 %%%%%%%%%%%%%%%%% some headers %%%%%%%%%%%%%%%%%%%
-$define{version}{2.21}$
+$define{version}{2.22}$
 $define{SYNTAX}{
 $pre$
   gpp [$d$$bra$o$pipe$O$ket$ $I{outfile}$] [$d$I$I{/include/path}$] [$d$D$I{name=val}$ ...]
@@ -165,7 +165,8 @@ $pre$
       [$d$n$pipe$+n] [+c$I{$l$n$g$}$ $I{str1}$ $I{str2}$] [+s$I{$l$n$g$}$ $I{str1}$ $I{str2}$ $I{c}$] 
       [$d$c $I{str1}$] [$d$$d$nostdinc] [$d$$d$nocurinc]
       [$d$$d$curdirinclast] [$d$$d$warninglevel $I{n}$]
-      [$d$$d$includemarker $I{str}$] [$I{infile}$]
+      [$d$$d$includemarker $I{str}$] [$d$$d$include $I{file}$]
+      [$I{infile}$]
 
   gpp $d$$d$help
 
@@ -413,6 +414,9 @@ ignored under certain circumstances. See below.
 $li$
 $BI{$d$s }{str1}$
 Un-specify comments or strings. Identical to $d$c.
+$li$
+$BI{$d$$d$include }{file}$
+Process $I{file}$ before $I{infile}$
 $li$
 $BI{$d$$d$nostdinc}$
 Do not look for include files in the standard directory /usr/include.
