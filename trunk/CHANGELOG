@@ -1,7 +1,18 @@
-CHANGES IN VERSION 2.11 (from 2.1):
+CHANGES IN VERSION 2.12 (from 2.1):
 
 Command-line options:
 - -X for XHTML mode
+
+Documentation:
+- fixed miscellaneous typographical, grammatical, and spelling mistakes
+
+Miscellaneous internal issues:
+- problematic (though not technically incorrect) C code fixed: casts to
+  malloc()-like functions removed, sizeof(type) changed to sizeof(*var)
+  where appropriate, replaced null argument lists with (void) where
+  appropriate, added const qualifiers to non-modified function parameters,
+  used standard return values provided by <stdlib.h>
+
 
 CHANGES IN VERSION 2.1 (from 2.0):
 
