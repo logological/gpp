@@ -1,6 +1,6 @@
 <#mode preservelf|off><#mode comment|"%%%" "\n">%%%
 %%%%
-%%%% $Id: gpp.pp,v 1.7 2004-10-01 23:14:14 psy Exp $
+%%%% $Id: gpp.pp,v 1.8 2004-10-01 23:30:31 psy Exp $
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% GPP documentation source file                            %%%%
@@ -27,6 +27,7 @@ $define{BR}{<BR>}$
 $define{I}{<I>@@@1</I>}$
 $define{S}{<P><HR><H2>@@@1</H2>}$
 $define{B}{<B>@@@1</B>}$
+$define{Q}{"@@@1"}$
 $define{l}{&lt;}$
 $define{g}{&gt;}$
 $define{d}{-}$
@@ -53,6 +54,7 @@ $define{ldots}{&hellip;}$
 $define{mdash}{&mdash;}$
 $define{ndash}{&ndash;}$
 $define{exp}{^}$
+$define{dbq}{"}$
 $define{pipe}{|}$
 $else$
 %%%%%%%%%%% man page macro definitions %%%%%%%%%%%%
@@ -66,6 +68,7 @@ $define{I}{\fI@@@1\fP}$
 $define{S}{
 .SH @@@1}$
 $define{B}{.B @@@1}$
+$define{Q}{"@@@1"}$
 $define{l}{<}$
 $define{g}{>}$
 $define{d}{\-}$
@@ -93,6 +96,7 @@ $define{ldots}{...}$
 $define{mdash}{ -- }$
 $define{ndash}{-}$
 $define{exp}{^}$
+$define{dbq}{"}$
 $define{pipe}{|}$
 $else$
 %%%%%%%%%%% latex page macro definitions %%%%%%%%%%%
@@ -106,6 +110,7 @@ $define{BR}{
 $define{I}{$isverb{@@@1}{{\it @@@1}}$}$
 $define{S}{\subsection{@@@1}}$
 $define{B}{{\bf @@@1}}$
+$define{Q}{``@@@1''}$
 $define{l}{$isverb{<}{$<$}$}$
 $define{g}{$isverb{>}{$>$}$}$
 $define{d}{-}$
@@ -138,6 +143,7 @@ $define{ldots}{\ldots}$
 $define{mdash}{---}$
 $define{ndash}{--}$
 $define{exp}{$isverb{^}{\^{}}$}$
+$define{dbq}{\texttt"}$
 $define{pipe}{$isverb{|}{$|$}$}$
 $else$
 
@@ -236,7 +242,7 @@ $P$
 GPP recognizes the following command-line switches and options.  Note that
 the $d$nostdinc, $d$nocurinc, $d$curdirinclast, $d$warninglevel, and $d$includemarker
 options from version 2.1 and earlier are deprecated and should not be used.  Use
-the "long option" variants instead ($d$$d$nostdinc, $I{etc.}$).
+the $Q{long option}$ variants instead ($d$$d$nostdinc, $I{etc.}$).
 $list{$li$
 $BI{$d$h $d$$d$help}$
 Print a short help message.
@@ -330,8 +336,8 @@ Typical meta-macros and user macros look like this: $pre$
   macro(arg,...)
 $nopre$
 This mode is equivalent to $pre$
-  -U "" "" "(" "," ")" "(" ")" "$dz$" "$b$$b$"
-  -M "$dz$" "$b$n" " " " " "$b$n" "(" ")"
+  -U $dbq$$dbq$ $dbq$$dbq$ $dbq$($dbq$ $dbq$,$dbq$ $dbq$)$dbq$ $dbq$($dbq$ $dbq$)$dbq$ $dbq$$dz$$dbq$ $dbq$$b$$b$$dbq$
+  -M $dbq$$dz$$dbq$ $dbq$$b$n$dbq$ $dbq$ $dbq$ $dbq$ $dbq$ $dbq$$b$n$dbq$ $dbq$($dbq$ $dbq$)$dbq$
 $nopre$
 $li$
 $BI{$d$C}$
@@ -339,10 +345,10 @@ cpp compatibility mode. This is the mode where GPP's behavior is the
 closest to that of cpp. Unlike in the default mode, meta-macro expansion
 occurs only at the beginning of lines, and C comments and strings are
 understood. This mode is equivalent to $pre$
-  -n -U "" "" "(" "," ")" "(" ")" "$dz$" ""
-  -M "$b$n$dz$$b$w" "$b$n" " " " " "$b$n" "" ""
-  +c "/*" "*/" +c "//" "$b$n" +c "$b$$b$$b$n" ""
-  +s "$b$"" "$b$"" "$b$$b$" +s "'" "'" "$b$$b$"
+  -n -U $dbq$$dbq$ $dbq$$dbq$ $dbq$($dbq$ $dbq$,$dbq$ $dbq$)$dbq$ $dbq$($dbq$ $dbq$)$dbq$ $dbq$$dz$$dbq$ $dbq$$dbq$
+  -M $dbq$$b$n$dz$$b$w$dbq$ $dbq$$b$n$dbq$ $dbq$ $dbq$ $dbq$ $dbq$ $dbq$$b$n$dbq$ $dbq$$dbq$ $dbq$$dbq$
+  +c $dbq$/*$dbq$ $dbq$*/$dbq$ +c $dbq$//$dbq$ $dbq$$b$n$dbq$ +c $dbq$$b$$b$$b$n$dbq$ $dbq$$dbq$
+  +s $dbq$$b$$dbq$$dbq$ $dbq$$b$$dbq$$dbq$ $dbq$$b$$b$$dbq$ +s $dbq$'$dbq$ $dbq$'$dbq$ $dbq$$b$$b$$dbq$
 $nopre$
 $li$
 $BI{$d$T}$
@@ -352,7 +358,7 @@ this: $pre$
   $b$macro$bra$arg$ket$$bra$...$ket$
 $nopre$
 No comments are understood. This mode is equivalent to $pre$
-  -U "$b$$b$" "" "$bra$" "$ket$$bra$" "$ket$" "$bra$" "$ket$" "$dz$" "@"
+  -U $dbq$$b$$b$$dbq$ $dbq$$dbq$ $dbq$$bra$$dbq$ $dbq$$ket$$bra$$dbq$ $dbq$$ket$$dbq$ $dbq$$bra$$dbq$ $dbq$$ket$$dbq$ $dbq$$dz$$dbq$ $dbq$@$dbq$
 $nopre$
 $li$
 $BI{$d$H}$
@@ -362,7 +368,7 @@ this: $pre$
   $l$$dz$macro arg$pipe$...$g$
 $nopre$
 No comments are understood. This mode is equivalent to $pre$
-  -U "$l$$dz$" "$g$" "$b$B" "$pipe$" "$g$" "$l$" "$g$" "$dz$" "$b$$b$"
+  -U $dbq$$l$$dz$$dbq$ $dbq$$g$$dbq$ $dbq$$b$B$dbq$ $dbq$$pipe$$dbq$ $dbq$$g$$dbq$ $dbq$$l$$dbq$ $dbq$$g$$dbq$ $dbq$$dz$$dbq$ $dbq$$b$$b$$dbq$
 $nopre$
 $li$
 $BI{$d$X}$
@@ -372,16 +378,16 @@ this: $pre$
   $l$$dz$macro arg$pipe$.../$g$
 $nopre$
 No comments are understood. This mode is equivalent to $pre$
-  -U "$l$$dz$" "/$g$" "$b$B" "$pipe$" "/$g$" "$l$" "$g$" "$dz$" "$b$$b$"
+  -U $dbq$$l$$dz$$dbq$ $dbq$/$g$$dbq$ $dbq$$b$B$dbq$ $dbq$$pipe$$dbq$ $dbq$/$g$$dbq$ $dbq$$l$$dbq$ $dbq$$g$$dbq$ $dbq$$dz$$dbq$ $dbq$$b$$b$$dbq$
 $nopre$
 $li$
 $BI{$d$P}$
 Prolog-compatible cpp-like mode. This mode differs from the cpp
 compatibility mode by its handling of comments, and is equivalent to $pre$
-  -n -U "" "" "(" "," ")" "(" ")" "$dz$" ""
-  -M "$b$n$dz$$b$w" "$b$n" " " " " "$b$n" "" ""
-  +ccss "$b$!o/*" "*/" +ccss "$pc$" "$b$n" +ccii "$b$$b$$b$n" ""
-  +s "$b$"" "$b$"" "" +s "$b$!$dz$'" "'" ""
+  -n -U $dbq$$dbq$ $dbq$$dbq$ $dbq$($dbq$ $dbq$,$dbq$ $dbq$)$dbq$ $dbq$($dbq$ $dbq$)$dbq$ $dbq$$dz$$dbq$ $dbq$$dbq$
+  -M $dbq$$b$n$dz$$b$w$dbq$ $dbq$$b$n$dbq$ $dbq$ $dbq$ $dbq$ $dbq$ $dbq$$b$n$dbq$ $dbq$$dbq$ $dbq$$dbq$
+  +ccss $dbq$$b$!o/*$dbq$ $dbq$*/$dbq$ +ccss $dbq$$pc$$dbq$ $dbq$$b$n$dbq$ +ccii $dbq$$b$$b$$b$n$dbq$ $dbq$$dbq$
+  +s $dbq$$b$$dbq$$dbq$ $dbq$$b$$dbq$$dbq$ $dbq$$dbq$ +s $dbq$$b$!$dz$'$dbq$ $dbq$'$dbq$ $dbq$$dbq$
 $nopre$
 $li$
 $BI{+c}{$l$n$g$ str1 str2}$
@@ -452,7 +458,7 @@ The syntax of a macro call is as follows: it must start with a
 sequence of characters matching the $I{macro start sequence}$ as specified
 in the current mode, followed immediately by the name of the macro, which
 must be a valid $I{identifier}$$mdash$$I{i.e.}$, a sequence of letters, digits, or
-underscores ("$und$"). The macro name must be followed by a $I{short macro end
+underscores ($Q{$und$}$). The macro name must be followed by a $I{short macro end
 sequence}$ if the macro has no arguments, or by a sequence of arguments
 initiated by an $I{argument start sequence}$. The various arguments are
 then separated by an $I{argument separator}$, and the macro ends with
@@ -465,12 +471,12 @@ Alternatively, macro parameters may be named (see below). Furthermore, to
 avoid interference between the GPP syntax and the contents of the input file,
 a $I{quote character}$ is provided. The quote character can be used to
 prevent the interpretation of a macro call, comment, or string as anything
-but plain text. The quote character "protects" the following character, and
+but plain text. The quote character $Q{protects}$ the following character, and
 always gets removed during evaluation. Two consecutive quote characters
 evaluate as a single quote character.
 $P$
 Finally, to facilitate proper argument delimitation, certain characters can
-be "stacked" when they occur in a macro argument, so that the argument
+be $Q{stacked}$ when they occur in a macro argument, so that the argument
 separator or macro end sequence are not parsed if the argument body is not
 balanced. This allows nesting macro calls without using quotes. If an
 improperly balanced argument is needed, quote characters should be added in
@@ -535,7 +541,7 @@ The behavior of a comment/string is specified by a three-character
 modifier string, which may be passed as an optional argument either 
 to the +c/+s command-line options or to the $I{$dz$mode comment}$/$I{$dz$mode 
 string}$ meta-macros. If no modifier string is specified, the default
-value is "ccc" for comments and "sss" for strings. The first character
+value is $Q{ccc}$ for comments and $Q{sss}$ for strings. The first character
 corresponds to the behavior inside meta-macro calls (including user-macro
 definitions since these come inside a $I{$dz$define}$ meta-macro call),
 the second character corresponds to the behavior inside user-macro
@@ -575,9 +581,9 @@ Syntax specification strings should always be provided as C strings,
 whether they are given as arguments to a $I{$dz$mode}$ meta-macro call or
 on the command-line of a Unix shell. If command-line arguments are given
 via another method than a standard Unix shell, then the shell behavior
-must be emulated$mdash$$I{i.e.}$, the surrounding "" quotes should be removed,
+must be emulated$mdash$$I{i.e.}$, the surrounding $dbq$$dbq$ quotes should be removed,
 all occurrences of `$b$$b$' should be replaced by a single backslash,
-and similarly `$b$"' should be replaced by `"'.
+and similarly `$b$$dbq$' should be replaced by `$dbq$'.
 Sequences like `$b$n' are recognized by GPP and should be left as is.
 $P$
 Special sequences matching certain subsets of the character set can be
@@ -621,14 +627,14 @@ $li$
 $bi{o}$
 an operator character. The set of matched characters is customizable
 using the $I{$dz$mode charset op}$ command. The default setting matches
-all characters in "+-*/$b$$exp$$l$$g$=`$tilde$:.?@$dz$$and$!$pc$$pipe$", except in Prolog mode
+all characters in $Q{+-*/$b$$exp$$l$$g$=`$tilde$:.?@$dz$$and$!$pc$$pipe$}$, except in Prolog mode
 where `!', `$pc$' and `$pipe$' are not matched.
 $li$
 $bi{O}$
 an operator character or a parenthesis character. The set of additional
 matched characters in comparison with `$b$o' is customizable using the
 $I{$dz$mode charset par}$ command. The default setting is to have the
-characters in "()[]$bra$$ket$" as parentheses.}$
+characters in $Q{()[]$bra$$ket$}$ as parentheses.}$
 $P$
 Moreover, all of these matching subsets except `$b$w' and `$b$W' can be 
 negated by inserting a `!'$mdash$$I{i.e.}$, by writing `$b$!$I{x}$' instead of `$b$$I{x}$'.
@@ -684,7 +690,7 @@ Note that meta-macro arguments are passed to the meta-macro prior to
 any evaluation (although the meta-macro may choose to evaluate them,
 see meta-macro descriptions below). In the case of the $I{$dz$mode}$
 meta-macro, GPP temporarily adds a comment/string specification to
-enable recognition of C strings ("$ldots$") and prevent any evaluation
+enable recognition of C strings ($dbq$$ldots$$dbq$) and prevent any evaluation
 inside them, so no interference of the characters being put in the C
 string arguments to $I{$dz$mode}$ with the current syntax is to be feared.
 $P$
@@ -804,7 +810,7 @@ follows. The include file is looked for first in the current directory,
 and then, if not found, in one of the directories specified by the $I{$d$I}$
 command-line option (or $I{/usr/include}$ if no directory was specified).
 Note that, for compatibility reasons, it is possible to put the file name 
-between "" or $l$$g$.
+between $dbq$$dbq$ or $l$$g$.
 $p$
 The order in which the various directories are searched for include files
 is affected by the $I{$d$nostdinc}$, $I{$d$nocurinc}$ and $I{$d$curdirinclast}$
@@ -862,7 +868,7 @@ $li$
 $BI{$dz$if }{expr}$
 This meta-macro invokes the arithmetic/globbing evaluator in the same
 manner as $I{$dz$eval}$ and compares the result of evaluation with the
-string "0" in order to begin a conditional block. In particular note
+string $dbq$0$dbq$ in order to begin a conditional block. In particular note
 that the logical value of $I{expr}$ is always true when it cannot be
 evaluated to a number.
 $li$
@@ -906,9 +912,9 @@ argument is always one of a list of available keywords (see below);
 its second argument is always a sequence of words separated by whitespace.
 Apart from possibly the first of them, each of these words is always a
 delimiter or syntax specifier, and should be provided as a C string
-delimited by double quotes ("$nbsp$"). The various special matching sequences 
+delimited by double quotes ($dbq$$nbsp$$dbq$). The various special matching sequences 
 listed in the section on syntax specification are available. Any $I{$dz$mode}$
-command is parsed in a mode where "$ldots$" is understood to be a C-style
+command is parsed in a mode where $dbq$$ldots$$dbq$ is understood to be a C-style
 string, so it is safe to put any character inside these strings.
 Also note that the first argument of $I{$dz$mode}$ (the keyword) is never
 evaluated, while the second argument is evaluated (except of course for
@@ -926,7 +932,7 @@ Pop mode specification from the mode stack.
 $li$
 $BI{$dz$mode standard }{name}$
 Select one of the standard modes. The only argument must be one of:
-default (default mode); cpp, C (cpp mode); tex, $TeX$$nbsp$(tex mode); html,
+default (default mode); cpp, C (cpp mode); tex, TeX ($TeX$$nbsp$mode); html,
 HTML (html mode); xhtml, XHTML (xhtml mode); prolog, Prolog (prolog
 mode). The mode name must be given directly, not as a C string.
 $li$
@@ -944,7 +950,7 @@ or there must be seven string arguments, whose significance is the same as
 for the $d$M command-line option (see section on syntax specification).
 $li$
 $BI{$dz$mode quote }{[$s{c}$]}$
-With no argument or "" as argument, removes the quote character
+With no argument or $dbq$$dbq$ as argument, removes the quote character
 specification and disables the quoting functionality. With one string
 argument, the first character of the string is taken to be the new
 quote character. The quote character can be neither alphanumeric nor `$und$',
@@ -952,14 +958,14 @@ nor can it be one of the special matching sequences.
 $li$
 $BI{$dz$mode comment }{[xxx] $s{start}$ $s{end}$ [$s{c}$ [$s{c}$]]}$
 Add a comment specification. Optionally a first argument consisting of
-three characters not enclosed in "$nbsp$" can be used to specify a comment/string
+three characters not enclosed in $dbq$$nbsp$$dbq$ can be used to specify a comment/string
 modifier (see the section on syntax specification). The default modifier
 is $I{ccc}$. The first two string
 arguments are used as comment start and end sequences respectively.
 The third string argument is optional and can be used to specify a
-string-quote character. (If it is "", the functionality is disabled.)
+string-quote character. (If it is $dbq$$dbq$, the functionality is disabled.)
 The fourth string argument is optional and can be used to specify a
-string delimitation warning character. (If it is "", the functionality is
+string delimitation warning character. (If it is $dbq$$dbq$, the functionality is
 disabled.)
 $li$
 $BI{$dz$mode string }{[xxx] $s{start}$ $s{end}$ [$s{c}$ [$s{c}$]]}$
@@ -982,16 +988,16 @@ Specify the character sets to be used for matching the $b$o, $b$O and
 $b$i special sequences. The first argument must be one of $I{id}$
 (the set matched by $b$i), $I{op}$ (the set matched by $b$o) or $I{par}$
 (the set matched by $b$O in addition to the one matched by $b$o).
-$I{"string"}$ is a C string which lists all characters to put in the set.
+$I{$dbq$string$dbq$}$ is a C string which lists all characters to put in the set.
 It may contain only the special matching sequences $b$a, $b$A, $b$b, $b$B, 
 and $b$$dz$ (the other sequences and the negated sequences are not allowed). 
 When a `-' is found inbetween two non-special characters this adds all 
-characters inbetween (e.g. "A-Z" corresponds to all uppercase characters). 
+characters inbetween (e.g. $dbq$A-Z$dbq$ corresponds to all uppercase characters). 
 To have `-' in the matched set, either put it in first or last position
 or place it next to a $b$x sequence.
 }$
 $S{DATE AND TIME CONVERSION SPECIFIERS}$
-Ordinary characters placed in the format string are copied to without
+Ordinary characters placed in the format string are copied without
 conversion.  Conversion specifiers are introduced by a `$pc$'
 character, and are replaced as follows:
 $list{
@@ -1152,7 +1158,7 @@ In cpp mode, C strings and comments are understood as such, as illustrated
 by the following example:
 $pre$
   $dz$define BLAH foo
-  BLAH "BLAH" /* BLAH */
+  BLAH $dbq$BLAH$dbq$ /* BLAH */
   `It$b$'s a /*string*/ !'
 $nopre$
 The main difference between Prolog mode and cpp mode is the handling of
@@ -1192,7 +1198,7 @@ the mode description, either by changing the meta-macro call syntax, or
 more elegantly by defining a silent string and using the fact that the
 context at the beginning of an evaluated string is a newline character:
 $pre$
-  $dz$mode string QQQ "$dollar$" "$dollar$"
+  $dz$mode string QQQ $dbq$$dollar$$dbq$ $dbq$$dollar$$dbq$
   $dz$ifeq $dollar$$dz$exec echo blah
   $dollar$ $dollar$blah
   $dollar$
@@ -1201,7 +1207,7 @@ $pre$
   $b$$dz$exec not allowed
   $dz$endif
 $nopre$
-Note, however, that comments/strings cannot be nested ("$ldots$" inside
+Note, however, that comments/strings cannot be nested ($dbq$$ldots$$dbq$ inside
 $dollar$$ldots$$dollar$ would go undetected), so one needs to be careful about what to 
 include inside such a silent evaluated string. In this example, the loose
 meta-macro nesting introduced in version 2.1 makes it possible to use the
@@ -1265,8 +1271,8 @@ $pre$
   $dz$define f(x) x x
   $dz$mode standard tex
   $b$f$bra$blah$ket$
-  $b$mode$bra$string$ket$$bra$"$dollar$" "$dollar$"$ket$
-  $b$mode$bra$comment$ket$$bra$"/*" "*/"$ket$
+  $b$mode$bra$string$ket$$bra$$dbq$$dollar$$dbq$ $dbq$$dollar$$dbq$$ket$
+  $b$mode$bra$comment$ket$$bra$$dbq$/*$dbq$ $dbq$*/$dbq$$ket$
   $dollar$$b$f$bra$urf$ket$$dollar$ /* blah */
   $b$define$bra$FOO$ket$$bra$bar/* and some more */$ket$
   $b$mode$bra$pop$ket$
@@ -1278,22 +1284,22 @@ $P$
 Another interesting application is selectively forcing evaluation of macros 
 in C strings when in cpp mode. For example, consider the following input:
 $pre$
-  $dz$define blah(x) "and he said: x"
+  $dz$define blah(x) $dbq$and he said: x$dbq$
   blah(foo)
 $nopre$
 Obviously one would want the parameter $I{x}$ to be expanded inside the
 string. There are several ways around this problem:
 $pre$
   $dz$mode push
-  $dz$mode nostring "$b$""
-  $dz$define blah(x) "and he said: x"
+  $dz$mode nostring $dbq$$b$$dbq$$dbq$
+  $dz$define blah(x) $dbq$and he said: x$dbq$
   $dz$mode pop
 
-  $dz$mode quote "`"
-  $dz$define blah(x) `"and he said: x`"
+  $dz$mode quote $dbq$`$dbq$
+  $dz$define blah(x) `$dbq$and he said: x`$dbq$
 
-  $dz$mode string QQQ "$dollar$$dollar$" "$dollar$$dollar$"
-  $dz$define blah(x) $dollar$$dollar$"and he said: x"$dollar$$dollar$
+  $dz$mode string QQQ $dbq$$dollar$$dollar$$dbq$ $dbq$$dollar$$dollar$$dbq$
+  $dz$define blah(x) $dollar$$dollar$$dbq$and he said: x$dbq$$dollar$$dollar$
 $nopre$
 The first method is very natural, but has the inconvenience of being lengthy
 and neutralizing string semantics, so that having an unevaluated instance
@@ -1307,7 +1313,7 @@ or enclose it inside a $I{$dz$mode push/pop}$ construct. For example, any
 occurrence of `/*' in the string would have to be quoted.$P$
 The last method demonstrates the efficiency of evaluated strings in the
 context of selective evaluation: since comments/strings cannot be nested,
-any occurrence of `"' or `/*' inside the `$dollar$$dollar$' gets output as plain text,
+any occurrence of `$dbq$' or `/*' inside the `$dollar$$dollar$' gets output as plain text,
 as expected inside a string, and only macro evaluation is enabled. Also note
 that there is much more freedom in the choice of a string delimiter than
 in the choice of a quote character.
@@ -1351,7 +1357,7 @@ $pre$
 $nopre$$P$
 Another example, in cpp mode:
 $pre$
-  $dz$mode string QQQ "$dollar$" "$dollar$"
+  $dz$mode string QQQ $dbq$$dollar$$dbq$ $dbq$$dollar$$dbq$
   $dz$define triangle(x,y) y $b$
    $dollar$$dz$if length(y)$l$x$dollar$ $dollar$$dz$define iter triangle$dollar$ $dollar$$dz$else$dollar$ $b$
    $dollar$$dz$define iter$dollar$ $dollar$$dz$endif
@@ -1363,11 +1369,11 @@ functional abstraction in GPP (in standard mode). Understanding this
 example and why it can't be made much simpler is an exercise left to the 
 curious reader.
 $pre$
-  $dz$mode string "`" "`" "$b$$b$"
+  $dz$mode string $dbq$`$dbq$ $dbq$`$dbq$ $dbq$$b$$b$$dbq$
   $dz$define ASIS(x) x
   $dz$define SILENT(x) ASIS()
   $dz$define EVAL(x,f,v) SILENT(
-    $dz$mode string QQQ "`" "`" "$b$$b$"
+    $dz$mode string QQQ $dbq$`$dbq$ $dbq$`$dbq$ $dbq$$b$$b$$dbq$
     $dz$defeval TEMP0 x
     $dz$defeval TEMP1 (
       $b$$dz$define $b$TEMP2(TEMP0) f
