@@ -1,7 +1,7 @@
 /* File:      gpp.c  -- generic preprocessor
 ** Author:    Denis Auroux, Tristan Miller
 ** Contact:   psychonaut@nothingisreal.com
-** Version:   2.14
+** Version:   2.20
 ** 
 ** Copyright (C) 1996, 1999, 2001 Denis Auroux
 ** Copyright (C) 2003, 2004 Tristan Miller
@@ -20,7 +20,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.2 2004-01-16 22:48:35 psy Exp $
+** $Id: gpp.c,v 1.3 2004-01-17 21:09:34 psy Exp $
 ** 
 */
 
@@ -331,7 +331,7 @@ void PopSpecs(void)
 }
 
 void display_version(void) {
-  fprintf(stderr,"GPP Version 2.14 - Generic Preprocessor\n");
+  fprintf(stderr,"GPP Version 2.20 - Generic Preprocessor\n");
   fprintf(stderr,"Copyright (C) 1996-2001 Denis Auroux\n");
   fprintf(stderr,"Copyright (C) 2003, 2004 Tristan Miller\n");
   fprintf(stderr,
@@ -719,7 +719,10 @@ void extendBuf(int pos)
 
 char getChar(int pos)
 {
+  static int lastchar = -666;
   int c;
+
+  if (lastchar == -666 && !strcmp(S->Meta.mEnd, "\n")) lastchar='\n';
 
   if (C->in==NULL) {
     if (pos>=C->len) return 0;
@@ -728,7 +731,8 @@ char getChar(int pos)
   extendBuf(pos);
   while (pos>=C->len) {
     do { c=fgetc(C->in); } while (c==13);
-    if (c=='\n') C->lineno++;
+    if (lastchar=='\n') C->lineno++;
+    lastchar=c;
     if (c==EOF) c=0;
     C->buf[C->len++]=(char)c;
   }
@@ -1044,7 +1048,7 @@ void initthings(int argc, char **argv)
   C->out=malloc(sizeof *(C->out));
   C->out->f=stdout;
   C->out->bufsize=0;
-  C->lineno=0;
+  C->lineno=1;
   isinput=isoutput=ismode=ishelp=hasmeta=usrmode=0;
   nincludedirs=0;
   C->bufsize=80;
@@ -2181,7 +2185,7 @@ int ParsePossibleMeta(void)
       C->argv=NULL;
       C->filename=incfile_name;
       C->out=N->out;
-      C->lineno=0;
+      C->lineno=1;
       C->bufsize=80;
       C->len=0;
       C->buf=C->malloced_buf=malloc(C->bufsize);
@@ -2337,9 +2341,9 @@ int ParsePossibleMeta(void)
     break;
 
   case 15: { /* LINE */ 
-    char buf[100];
+    char buf[MAX_GPP_NUM_SIZE];
+    sprintf(buf, "%d", C->lineno);
     replace_directive_with_blank_line(C->out->f);
-    sprintf(buf, "%d", C->lineno + 1);
     sendout(buf, strlen(buf), 0);
   }
     break;
