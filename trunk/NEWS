@@ -1,11 +1,16 @@
 GPP NEWS -- history of user-visible changes
-$Id: NEWS,v 1.4 2004-02-07 15:14:24 psy Exp $
+$Id: NEWS,v 1.5 2004-02-14 14:35:00 psy Exp $
 
 See the end of this file for copying conditions.
 
 Please send GPP bug reports to Tristan Miller
 <psychonaut@nothingisreal.com>.
 
+
+Version 2.22
+
+    * Added --include option which allows user to specify a file
+      to be processed before the regular input file
 
 Version 2.21
 

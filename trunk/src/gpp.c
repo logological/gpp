@@ -19,7 +19,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.5 2004-02-07 15:13:07 psy Exp $
+** $Id: gpp.c,v 1.6 2004-02-14 14:35:00 psy Exp $
 ** 
 */
 
@@ -187,6 +187,7 @@ int NoStdInc        = 0;
 int NoCurIncFirst   = 0;
 int CurDirIncLast   = 0;
 int file_and_stdout = 0;
+char *IncludeFile   = NULL;
 
 typedef struct OUTPUTCONTEXT {
   char *buf;
@@ -237,6 +238,7 @@ void write_include_marker(FILE *f, int lineno, char *filename, const char *marke
 void construct_include_directive_marker(char **include_directive_marker,
 					const char *includemarker_input);
 void escape_backslashes(const char *instr, char **outstr);
+static void DoInclude(char *file_name);
 
 /*
 ** strdup() and my_strcasecmp() are not ANSI C, so here we define our own
@@ -348,7 +350,7 @@ void display_version(void) {
 void usage(void) {
   fprintf(stderr,"Usage : gpp [-{o|O} outfile] [-I/include/path] [-Dname=val ...] [-z] [-x] [-m]\n");
   fprintf(stderr,"            [-n] [-C | -T | -H | -X | -P | -U ... [-M ...]] [+c<n> str1 str2]\n");
-  fprintf(stderr,"            [+s<n> str1 str2 c] [infile]\n\n");
+  fprintf(stderr,"            [+s<n> str1 str2 c] [long options] [infile]\n\n");
   fprintf(stderr,"      default:    #define x y           macro(arg,...)\n");
   fprintf(stderr," -C : maximum cpp compatibility (includes -n, +c, +s, ...)\n");
   fprintf(stderr," -T : TeX-like    \\define{x}{y}         \\macro{arg}{...}\n");
@@ -365,6 +367,8 @@ void usage(void) {
   fprintf(stderr," -n : send LF characters serving as macro terminators to output\n");
   fprintf(stderr," +c : use next 2 args as comment start and comment end sequences\n");
   fprintf(stderr," +s : use next 3 args as string start, end and quote character\n\n");
+  fprintf(stderr," Long options:\n");
+  fprintf(stderr," --include file : process file before infile\n");
   fprintf(stderr," --nostdinc : don't search standard directories for files to include\n");
   fprintf(stderr," --nocurinc : don't search the current directory for files to include\n");
   fprintf(stderr," --curdirinclast : search the current directory last\n");
@@ -1103,6 +1107,14 @@ void initthings(int argc, char **argv)
 	exit(EXIT_FAILURE);
       }
       construct_include_directive_marker(&include_directive_marker, *arg);
+      continue;
+    }
+    if (strcmp(*arg, "--include") == 0) {
+      if (!(*(++arg))) {
+        usage();
+        exit(EXIT_FAILURE);
+      }
+      IncludeFile = *arg;
       continue;
     }
     if (strcmp(*arg, "-warninglevel") == 0) {
@@ -1986,6 +1998,81 @@ void ProcessModeCommand(int p1start,int p1end,int p2start,int p2end)
   free(s);
 }
 
+static void DoInclude(char *file_name)
+{
+  struct INPUTCONTEXT *N;
+  char *incfile_name = NULL;
+  FILE *f = NULL;
+  int i, j;
+  int len = strlen(file_name);
+
+  /* if absolute path name is specified */
+  if (file_name[0]==SLASH
+#ifdef WIN_NT
+      || (isalpha(file_name[0]) && file_name[1]==':')
+#endif
+      )
+    f=fopen(file_name,"r");
+  else /* search current dir, if this search isn't turned off */
+    if (!NoCurIncFirst) {
+      f = openInCurrentDir(file_name);
+    }
+
+  for (j=0;(f==NULL)&&(j<nincludedirs);j++) {
+    incfile_name =
+      realloc(incfile_name,len+strlen(includedir[j])+2);
+    strcpy(incfile_name,includedir[j]);
+    incfile_name[strlen(includedir[j])]=SLASH;
+    /* extract the orig include filename */
+    strcpy(incfile_name+strlen(includedir[j])+1, file_name);
+    f=fopen(incfile_name,"r");
+  }
+  if (incfile_name!=NULL)
+    free(incfile_name);
+
+  /* If didn't find the file and "." is said to be searched last */
+  if (f==NULL && CurDirIncLast) {
+    f = openInCurrentDir(file_name);
+  }
+
+  if (f==NULL)
+    bug("Requested include file not found");
+
+  N=C;
+  C=malloc(sizeof *C);
+  C->in=f;
+  C->argc=0;
+  C->argv=NULL;
+  C->filename=file_name;
+  C->out=N->out;
+  C->lineno=1;
+  C->bufsize=80;
+  C->len=0;
+  C->buf=C->malloced_buf=malloc(C->bufsize);
+  C->eof=0;
+  C->namedargs=NULL;
+  C->in_comment=0;
+  C->ambience=FLAG_TEXT;
+  C->may_have_args=0;
+  PushSpecs(S);
+  if (autoswitch) {
+    if (!strcmp(file_name+strlen(file_name)-2,".h")
+       || !strcmp(file_name+strlen(file_name)-2,".c"))
+      SetStandardMode(S,"C");
+  }
+
+  /* Include marker before the included contents */
+  write_include_marker(N->out->f, 1, C->filename, "1");
+  ProcessContext();
+  /* Include marker after the included contents */
+  write_include_marker(N->out->f, N->lineno, N->filename, "2");
+  /* Need to leave the blank line in lieu of #include, like cpp does */
+  replace_directive_with_blank_line(N->out->f);
+  free(C);
+  PopSpecs();
+  C=N;
+}
+
 int ParsePossibleMeta(void)
 {
   int cklen,nameend;
@@ -2158,8 +2245,6 @@ int ParsePossibleMeta(void)
 
   case 7: /* INCLUDE */
     if (!commented[iflevel]) {
-      struct INPUTCONTEXT *N;
-      FILE *f = NULL;
       char *incfile_name;
 
       if (nparam==2 && WarningLevel > 0)
@@ -2176,76 +2261,7 @@ int ParsePossibleMeta(void)
 	incfile_name[i]=getChar(p1start+i);
       incfile_name[p1end-p1start]=0;
 
-      /* if absolute path name is specified */
-      if (incfile_name[0]==SLASH
-#ifdef WIN_NT
-	  || (isalpha(incfile_name[0]) && incfile_name[1]==':')
-#endif
-	  )
-	f=fopen(incfile_name,"r");
-      else /* search current dir, if this search isn't turned off */
-	if (!NoCurIncFirst) {
-	  f = openInCurrentDir(incfile_name);
-	}
-
-      for (j=0;(f==NULL)&&(j<nincludedirs);j++) {
-	incfile_name =
-	  realloc(incfile_name,p1end-p1start+strlen(includedir[j])+2);
-	strcpy(incfile_name,includedir[j]);
-	incfile_name[strlen(includedir[j])]=SLASH;
-	/* extract the orig include filename */
-	for (i=0;i<p1end-p1start;i++) 
-	  incfile_name[strlen(includedir[j])+1+i]=getChar(p1start+i);
-	incfile_name[p1end-p1start+strlen(includedir[j])+1]=0;
-	f=fopen(incfile_name,"r");
-      }
-
-      /* If didn't find the file and "." is said to be searched last */
-      if (f==NULL && CurDirIncLast) {
-	incfile_name=realloc(incfile_name,p1end-p1start+1);
-	/* extract the orig include filename */
-	for (i=0;i<p1end-p1start;i++) 
-	  incfile_name[i]=getChar(p1start+i);
-	incfile_name[p1end-p1start]=0;
-	f = openInCurrentDir(incfile_name);
-      }
-
-      if (f==NULL)
-	bug("Requested include file not found");
-
-      N=C;
-      C=malloc(sizeof *C);
-      C->in=f;
-      C->argc=0;
-      C->argv=NULL;
-      C->filename=incfile_name;
-      C->out=N->out;
-      C->lineno=1;
-      C->bufsize=80;
-      C->len=0;
-      C->buf=C->malloced_buf=malloc(C->bufsize);
-      C->eof=0;
-      C->namedargs=NULL;
-      C->in_comment=0;
-      C->ambience=FLAG_TEXT;
-      C->may_have_args=0;
-      PushSpecs(S);
-      if (autoswitch) {
-	if (!strcmp(incfile_name+strlen(incfile_name)-2,".h")
-	    || !strcmp(incfile_name+strlen(incfile_name)-2,".c"))
-	  SetStandardMode(S,"C");
-      }
-
-      /* Include marker before the included contents */
-      write_include_marker(N->out->f, 1, C->filename, "1");
-      ProcessContext();
-      /* Include marker after the included contents */
-      write_include_marker(N->out->f, N->lineno, N->filename, "2");
-      /* Need to leave the blank line in lieu of #include, like cpp does */
-      replace_directive_with_blank_line(N->out->f);
-      free(C);
-      PopSpecs();
-      C=N;
+      DoInclude(incfile_name);
     } else
       replace_directive_with_blank_line(C->out->f);
     break;
@@ -2749,6 +2765,8 @@ int main(int argc,char **argv)
 {
   initthings(argc,argv); 
   /* The include marker at the top of the file */
+  if (IncludeFile)
+    DoInclude(IncludeFile);
   write_include_marker(C->out->f, 1, C->filename, "");
   ProcessContext();
   fclose(C->out->f);

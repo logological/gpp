@@ -19,7 +19,7 @@ your compiler does not already #define it by default.
 
 UNIX-LIKE SYSTEMS:
 
-  These are generic installation instructions.
+   These are generic installation instructions.
 
    The `configure' shell script attempts to guess correct values for
 various system-dependent variables used during compilation.  It uses
