@@ -1,6 +1,10 @@
 <#mode preservelf|off><#mode comment|"%%%" "\n">%%%
+%
+% $Id: gpphelp.pp,v 1.6 2003-11-21 16:49:05 psy Exp $
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% GPP 2.11 documentation source file (C) Denis Auroux 2001 %%%%
+%%%% GPP 2.12 documentation source file (C) 2001 Denis Auroux %%%%
+%%%% (C) 2003 Tristan Miller                                  %%%%
 %%%%                                                          %%%%
 %%%% to get the man page, run:                                %%%%
 %%%%    gpp -H -Dman gpphelp.pp -o gpp.1                      %%%%
@@ -112,7 +116,7 @@ $define{exp}{$isverb{^}{\^{}}$}$
 $define{pipe}{$isverb{|}{$|$}$}$
 $else$
 
-This is the gpp 2.11 help file.
+This is the gpp 2.12 help file.
 
  to get the man page, run:              
     gpp -H -Dman gpphelp.pp -o gpp.1    
@@ -128,7 +132,7 @@ $endif$
 $endif$
 $endif$
 %%%%%%%%%%%%%%%%% some headers %%%%%%%%%%%%%%%%%%%
-$define{version}{2.11}$
+$define{version}{2.12}$
 $define{SYNTAX}{
 $pre$
   gpp [$d$$bra$o$pipe$O$ket$ $I{outfile}$] [$d$I$I{/include/path}$] [$d$D$I{name=val}$ ...]
@@ -141,23 +145,23 @@ $ifdef{html}$
 <HTML><HEAD><TITLE>GPP &mdash; Generic Preprocessor</TITLE>
 </HEAD><BODY BGCOLOR="#FFFFFF">
 <CENTER><H1>GPP &mdash; Generic Preprocessor</H1>
-Version $version$ &mdash; &copy; Denis Auroux 1996&ndash;2001, Tristan Miller 2003</CENTER>
+Version $version$ &mdash; &copy; 1996&ndash;2001 Denis Auroux, 2003 Tristan Miller</CENTER>
 <P><B>
 <a href="http://math.polytechnique.fr/cmat/auroux/prog/gpp.html">GPP 2.1 home page (Denis Auroux)</a><br>
-<a href="http://www.nothingisreal.com/gpp/">GPP 2.11 home page (Tristan Miller)</a></B>
+<a href="http://www.nothingisreal.com/gpp/">GPP 2.12 home page (Tristan Miller)</a></B>
 $else$
 $ifdef{man}$
 .TH GPP 1 \" -*- nroff -*-
 
 .SH NAME
-GPP \- Generic Preprocessor \- version $version$ (C) Denis Auroux 1996-2001, Tristan Miller 2003
+GPP \- Generic Preprocessor \- version $version$ (C) 1996-2001 Denis Auroux, 2003 Tristan Miller
 
 .SH SYNOPSIS
 $SYNTAX$%%%
 $else$
 \documentclass[12pt]{article}
 \title{GPP --- Generic Preprocessor}
-\author{\copyright Denis Auroux 1996--2001, Tristan Miller 2003}
+\author{\copyright 1996--2001 Denis Auroux, 2003 Tristan Miller}
 \date{Version $version$}
 \renewcommand{\thesubsection}{\arabic{subsection}}
 \begin{document}
@@ -1241,11 +1245,12 @@ $S{SEE ALSO}$
 m4(1V), cpp(1)
 $endif$
 $S{AUTHOR}$
-Denis Auroux (auroux@math.polytechnique.fr) and
+Denis Auroux (auroux@math.polytechnique.fr).$P$
+XHTML mode and miscellaneous bugfixes by 
 Tristan Miller (psychonaut@nothingisreal.com). $P$
 Please send e-mail for any comments, questions or suggestions. $P$
 Many thanks to Michael Kifer for valuable feedback and suggestions,
-and for contributing various patches included in this version.
+and for contributing various patches included in version 2.1.
 $ifdef{html}$
 </BODY></HTML>
 $endif$
