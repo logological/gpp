@@ -1,6 +1,6 @@
 <#mode preservelf|off><#mode comment|"%%%" "\n">%%%
 %%%%
-%%%% $Id: gpp.pp,v 1.8 2004-10-01 23:30:31 psy Exp $
+%%%% $Id: gpp.pp,v 1.9 2004-10-01 23:30:49 psy Exp $
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% GPP documentation source file                            %%%%
@@ -1049,8 +1049,8 @@ $li$
 $BI{$pc$p}$
 Either `AM' or `PM' according  to  the  given  time
 value, or the corresponding strings for the current
-locale.  Noon is treated as `pm'  and  midnight  as
-`am'.
+locale.  Noon is treated as `PM'  and  midnight  as
+`AM'.
 $li$
 $BI{$pc$R}$
 The  time  in  24-hour notation ($pc$H:$pc$M).
