@@ -20,13 +20,13 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.9 2003-11-21 15:56:02 psy Exp $
+** $Id: gpp.c,v 1.10 2003-11-21 16:37:11 psy Exp $
 ** 
 **
 ** To fix:
 **
 ** - many function names are not ANSI-compliant (e.g., str...)
-** - return value from malloc(), strdup(), etc. rarely checked
+** - return value from malloc(), calloc, realloc, strdup() rarely checked
 **
 */
 
@@ -217,32 +217,32 @@ int commented[STACKDEPTH],iflevel;
 
 void ProcessContext(void); /* the main loop */
 
-int findIdent(char *b,int l);
+int findIdent(const char *b,int l);
 void delete_macro(int i);
 
 /* various recent additions */
-static void getDirname(char *fname, char *dirname);
-static FILE *openInCurrentDir(char *incfile);
+static void getDirname(const char *fname, char *dirname);
+static FILE *openInCurrentDir(const char *incfile);
 char *ArithmEval(int pos1,int pos2);
-void replace_definition_with_blank_lines(char *start, char *end, int skip);
+void replace_definition_with_blank_lines(const char *start, const char *end, int skip);
 void replace_directive_with_blank_line(FILE *file);
-void write_include_marker(FILE *f, int lineno, char *filename, char *marker);
+void write_include_marker(FILE *f, int lineno, char *filename, const char *marker);
 void construct_include_directive_marker(char **include_directive_marker,
-					char *includemarker_input);
-void escape_backslashes(char *instr, char **outstr);
+					const char *includemarker_input);
+void escape_backslashes(const char *instr, char **outstr);
 
-void bug(char *s)
+void bug(const char *s)
 {
   fprintf(stderr,"%s:%d: error: %s.\n",C->filename,C->lineno,s);
   exit(EXIT_FAILURE);
 }
 
-void warning(char *s)
+void warning(const char *s)
 {
   fprintf(stderr,"%s:%d: warning: %s.\n",C->filename,C->lineno,s);
 }
 
-struct SPECS *CloneSpecs(struct SPECS *Q)
+struct SPECS *CloneSpecs(const struct SPECS *Q)
 {
   struct SPECS *P;
   struct COMMENT *x,*y;
@@ -276,7 +276,7 @@ void FreeComments(struct SPECS *Q)
   }
 }
 
-void PushSpecs(struct SPECS *X)
+void PushSpecs(const struct SPECS *X)
 {
   struct SPECS *P;
   
@@ -344,7 +344,7 @@ int iswhite(char c)
   return 0;
 }
 
-void newmacro(char *s,int len,int hasspecs)
+void newmacro(const char *s,int len,int hasspecs)
 {
   if (nmacros==nalloced) {
     nalloced=2*nalloced+1;
@@ -378,7 +378,7 @@ void lookupArgRefs(int n)
   }
 }
 
-char *strnl0(char *s) /* replace "\\n" by "\n" in a cmd-line arg */
+char *strnl0(const char *s) /* replace "\\n" by "\n" in a cmd-line arg */
 {
   char *t,*u;
   t=malloc(strlen(s)+1);
@@ -392,7 +392,7 @@ char *strnl0(char *s) /* replace "\\n" by "\n" in a cmd-line arg */
   return t;
 }
 
-char *strnl(char *s) /* the same but with whitespace specifier handling */
+char *strnl(const char *s) /* the same but with whitespace specifier handling */
 {
   char *t,*u;
   int neg;
@@ -475,7 +475,7 @@ char *strnl2(char *s,int check_delim)
   return (s+1);
 }
 
-int iswhitesep(char *s)
+int iswhitesep(const char *s)
 {
   while (iswhite(*s)||(*s=='\001')||(*s=='\002')||(*s=='\003')||(*s=='\004')) 
     s++;
@@ -496,7 +496,7 @@ int nowhite_strcmp(char *s,char *t)
   return strcmp(s,t);
 }
 
-void parseCmdlineDefine(char *s)
+void parseCmdlineDefine(const char *s)
 {
   int l, i, argc;
   
@@ -572,7 +572,7 @@ int parse_comment_specif(char c)
   }
 }
 
-void add_comment(struct SPECS *S,char *specif,char *start,char *end,char quote,char warn)
+void add_comment(struct SPECS *S,const char *specif,char *start,char *end,char quote,char warn)
 {
   struct COMMENT *p;
   
@@ -645,7 +645,7 @@ void outchar(char c)
   }
 }
 
-void sendout(char *s,int l,int proc) /* only process the quotechar, that's all */
+void sendout(const char *s,int l,int proc) /* only process the quotechar, that's all */
 {
   int i;
   
@@ -729,7 +729,7 @@ int IsInCharset(CHARSET_SUBSET x,int c)
   return (x[c>>LOG_LONG_BITS] & 1L<<(c&((1<<LOG_LONG_BITS)-1)))!=0;
 }
 
-int matchSequence(char *s,int *pos)
+int matchSequence(const char *s,int *pos)
 {
   int i=*pos;
   int match;
@@ -793,7 +793,7 @@ int matchSequence(char *s,int *pos)
   return 1;
 }
 
-int matchEndSequence(char *s,int *pos)
+int matchEndSequence(const char *s,int *pos)
 {
   if (*s==0) return 1;
   /* if terminator is \n and we're at end of input, let it be... */
@@ -803,7 +803,7 @@ int matchEndSequence(char *s,int *pos)
   return 1;
 }
 
-int matchStartSequence(char *s,int *pos)
+int matchStartSequence(const char *s,int *pos)
 {
   char c;
   int match;
@@ -916,7 +916,7 @@ CHARSET_SUBSET MakeCharsetSubset(unsigned char *s)
 }
 
 
-int idequal(char *b,int l,char *s)
+int idequal(const char *b,int l,const char *s)
 {
   int i;
   
@@ -925,7 +925,7 @@ int idequal(char *b,int l,char *s)
   return 1;
 }
 
-int findIdent(char *b,int l)
+int findIdent(const char *b,int l)
 {
   int i;
   
@@ -934,7 +934,7 @@ int findIdent(char *b,int l)
   return -1;
 }
 
-int findNamedArg(char *b,int l)
+int findNamedArg(const char *b,int l)
 {
   char *s; 
   int i;
@@ -967,9 +967,9 @@ void shiftIn(int l)
   }
 }
 
-void initthings(int argc,char **argv)
+void initthings(int argc, char **argv)
 {
-  char **arg,*s;
+  char **arg, *s;
   int i,isinput,isoutput,ishelp,ismode,hasmeta,usrmode;
 
   DefaultOp=MakeCharsetSubset(DEFAULT_OP_STRING);
@@ -1185,7 +1185,7 @@ void initthings(int argc,char **argv)
   }
 }
 
-int findCommentEnd(char *endseq,char quote,char warn,int pos,int flags)
+int findCommentEnd(const char *endseq,char quote,char warn,int pos,int flags)
 {
   int i;
   char c;
@@ -1358,7 +1358,7 @@ int findMetaArgs(int start,int *p1b,int *p1e,int *p2b,int *p2e,int *endm,int *ar
   return 2;
 }
 
-char *ProcessText(char *buf,int l,int ambience)
+char *ProcessText(const char *buf,int l,int ambience)
 {
   char *s;
   struct INPUTCONTEXT *T;
@@ -1398,10 +1398,10 @@ char *ProcessText(char *buf,int l,int ambience)
   return s;
 }
 
-int SpliceInfix(char *buf,int pos1,int pos2,char *sep,int *spl1,int *spl2)
+int SpliceInfix(const char *buf,int pos1,int pos2,char *sep,int *spl1,int *spl2)
 {
   int pos,numpar,l;
-  char *p;
+  const char *p;
   
   numpar=0; l=strlen(sep);
   for (pos=pos2-1,p=buf+pos;pos>=pos1;pos--,p--) {
@@ -1696,7 +1696,7 @@ char *remove_comments(int start,int end,int cmtmode)
   return s;
 }
 
-void SetStandardMode(struct SPECS *P,char *opt) 
+void SetStandardMode(struct SPECS *P,const char *opt) 
 {
   P->op_set=DefaultOp;
   P->ext_op_set=DefaultExtOp;
@@ -2417,7 +2417,7 @@ void ProcessContext(void)
 /* additions by M. Kifer - revised D.A. 12/16/01 */
 
 /* copy SLASH-terminated name of the directory of fname */
-static void getDirname(char *fname, char *dirname)
+static void getDirname(const char *fname, char *dirname)
 {
   int i;
 
@@ -2435,7 +2435,7 @@ static void getDirname(char *fname, char *dirname)
   dirname[i+1] = '\0';
 }
 
-static FILE *openInCurrentDir(char *incfile)
+static FILE *openInCurrentDir(const char *incfile)
 {
   char *absfile =
     calloc(strlen(C->filename)+strlen(incfile)+1, 1);
@@ -2448,7 +2448,7 @@ static FILE *openInCurrentDir(char *incfile)
 }
 
 /* skip = # of \n's already output by other mechanisms, to be skipped */
-void replace_definition_with_blank_lines(char *start, char *end, int skip)
+void replace_definition_with_blank_lines(const char *start, const char *end, int skip)
 {
   if ((include_directive_marker != NULL) && (C->out->f != NULL)) {
     while (start <= end) {
@@ -2473,7 +2473,7 @@ void replace_directive_with_blank_line(FILE *f)
 
 
 /* If lineno is > 15 digits - the number won't be printed correctly */
-void write_include_marker(FILE *f, int lineno, char *filename, char *marker)
+void write_include_marker(FILE *f, int lineno, char *filename, const char *marker)
 {
   static char lineno_buf[MAX_GPP_NUM_SIZE];
   static char *escapedfilename = NULL;
@@ -2493,7 +2493,7 @@ void write_include_marker(FILE *f, int lineno, char *filename, char *marker)
 /* Under windows, files can have backslashes in them. 
    These should be escaped.
 */
-void escape_backslashes(char *instr, char **outstr)
+void escape_backslashes(const char *instr, char **outstr)
 {
   int out_idx=0;
 
@@ -2518,7 +2518,7 @@ void escape_backslashes(char *instr, char **outstr)
    backslash.
 */
 void construct_include_directive_marker(char **include_directive_marker,
-					char *includemarker_input)
+					const char *includemarker_input)
 {
   int len = strlen(includemarker_input);
   char ch;
