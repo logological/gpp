@@ -1,6 +1,6 @@
 Many people have further contributed to GPP by reporting problems,
 suggesting various improvements, or submitting actual code. Here is a
-list of these people. Help me keep it complete and exempt of errors.
+list of these people. Help me keep it complete and free of errors.
 
 Many thanks to Michael Kifer for valuable feedback and suggestions,
 and for contributing various patches included in version 2.1.
@@ -15,3 +15,6 @@ Thanks to Luis Recuerda Santiago for the --include patch incorporated
 into version 2.22.
 
 Thanks to Lucas Wall for providing a GPP package for Debian GNU/Linux.
+
+Thanks to Richard M. Myers for various bug reports and feature
+suggestions incorporated into version 2.30.

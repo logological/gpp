@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 #
-# $Id: configure.ac,v 1.7 2004-02-14 14:35:00 psy Exp $
+# $Id: configure.ac,v 1.8 2004-07-11 14:00:22 psy Exp $
 
 AC_PREREQ(2.57)
 AC_INIT(GPP, 2.22, psychonaut@nothingisreal.com, gpp)
@@ -13,10 +13,13 @@ AC_CONFIG_HEADER([config.h])
 AC_PROG_CC
 
 # Checks for libraries.
+AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION(0.14.1)
 
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([stdlib.h string.h fnmatch.h])
+AM_ICONV
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -26,6 +29,5 @@ AC_TYPE_SIZE_T
 # Checks for library functions.
 AC_CHECK_FUNCS([strcasecmp strchr strdup strtol])
 
-AC_CONFIG_FILES([Makefile
-                 src/Makefile])
+AC_CONFIG_FILES([Makefile po/Makefile.in src/Makefile m4/Makefile])
 AC_OUTPUT

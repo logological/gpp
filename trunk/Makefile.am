@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.2 2003-12-31 00:15:00 psy Exp $
+# $Id: Makefile.am,v 1.3 2004-07-11 14:00:22 psy Exp $
 #
 # Copyright (C) 2003 Tristan Miller <psychonaut@nothingisreal.com>
 #  
@@ -11,6 +11,7 @@
 # PURPOSE.
 
 AUTOMAKE_OPTIONS = dist-bzip2
-SUBDIRS = src
+SUBDIRS = src po m4
 man_MANS = doc/gpp.1
-EXTRA_DIST = BUGS TODO doc/gpp.html doc/gpp.pp $(man_MANS)
+EXTRA_DIST = config.rpath BUGS TODO doc/gpp.html doc/gpp.pp $(man_MANS)
+ACLOCAL_AMFLAGS = -I m4
