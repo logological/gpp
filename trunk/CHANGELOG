@@ -17,6 +17,7 @@ Miscellaneous internal issues:
   appropriate, added const qualifiers to non-modified function parameters,
   used standard return values provided by <stdlib.h>
 - distribution now includes copy of the licence
+- New project maintainer: Tristan Miller <psychonaut@nothingisreal.com>
 
 
 CHANGES IN VERSION 2.1 (from 2.0):
