@@ -1,11 +1,17 @@
 GPP NEWS -- history of user-visible changes
-$Id: NEWS,v 1.1 2003-12-31 00:10:41 psy Exp $
+$Id: NEWS,v 1.2 2004-01-16 22:48:34 psy Exp $
 
 See the end of this file for copying conditions.
 
 Please send GPP bug reports to Tristan Miller
 <psychonaut@nothingisreal.com>.
 
+
+Version 2.14
+
+    * fixed a crash bug
+    * added built-in macros `line' and 'file'
+    * GPP documentation is now under a free licence
 
 Version 2.13
 
@@ -82,7 +88,7 @@ Version 2.1
 Copyright information:
 
 Copyright (C) 2001 Denis Auroux.
-Copyright (C) 2003 Tristan Miller.
+Copyright (C) 2003, 2004 Tristan Miller.
 
    Permission is granted to anyone to make or distribute verbatim
    copies of this document as received, in any medium, provided that
