@@ -1,6 +1,6 @@
 /* File:      gpp.c  -- generic preprocessor
-** Author:    Denis Auroux
-** Contact:   auroux@math.polytechnique.fr
+** Author:    Denis Auroux, Tristan Miller
+** Contact:   psychonaut@nothingisreal.com
 ** Version:   2.11
 ** 
 ** Copyright (C) Denis Auroux 1996, 1999, 2001
@@ -20,7 +20,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.2 2003-10-04 17:33:08 psy Exp $
+** $Id: gpp.c,v 1.3 2003-10-04 17:46:08 psy Exp $
 ** 
 */
 
@@ -228,7 +228,7 @@ void escape_backslashes(char *instr, char **outstr);
 void bug(char *s)
 {
   fprintf(stderr,"%s:%d: error: %s.\n",C->filename,C->lineno,s);
-  exit(1);
+  exit(EXIT_FAILURE);
 }
 
 void warning(char *s)
@@ -317,7 +317,7 @@ void usage() {
   fprintf(stderr," -curdirinclast : search the current directory last\n");
   fprintf(stderr," -warninglevel n : set warning level\n");
   fprintf(stderr," -includemarker formatstring : keep track of #include directives in output\n\n");
-  exit(1);
+  exit(EXIT_FAILURE);
 }
 
 int isdelim(unsigned char c)
@@ -2568,6 +2568,6 @@ int main(int argc,char **argv)
   write_include_marker(C->out->f, 1, C->filename, "");
   ProcessContext();
   fclose(C->out->f);
-  return 0;
+  return EXIT_SUCCESS;
 }
 
