@@ -20,13 +20,13 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.10 2003-11-21 16:37:11 psy Exp $
+** $Id: gpp.c,v 1.11 2003-11-21 16:43:03 psy Exp $
 ** 
 **
 ** To fix:
 **
-** - many function names are not ANSI-compliant (e.g., str...)
-** - return value from malloc(), calloc, realloc, strdup() rarely checked
+** - many function names are not ANSI/ISO-compliant (e.g., str...)
+** - return values from malloc(), calloc(), realloc(), strdup() rarely checked
 **
 */
 
