@@ -20,7 +20,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.16 2003-11-22 22:20:33 psy Exp $
+** $Id: gpp.c,v 1.17 2003-11-22 22:21:10 psy Exp $
 ** 
 **
 ** To fix:
@@ -32,6 +32,7 @@
 **   - add function prototypes
 **   - add comments dividing code into sections
 ** - static keyword seems to be used with no apparent purpose
+** - perhaps configure with Autoconf
 **
 */
 
