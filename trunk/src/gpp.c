@@ -1,7 +1,6 @@
 /* File:      gpp.c  -- generic preprocessor
 ** Author:    Denis Auroux, Tristan Miller
 ** Contact:   psychonaut@nothingisreal.com
-** Version:   2.20
 ** 
 ** Copyright (C) 1996, 1999, 2001 Denis Auroux
 ** Copyright (C) 2003, 2004 Tristan Miller
@@ -20,7 +19,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.4 2004-01-17 22:32:44 psy Exp $
+** $Id: gpp.c,v 1.5 2004-02-07 15:13:07 psy Exp $
 ** 
 */
 
@@ -273,13 +272,13 @@ int my_strcasecmp(const char *s, const char *s2) {
 
 void bug(const char *s)
 {
-  fprintf(stderr,"%s:%d: error: %s.\n",C->filename,C->lineno,s);
+  fprintf(stderr,"%s:%d: error: %s\n",C->filename,C->lineno,s);
   exit(EXIT_FAILURE);
 }
 
 void warning(const char *s)
 {
-  fprintf(stderr,"%s:%d: warning: %s.\n",C->filename,C->lineno,s);
+  fprintf(stderr,"%s:%d: warning: %s\n",C->filename,C->lineno,s);
 }
 
 struct SPECS *CloneSpecs(const struct SPECS *Q)
@@ -337,7 +336,7 @@ void PopSpecs(void)
 }
 
 void display_version(void) {
-  fprintf(stderr,"GPP Version 2.20 - Generic Preprocessor\n");
+  fprintf(stderr, PACKAGE_STRING "\n");
   fprintf(stderr,"Copyright (C) 1996-2001 Denis Auroux\n");
   fprintf(stderr,"Copyright (C) 2003, 2004 Tristan Miller\n");
   fprintf(stderr,
@@ -2035,6 +2034,10 @@ int ParsePossibleMeta(void)
     { id=16; expparams=0; }
   else if (idequal(C->buf+cklen,nameend-cklen,"elif"))
     { id=17; expparams=1; }
+  else if (idequal(C->buf+cklen,nameend-cklen,"error"))
+    { id=18; expparams=1; }
+  else if (idequal(C->buf+cklen,nameend-cklen,"warning"))
+    { id=19; expparams=1; }
   else return -1;
 
   /* #MODE magic : define "..." to be C-style strings */
@@ -2266,7 +2269,7 @@ int ParsePossibleMeta(void)
 	}
 	f=popen(s,"r");
 	free(s);
-	if (f==NULL) warning("Cannot #exec. Command not found ?");
+	if (f==NULL) warning("Cannot #exec. Command not found(?)");
 	else {
 	  while ((c=fgetc(f)) != EOF) outchar((char)c);
 	  pclose(f);
@@ -2401,6 +2404,25 @@ int ParsePossibleMeta(void)
     }
     break;
      
+  case 18: /* ERROR */ 
+    replace_directive_with_blank_line(C->out->f);
+    bug(ProcessText(C->buf + p1start,
+		    (nparam == 2 ? p2end : p1end) - p1start,
+		    FLAG_META));
+    break;
+
+  case 19: /* WARNING */ 
+    replace_directive_with_blank_line(C->out->f);
+    {
+      char *s;
+      s=ProcessText(C->buf + p1start,
+		    (nparam == 2 ? p2end : p1end) - p1start,
+		    FLAG_META);
+      warning(s);
+      free(s);
+    }
+    break;
+
   default: bug("Internal meta-macro identification error");
   }
   shiftIn(macend);
