@@ -10,12 +10,13 @@ Command-line options:
 Documentation:
 - fixed miscellaneous typographical, grammatical, and spelling mistakes
 
-Miscellaneous internal issues:
+Miscellaneous:
 - problematic (though not technically incorrect) C code fixed: casts to
   malloc()-like functions removed, sizeof(type) changed to sizeof(*var)
   where appropriate, replaced null argument lists with (void) where
   appropriate, added const qualifiers to non-modified function parameters,
   used standard return values provided by <stdlib.h>
+- licence changed from GNU Library GPL 2 to GNU Lesser GPL 2.1
 - distribution now includes copy of the licence
 - New project maintainer: Tristan Miller <psychonaut@nothingisreal.com>
 
@@ -56,4 +57,4 @@ Misbehavior fixes:
 Miscellaneous:
 - LaTeX version of the manual in addition to man and html formats.
 
-$Id: CHANGELOG,v 1.10 2003-11-22 22:38:24 psy Exp $
+$Id: CHANGELOG,v 1.11 2003-11-22 23:51:52 psy Exp $
