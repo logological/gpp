@@ -1,11 +1,13 @@
 Summary: Generic Preprocessor
-Name: gpp
+%define packagename genpp
+%define tarballname gpp
+Name: %{packagename}
 Version: 2.24
-Release: 1
+Release: 2
 License: LGPL
 Group: Development/Languages/Other
 URL: http://www.nothingisreal.com/gpp/
-Source0: http://www.nothingisreal.com/gpp/%{name}-%{version}.tar.bz2
+Source0: http://www.nothingisreal.com/gpp/%{tarballname}-%{version}.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 Prefix: %{_prefix}
 
@@ -18,7 +20,7 @@ flexible than that of GNU m4. There are built-in macros for use with
 C/C++, LaTeX, HTML, XHTML, and Prolog files.
 
 %prep
-%setup -q
+%setup -q -n %{tarballname}-%{version}
 
 %build
 ./configure --prefix=%{_prefix}
@@ -41,6 +43,9 @@ make DESTDIR=$RPM_BUILD_ROOT install-strip
 
 
 %changelog
+* Mon Dec 20 2004 Tristan Miller <psychonaut@nothingisreal.com> - 
+- Renamed package to genpp to avoid conflicts with obsolete GCC
+  package of the same name.
+
 * Fri Dec  3 2004 Tristan Miller <psychonaut@nothingisreal.com> - 
 - Initial build.
-
