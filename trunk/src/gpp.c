@@ -20,7 +20,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.3 2004-01-17 21:09:34 psy Exp $
+** $Id: gpp.c,v 1.4 2004-01-17 22:32:44 psy Exp $
 ** 
 */
 
@@ -46,6 +46,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#if HAVE_FNMATCH_H
+#  include <fnmatch.h>
+#endif
 
 #define STACKDEPTH 50
 #define MAXARGS 100
@@ -212,6 +215,9 @@ typedef struct INPUTCONTEXT {
 struct INPUTCONTEXT *C;
   
 int commented[STACKDEPTH],iflevel;
+/* commented = 0: output, 1: not output, 
+   2: not output because we're in a #elif and we've already gone through
+      the right case (so #else/#elif can't toggle back to output) */
 
 void ProcessContext(void); /* the main loop */
 
@@ -1577,6 +1583,29 @@ int DoArithmEval(char *buf,int pos1,int pos2,int *result)
     return 1;
   }
 
+  if (SpliceInfix(buf,pos1,pos2,"=~",&spl1,&spl2)) {
+#if ! HAVE_FNMATCH_H
+    bug("globbing support has not been compiled in");
+#endif
+    if (!DoArithmEval(buf,pos1,spl1,&result1)||
+        !DoArithmEval(buf,spl2,pos2,&result2)) {
+      char *str1,*str2;
+
+      /* revert to string comparison */
+      while ((pos1<spl1)&&iswhite(buf[spl1-1])) spl1--;
+      while ((pos2>spl2)&&iswhite(buf[spl2])) spl2++;
+      str1=strdup(buf+pos1);
+      str1[spl1-pos1]='\0';
+      str2=strdup(buf+spl2);
+      str2[pos2-spl2]='\0';
+      *result=(fnmatch(str2,str1,0)==0);
+      free(str1);
+      free(str2);
+    }
+    else *result=(result1==result2);
+    return 1;
+  }
+
   if (SpliceInfix(buf,pos1,pos2,">=",&spl1,&spl2)) {
     if (!DoArithmEval(buf,pos1,spl1,&result1)||
         !DoArithmEval(buf,spl2,pos2,&result2)) {
@@ -2004,6 +2033,8 @@ int ParsePossibleMeta(void)
     { id=15; expparams=0; }
   else if (idequal(C->buf+cklen,nameend-cklen,"file"))
     { id=16; expparams=0; }
+  else if (idequal(C->buf+cklen,nameend-cklen,"elif"))
+    { id=17; expparams=1; }
   else return -1;
 
   /* #MODE magic : define "..." to be C-style strings */
@@ -2110,7 +2141,8 @@ int ParsePossibleMeta(void)
     if (!commented[iflevel] && (nparam>0) && WarningLevel > 0)
       warning("Extra argument to #else ignored");
     if (iflevel==0) bug("#else without #if");
-    if (!commented[iflevel-1]) commented[iflevel]=!commented[iflevel];
+    if (!commented[iflevel-1] && commented[iflevel]!=2) 
+      commented[iflevel]=!commented[iflevel];
     break;
 
   case 6: /* ENDIF */
@@ -2351,6 +2383,22 @@ int ParsePossibleMeta(void)
   case 16: /* FILE */ 
     replace_directive_with_blank_line(C->out->f);
     sendout(C->filename, strlen(C->filename), 0);
+    break;
+
+  case 17: /* ELIF */
+    replace_directive_with_blank_line(C->out->f);
+    if (iflevel==0) bug("#elif without #if");
+    if (!commented[iflevel-1]) {
+      if (commented[iflevel]!=1) commented[iflevel]=2;
+      else {
+        char *s;
+        commented[iflevel]=0;
+        if (nparam==2) p1end=p2end; /* we really want it all ! */
+        s=ArithmEval(p1start,p1end);
+        commented[iflevel]=((s[0]=='0')&&(s[1]==0));
+        free(s);
+      }
+    }
     break;
      
   default: bug("Internal meta-macro identification error");
