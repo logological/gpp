@@ -20,12 +20,14 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.6 2003-11-21 15:46:58 psy Exp $
+** $Id: gpp.c,v 1.7 2003-11-21 15:53:42 psy Exp $
 ** 
 **
 ** To fix:
 **
 ** - many function names are not ANSI-compliant (e.g., str...)
+** - return value from malloc(), strdup(), etc. rarely checked
+**
 */
 
 /* To compile under MS VC++, one must define WIN_NT */
@@ -247,12 +249,12 @@ struct SPECS *CloneSpecs(struct SPECS *Q)
   
   P=malloc(sizeof *P);
   if (P==NULL) bug("Out of memory.");
-  memcpy((char *)P,(char *)Q,sizeof(struct SPECS));
+  memcpy(P,Q,sizeof(struct SPECS));
   P->stack_next=NULL;
   if (Q->comments!=NULL) 
     P->comments=malloc(sizeof *(P->comments));
   for (x=Q->comments,y=P->comments;x!=NULL;x=x->next,y=y->next) {
-    memcpy((char *)y,(char *)x,sizeof(struct COMMENT));
+    memcpy(y,x,sizeof(struct COMMENT));
     y->start=strdup(x->start);
     y->end=strdup(x->end);
     if (x->next!=NULL)
@@ -1627,7 +1629,7 @@ void delete_macro(int i)
   }
   FreeComments(macros[i].define_specs);
   free(macros[i].define_specs);
-  memcpy((char *)(macros+i),(char *)(macros+nmacros),sizeof(struct MACRO));
+  memcpy(macros+i,macros+nmacros,sizeof(struct MACRO));
 }
 
 char *ArithmEval(int pos1,int pos2)
