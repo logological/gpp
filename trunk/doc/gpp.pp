@@ -1,6 +1,6 @@
 <#mode preservelf|off><#mode comment|"%%%" "\n">%%%
 %%%%
-%%%% $Id: gpp.pp,v 1.2 2004-01-16 22:48:35 psy Exp $
+%%%% $Id: gpp.pp,v 1.3 2004-01-17 22:32:31 psy Exp $
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% GPP documentation source file                            %%%%
@@ -157,7 +157,7 @@ $endif$
 $endif$
 $endif$
 %%%%%%%%%%%%%%%%% some headers %%%%%%%%%%%%%%%%%%%
-$define{version}{2.14}$
+$define{version}{2.20}$
 $define{SYNTAX}{
 $pre$
   gpp [$d$$bra$o$pipe$O$ket$ $I{outfile}$] [$d$I$I{/include/path}$] [$d$D$I{name=val}$ ...]
@@ -210,15 +210,16 @@ able to process equally efficiently text files or source code in a variety
 of languages, the syntax used by GPP is fully customizable. The
 handling of comments and strings is especially advanced.
 $P$
-Initially, GPP only understands a minimal set of built-in macros, called
-$I{meta-macros}$. These meta-macros allow the definition of $I{user macros}$
-as well as some basic operations forming the core of the preprocessing
-system, including conditional tests, arithmetic evaluation, and syntax
-specification. All user macro definitions are global$mdash$$I{i.e.}$, they remain
-valid until explicitly removed; meta-macros cannot be redefined. With
-each user macro definition GPP keeps track of the corresponding syntax 
-specification so that a macro can be safely invoked regardless of any
-subsequent change in operating mode.
+Initially, GPP only understands a minimal set of built-in macros,
+called $I{meta-macros}$. These meta-macros allow the definition of
+$I{user macros}$ as well as some basic operations forming the core of
+the preprocessing system, including conditional tests, arithmetic
+evaluation, wildcard matching (globbing), and syntax
+specification. All user macro definitions are global$mdash$$I{i.e.}$,
+they remain valid until explicitly removed; meta-macros cannot be
+redefined. With each user macro definition GPP keeps track of the
+corresponding syntax specification so that a macro can be safely
+invoked regardless of any subsequent change in operating mode.
 $P$
 In addition to macros, GPP understands comments and strings, whose syntax
 and behavior can be widely customized to fit any particular purpose.
@@ -825,28 +826,47 @@ not evaluated. If you need the output to be evaluated, you must use
 $I{$dz$defeval}$ (see above) to cause a double evaluation.
 $li$
 $BI{$dz$eval }{expr}$
-The $I{$dz$eval}$ meta-macro attempts to evaluate $I{expr}$ first by expanding
-macros (normal GPP evaluation) and then by performing arithmetic evaluation.
-The syntax and operator precedence for arithmetic expressions are the same
-as in C; the only missing operators are $l$$l$, $g$$g$, ?:, and the assignment
-operators. If unable to assign a numerical value to the result, the returned
-text is simply the result of macro expansion without any arithmetic
-evaluation. The only exceptions to this rule are the comparison operators
-==, !=, $l$, $g$, $l$=, and $g$=
-which, if one of the sides does not evaluate to a number, perform string
-comparison instead (ignoring trailing and leading spaces).
-Additionally, the $I{length($ldots$)}$ arithmetic operator returns the length
-in characters of its evaluated argument.
+The $I{$dz$eval}$ meta-macro attempts to evaluate $I{expr}$ first by
+expanding macros (normal GPP evaluation) and then by performing
+arithmetic evaluation and/or wildcard matching.  The syntax and
+operator precedence for arithmetic expressions are the same as in C;
+the only missing operators are $l$$l$, $g$$g$, ?:, and the assignment
+operators.
+$p$
+POSIX-style wildcard matching ('globbing') is available only on POSIX
+implementations and can be invoked with the =$tilde$ operator.  In
+brief, a '?' matches any single character, a '*' matches any string
+(including the empty string), and '[$ldots$]' matches any one of the
+characters enclosed in brackets.  A '[$ldots$]' class is complemented
+when the first character in the brackets is '!'.  The characters in a '[$ldots$]'
+class can also be specified as a range using the '$d$'
+character$mdash$$I{e.g.}$, '[F$d$N]' is equivalent to '[FGHIJKLMN]'.
+$p$
+If unable to assign a numerical value to the result, the
+returned text is simply the result of macro expansion without any
+arithmetic evaluation. The only exceptions to this rule are the
+comparison operators ==, !=, $l$, $g$, $l$=, and $g$= which, if one of
+the sides does not evaluate to a number, perform string comparison
+instead (ignoring trailing and leading spaces).  Additionally, the
+$I{length($ldots$)}$ arithmetic operator returns the length in
+characters of its evaluated argument.
 $p$
 Inside arithmetic expressions, the $I{defined($ldots$)}$ special user macro
 is also available: it takes only one argument, which is not evaluated, and
 returns 1 if it is the name of a user macro and 0 otherwise.
 $li$
 $BI{$dz$if }{expr}$
-This meta-macro invokes the arithmetic evaluator in the same manner as
-$I{$dz$eval}$ and compares the result of evaluation with the string "0" in
-order to begin a conditional block. In particular note that the logical
-value of $I{expr}$ is always true when it cannot be evaluated to a number.
+This meta-macro invokes the arithmetic/globbing evaluator in the same
+manner as $I{$dz$eval}$ and compares the result of evaluation with the
+string "0" in order to begin a conditional block. In particular note
+that the logical value of $I{expr}$ is always true when it cannot be
+evaluated to a number.
+$li$
+$BI{$dz$elif }{expr}$
+This meta-macro can be used to avoid nested $I{$dz$if}$ conditions.
+$I{$dz$if}$ $ldots$ $I{$dz$elif}$ $ldots$ $I{$dz$endif}$ is equivalent
+to $I{$dz$if}$ $ldots$ $I{$dz$else}$ $I{$dz$if}$ $ldots$
+$I{$dz$endif}$ $I{$dz$endif}$.
 $li$
 $BI{$dz$mode }{keyword $ldots$}$
 This meta-macro controls GPP's operating mode. See below for a list of
@@ -859,7 +879,7 @@ $BI{$dz$file}$
 This meta-macro evaluates to the filename of the current input file as
 it appears on the command line or in the argument to $I{$dz$include}$.
 If GPP is reading its input from stdin, then $I{$dz$file}$ evaluates
-to `stdin'.
+to 'stdin'.
 }$
 $P$
 The key to GPP's flexibility is the $I{$dz$mode}$ meta-macro. Its first
@@ -1285,7 +1305,7 @@ $nopre$
 %%%%%%%%%%%%%%%%%%%%%% misc stuff at the end %%%%%%%%%%%%%%%%%%%%%%%%
 $ifdef{man}$
 $S{SEE ALSO}$
-m4(1V), cpp(1)$P$
+glob(7), m4(1V), cpp(1)$P$
 GPP home page: http://www.nothingisreal.com/gpp/
 $endif$
 $S{AUTHOR}$
