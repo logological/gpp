@@ -13,3 +13,5 @@ version 2.14.
 
 Thanks to Luis Recuerda Santiago for the --include patch incorporated
 into version 2.22.
+
+Thanks to Lucas Wall for providing a GPP package for Debian GNU/Linux.
