@@ -56,7 +56,4 @@ Misbehavior fixes:
 Miscellaneous:
 - LaTeX version of the manual in addition to man and html formats.
 
-
-$ Id: $
-
-Test
+# $Id: CHANGELOG,v 1.9 2003-11-22 22:38:16 psy Exp $
