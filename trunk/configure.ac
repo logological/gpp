@@ -1,10 +1,10 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 #
-# $Id: configure.ac,v 1.10 2004-07-11 16:15:58 psy Exp $
+# $Id: configure.ac,v 1.11 2004-07-11 16:21:40 psy Exp $
 
 AC_PREREQ(2.57)
-AC_INIT(GPP, 2.22, psychonaut@nothingisreal.com, gpp)
+AC_INIT(GPP, 2.23, psychonaut@nothingisreal.com, gpp)
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/gpp.c])
 AC_CONFIG_HEADER([config.h])
