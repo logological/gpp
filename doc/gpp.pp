@@ -1,11 +1,11 @@
 <#mode preservelf|off><#mode comment|"%%%" "\n">%%%
 %%%%
-%%%% $Id: gpp.pp,v 1.1 2003-12-31 00:10:41 psy Exp $
+%%%% $Id: gpp.pp,v 1.2 2004-01-16 22:48:35 psy Exp $
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% GPP documentation source file                            %%%%
 %%%% (C) 2001 Denis Auroux                                    %%%%
-%%%% (C) 2003 Tristan Miller                                  %%%%
+%%%% (C) 2003, 2004 Tristan Miller                            %%%%
 %%%%                                                          %%%%
 %%%% to get the man page, run:                                %%%%
 %%%%    gpp -H -Dman gpp.pp -o gpp.1                          %%%%
@@ -157,7 +157,7 @@ $endif$
 $endif$
 $endif$
 %%%%%%%%%%%%%%%%% some headers %%%%%%%%%%%%%%%%%%%
-$define{version}{2.13}$
+$define{version}{2.14}$
 $define{SYNTAX}{
 $pre$
   gpp [$d$$bra$o$pipe$O$ket$ $I{outfile}$] [$d$I$I{/include/path}$] [$d$D$I{name=val}$ ...]
@@ -851,6 +851,15 @@ $li$
 $BI{$dz$mode }{keyword $ldots$}$
 This meta-macro controls GPP's operating mode. See below for a list of
 $I{$dz$mode}$ commands.
+$li$
+$BI{$dz$line}$
+This meta-macro evaluates to the line number of the current input file.
+$li$
+$BI{$dz$file}$
+This meta-macro evaluates to the filename of the current input file as
+it appears on the command line or in the argument to $I{$dz$include}$.
+If GPP is reading its input from stdin, then $I{$dz$file}$ evaluates
+to `stdin'.
 }$
 $P$
 The key to GPP's flexibility is the $I{$dz$mode}$ meta-macro. Its first
@@ -1284,7 +1293,14 @@ GPP was written by Denis Auroux $l$auroux@math.mit.edu$g$.
 Since version 2.12 it has been maintained by Tristan Miller $l$psychonaut@nothingisreal.com$g$.
 $S{COPYRIGHT}$
 Copyright $copy$$nbsp$1996$ndash$2001 Denis Auroux.$BR$
-Copyright $copy$$nbsp$2003 Tristan Miller.$P$
+Copyright $copy$$nbsp$2003, 2004 Tristan Miller.$P$
+Permission is granted to anyone to make or distribute verbatim copies
+of this document as received, in any medium, provided that the
+copyright notice and this permission notice are preserved, thus giving
+the recipient permission to redistribute in turn.$P$
+Permission is granted to distribute modified versions of this
+document, or of portions of it, under the above conditions, provided
+also that they carry prominent notices stating who last changed them.
 $ifdef{html}$
 </BODY></HTML>
 $endif$

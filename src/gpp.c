@@ -1,10 +1,10 @@
 /* File:      gpp.c  -- generic preprocessor
 ** Author:    Denis Auroux, Tristan Miller
 ** Contact:   psychonaut@nothingisreal.com
-** Version:   2.13
+** Version:   2.14
 ** 
 ** Copyright (C) 1996, 1999, 2001 Denis Auroux
-** Copyright (C) 2003 Tristan Miller
+** Copyright (C) 2003, 2004 Tristan Miller
 ** 
 ** GPP is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Lesser General Public License as published by the Free
@@ -20,7 +20,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.1 2003-12-31 00:10:41 psy Exp $
+** $Id: gpp.c,v 1.2 2004-01-16 22:48:35 psy Exp $
 ** 
 */
 
@@ -331,8 +331,9 @@ void PopSpecs(void)
 }
 
 void display_version(void) {
-  fprintf(stderr,"GPP Version 2.13 - Generic Preprocessor\n");
-  fprintf(stderr,"Copyright (C) 1996-2001 Denis Auroux, 2003 Tristan Miller\n");
+  fprintf(stderr,"GPP Version 2.14 - Generic Preprocessor\n");
+  fprintf(stderr,"Copyright (C) 1996-2001 Denis Auroux\n");
+  fprintf(stderr,"Copyright (C) 2003, 2004 Tristan Miller\n");
   fprintf(stderr,
 	  "This is free software; see the source for copying conditions.  There is NO\n"
 	  "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
@@ -402,6 +403,8 @@ void newmacro(const char *s,int len,int hasspecs)
   macros[nmacros].defined_in_comment=0;
   if (hasspecs)
     macros[nmacros].define_specs=CloneSpecs(S);
+  else
+    macros[nmacros].define_specs=NULL;
 }
 
 void lookupArgRefs(int n)
@@ -1993,6 +1996,10 @@ int ParsePossibleMeta(void)
     { id=13; expparams=1; }
   else if (idequal(C->buf+cklen,nameend-cklen,"mode"))
     { id=14; expparams=2; }
+  else if (idequal(C->buf+cklen,nameend-cklen,"line"))
+    { id=15; expparams=0; }
+  else if (idequal(C->buf+cklen,nameend-cklen,"file"))
+    { id=16; expparams=0; }
   else return -1;
 
   /* #MODE magic : define "..." to be C-style strings */
@@ -2327,6 +2334,19 @@ int ParsePossibleMeta(void)
     if (!commented[iflevel])
       ProcessModeCommand(p1start,p1end,p2start,p2end);
     PopSpecs();
+    break;
+
+  case 15: { /* LINE */ 
+    char buf[100];
+    replace_directive_with_blank_line(C->out->f);
+    sprintf(buf, "%d", C->lineno + 1);
+    sendout(buf, strlen(buf), 0);
+  }
+    break;
+
+  case 16: /* FILE */ 
+    replace_directive_with_blank_line(C->out->f);
+    sendout(C->filename, strlen(C->filename), 0);
     break;
      
   default: bug("Internal meta-macro identification error");
