@@ -1,6 +1,6 @@
 <#mode preservelf|off><#mode comment|"%%%" "\n">%%%
 %%%%
-%%%% $Id: gpp.pp,v 1.6 2004-09-19 20:19:16 psy Exp $
+%%%% $Id: gpp.pp,v 1.7 2004-10-01 23:14:14 psy Exp $
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% GPP documentation source file                            %%%%
@@ -634,12 +634,12 @@ Moreover, all of these matching subsets except `$b$w' and `$b$W' can be
 negated by inserting a `!'$mdash$$I{i.e.}$, by writing `$b$!$I{x}$' instead of `$b$$I{x}$'.
 $P$
 Note an important distinctive feature of $I{start sequences}$: when the
-first character of a macro or comment/string start sequence is '$nbsp$' or one 
+first character of a macro or comment/string start sequence is `$nbsp$' or one 
 of the above special sequences, it is not taken to be part of the sequence 
 itself but is used instead as a context check: for example a start sequence 
-beginning with '$b$n' matches only at the beginning of a line, but the 
+beginning with `$b$n' matches only at the beginning of a line, but the 
 matching newline character is not taken to be part of the sequence. 
-Similarly a start sequence beginning with '$nbsp$' matches only if some
+Similarly a start sequence beginning with `$nbsp$' matches only if some
 whitespace is present, but the matching whitespace is not considered to
 be part of the start sequence and is therefore sent to output. If a context
 check is performed at the very beginning of a file (or more generally of
@@ -667,7 +667,7 @@ $P$
 Input is read sequentially and interpreted according to the rules of the
 current mode. All input text is first matched against the specified
 comment/string start sequences of the current mode (except those which
-are disabled by the 'i' modifier), unless the body being evaluated is
+are disabled by the `i' modifier), unless the body being evaluated is
 the contents of a comment/string whose modifier enables macro evaluation. 
 The most recently defined comment/string specifications are checked for 
 first. Important note: comments may not appear between the name of a macro
@@ -733,7 +733,7 @@ $li$
 $BI{$dz$define }{x y}$
 This defines the user macro $I{x}$ as $I{y}$. $I{y}$ can be any valid
 GPP input, and may for example refer to other macros. $I{x}$ must
-be an identifier ($I{i.e.}$, a sequence of alphanumeric characters and '$und$'),
+be an identifier ($I{i.e.}$, a sequence of alphanumeric characters and `$und$'),
 unless named arguments are specified. If $I{x}$ is already defined, 
 the previous definition is overwritten. If no second argument is given, 
 $I{x}$ will be defined as a macro that outputs nothing. Neither $I{x}$ 
@@ -816,7 +816,7 @@ included file. The included file may override this behavior by starting with
 a $I{$dz$mode restore}$ call and ending with a $I{$dz$mode push}$ call.
 Additionally, when the $I{$d$m}$ command line option is specified, GPP will
 automatically switch to the cpp compatibility mode upon including a file
-whose name ends with either '.c' or '.h'.
+whose name ends with either `.c' or `.h'.
 $li$
 $BI{$dz$exec }{command}$
 This causes GPP to execute the specified command line and include
@@ -837,14 +837,14 @@ operator precedence for arithmetic expressions are the same as in C;
 the only missing operators are $l$$l$, $g$$g$, ?:, and the assignment
 operators.
 $p$
-POSIX-style wildcard matching ('globbing') is available only on POSIX
+POSIX-style wildcard matching (`globbing') is available only on POSIX
 implementations and can be invoked with the =$tilde$ operator.  In
-brief, a '?' matches any single character, a '*' matches any string
-(including the empty string), and '[$ldots$]' matches any one of the
-characters enclosed in brackets.  A '[$ldots$]' class is complemented
-when the first character in the brackets is '!'.  The characters in a '[$ldots$]'
-class can also be specified as a range using the '$d$'
-character$mdash$$I{e.g.}$, '[F$d$N]' is equivalent to '[FGHIJKLMN]'.
+brief, a `?' matches any single character, a `*' matches any string
+(including the empty string), and `[$ldots$]' matches any one of the
+characters enclosed in brackets.  A `[$ldots$]' class is complemented
+when the first character in the brackets is `!'.  The characters in a `[$ldots$]'
+class can also be specified as a range using the `$d$'
+character$mdash$$I{e.g.}$, `[F$d$N]' is equivalent to `[FGHIJKLMN]'.
 $p$
 If unable to assign a numerical value to the result, the
 returned text is simply the result of macro expansion without any
@@ -947,7 +947,7 @@ $BI{$dz$mode quote }{[$s{c}$]}$
 With no argument or "" as argument, removes the quote character
 specification and disables the quoting functionality. With one string
 argument, the first character of the string is taken to be the new
-quote character. The quote character can be neither alphanumeric nor '$und$',
+quote character. The quote character can be neither alphanumeric nor `$und$',
 nor can it be one of the special matching sequences.
 $li$
 $BI{$dz$mode comment }{[xxx] $s{start}$ $s{end}$ [$s{c}$ [$s{c}$]]}$
@@ -985,9 +985,9 @@ $b$i special sequences. The first argument must be one of $I{id}$
 $I{"string"}$ is a C string which lists all characters to put in the set.
 It may contain only the special matching sequences $b$a, $b$A, $b$b, $b$B, 
 and $b$$dz$ (the other sequences and the negated sequences are not allowed). 
-When a '-' is found inbetween two non-special characters this adds all 
+When a `-' is found inbetween two non-special characters this adds all 
 characters inbetween (e.g. "A-Z" corresponds to all uppercase characters). 
-To have '-' in the matched set, either put it in first or last position
+To have `-' in the matched set, either put it in first or last position
 or place it next to a $b$x sequence.
 }$
 $S{DATE AND TIME CONVERSION SPECIFIERS}$
@@ -1145,7 +1145,7 @@ $pre$
   $b$BLAH(urf)
 $nopre$
 Note that the multiline definition is also valid in cpp and Prolog
-modes despite the absence of quote character, because '$b$' followed
+modes despite the absence of quote character, because `$b$' followed
 by a newline is then interpreted as a comment and discarded.
 $P$
 In cpp mode, C strings and comments are understood as such, as illustrated
@@ -1153,10 +1153,10 @@ by the following example:
 $pre$
   $dz$define BLAH foo
   BLAH "BLAH" /* BLAH */
-  'It$b$'s a /*string*/ !'
+  `It$b$'s a /*string*/ !'
 $nopre$
 The main difference between Prolog mode and cpp mode is the handling of
-strings and comments: in Prolog, a '$ldots$' string may not begin
+strings and comments: in Prolog, a `$ldots$' string may not begin
 immediately after a digit, and a /*$ldots$*/ comment may not begin immediately
 after an operator character. Furthermore, comments are not removed from
 the output unless they occur in a $dz$command.
@@ -1164,7 +1164,7 @@ $P$
 The differences between cpp mode and default mode are deeper: in default
 mode $dz$commands may start anywhere, while in cpp mode they must be at the
 beginning of a line; the default mode has no knowledge of comments and
-strings, but has a quote character ('$b$'), while cpp mode has extensive
+strings, but has a quote character (`$b$'), while cpp mode has extensive
 comment/string specifications but no quote character. Moreover, the
 arguments to meta-macros need to be correctly parenthesized in default
 mode, while no such checking is performed in cpp mode.
@@ -1297,17 +1297,17 @@ $pre$
 $nopre$
 The first method is very natural, but has the inconvenience of being lengthy
 and neutralizing string semantics, so that having an unevaluated instance
-of 'x' in the string, or an occurrence of '/*', would be impossible without
+of `x' in the string, or an occurrence of `/*', would be impossible without
 resorting to further contortions. $P$
 The second method is slightly more efficient because the local presence of a
 quote character makes it easier to control what is evaluated and what isn't,
 but has the drawback that it is sometimes impossible to find a reasonable
 quote character without having to either significantly alter the source file
 or enclose it inside a $I{$dz$mode push/pop}$ construct. For example, any
-occurrence of '/*' in the string would have to be quoted.$P$
+occurrence of `/*' in the string would have to be quoted.$P$
 The last method demonstrates the efficiency of evaluated strings in the
 context of selective evaluation: since comments/strings cannot be nested,
-any occurrence of '"' or '/*' inside the '$dollar$$dollar$' gets output as plain text,
+any occurrence of `"' or `/*' inside the `$dollar$$dollar$' gets output as plain text,
 as expected inside a string, and only macro evaluation is enabled. Also note
 that there is much more freedom in the choice of a string delimiter than
 in the choice of a quote character.
