@@ -1,6 +1,6 @@
 <#mode preservelf|off><#mode comment|"%%%" "\n">%%%
 %%%%
-%%%% $Id: gpphelp.pp,v 1.10 2003-11-22 22:25:06 psy Exp $
+%%%% $Id: gpphelp.pp,v 1.11 2003-11-22 23:50:49 psy Exp $
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% GPP 2.12 documentation source file (C) 2001 Denis Auroux %%%%
@@ -1274,8 +1274,8 @@ $S{SEE ALSO}$
 m4(1V), cpp(1)
 $endif$
 $S{AUTHOR}$
-To version 2.1: Denis Auroux.$P$
-Since version 2.12: Tristan Miller (psychonaut@nothingisreal.com). $P$
+Denis Auroux $l$auroux@math.mit.edu$g$ (to version 2.1)$P$
+Tristan Miller $l$psychonaut@nothingisreal.com$g$ (since version 2.12)$P$
 Please send e-mail for any comments, questions or suggestions. $P$
 Many thanks to Michael Kifer for valuable feedback and suggestions,
 and for contributing various patches included in version 2.1.
