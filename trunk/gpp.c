@@ -1,6 +1,6 @@
 /* File:      gpp.c  -- generic preprocessor
-** Author:    Denis Auroux, Tristan Miller
-** Contact:   psychonaut@nothingisreal.com
+** Author:    Denis Auroux
+** Contact:   auroux@math.polytechnique.fr
 ** Version:   2.11
 ** 
 ** Copyright (C) Denis Auroux 1996, 1999, 2001
@@ -20,7 +20,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.3 2003-10-04 17:46:08 psy Exp $
+** $Id: gpp.c,v 1.4 2003-11-21 15:41:03 psy Exp $
 ** 
 */
 
@@ -241,18 +241,18 @@ struct SPECS *CloneSpecs(struct SPECS *Q)
   struct SPECS *P;
   struct COMMENT *x,*y;
   
-  P=(struct SPECS *)malloc(sizeof(struct SPECS));
+  P=malloc(sizeof *P);
   if (P==NULL) bug("Out of memory.");
   memcpy((char *)P,(char *)Q,sizeof(struct SPECS));
   P->stack_next=NULL;
   if (Q->comments!=NULL) 
-    P->comments=(struct COMMENT *)malloc(sizeof(struct COMMENT));
+    P->comments=malloc(sizeof *(P->comments));
   for (x=Q->comments,y=P->comments;x!=NULL;x=x->next,y=y->next) {
     memcpy((char *)y,(char *)x,sizeof(struct COMMENT));
     y->start=strdup(x->start);
     y->end=strdup(x->end);
     if (x->next!=NULL)
-      y->next=(struct COMMENT *)malloc(sizeof(struct COMMENT));
+      y->next=malloc(sizeof *(y->next));
   }
   return P;
 }
@@ -375,7 +375,7 @@ void lookupArgRefs(int n)
 char *strnl0(char *s) /* replace "\\n" by "\n" in a cmd-line arg */
 {
   char *t,*u;
-  t=(char *)malloc(strlen(s)+1);
+  t=malloc(strlen(s)+1);
   u=t;
   while (*s!=0) {
     if ((*s=='\\')&&(s[1]=='n')) { *u='\n'; s++; }
@@ -390,7 +390,7 @@ char *strnl(char *s) /* the same but with whitespace specifier handling */
 {
   char *t,*u;
   int neg;
-  t=(char *)malloc(strlen(s)+1);
+  t=malloc(strlen(s)+1);
   u=t;
   if (!isdelim(*s)) bug("character not allowed to start a syntax specifier");
   while (*s!=0) {
@@ -581,7 +581,7 @@ void add_comment(struct SPECS *S,char *specif,char *start,char *end,char quote,c
     }
 
   if (p==NULL) {
-    p=(struct COMMENT *)malloc(sizeof(struct COMMENT));
+    p=malloc(sizeof *p);
     p->next=S->comments;
     S->comments=p;
   }
@@ -658,7 +658,7 @@ void extendBuf(int pos)
   char *p;
   if (C->bufsize<=pos) {
     C->bufsize+=pos; /* approx double */
-    p=(char *)malloc(C->bufsize);
+    p=malloc(C->bufsize);
     memcpy(p,C->buf,C->len);
     free(C->malloced_buf);
     C->malloced_buf=C->buf=p;
@@ -864,7 +864,7 @@ CHARSET_SUBSET MakeCharsetSubset(unsigned char *s)
   int i;
   unsigned char c;
 
-  x=(CHARSET_SUBSET) malloc(CHARSET_SUBSET_LEN*sizeof(unsigned long));
+  x=malloc(CHARSET_SUBSET_LEN*sizeof(unsigned long));
   for (i=0;i<CHARSET_SUBSET_LEN;i++) x[i]=0;
   while (*s!=0) {
     if (!((*s)&0x60)) { /* special sequences */
@@ -973,9 +973,9 @@ void initthings(int argc,char **argv)
 
   nmacros=0;
   nalloced=31;
-  macros=(struct MACRO *)malloc(nalloced*sizeof(struct MACRO));
+  macros=malloc(nalloced*sizeof *macros);
 
-  S=(struct SPECS *)malloc(sizeof(struct SPECS));
+  S=malloc(sizeof *S);
   S->User=CUser;
   S->Meta=CMeta;
   S->comments=NULL;
@@ -985,12 +985,12 @@ void initthings(int argc,char **argv)
   S->ext_op_set=DefaultExtOp;
   S->id_set=DefaultId;
   
-  C=(struct INPUTCONTEXT *)malloc(sizeof(struct INPUTCONTEXT));
+  C=malloc(sizeof *C);
   C->in=stdin;
   C->argc=0;
   C->argv=NULL;
   C->filename=strdup("stdin");
-  C->out=(struct OUTPUTCONTEXT *)malloc(sizeof(struct OUTPUTCONTEXT));
+  C->out=malloc(sizeof *(C->out));
   C->out->f=stdout;
   C->out->bufsize=0;
   C->lineno=0;
@@ -1363,8 +1363,8 @@ char *ProcessText(char *buf,int l,int ambience)
   memcpy(s+1,buf,l);
   s[l+1]=0;
   T=C;
-  C=(struct INPUTCONTEXT *)malloc(sizeof(struct INPUTCONTEXT));
-  C->out=(struct OUTPUTCONTEXT *)malloc(sizeof(struct OUTPUTCONTEXT));
+  C=malloc(sizeof *C);
+  C->out=malloc(sizeof *(C->out));
   C->in=NULL;
   C->argc=T->argc;
   C->argv=T->argv;
@@ -1942,7 +1942,7 @@ int ParsePossibleMeta()
         for (j=0;j<argc;j++) whiteout(argb+j,arge+j);
         /* define with one empty argument */
         if ((argc==1)&&(arge[0]==argb[0])) argc=0;
-        macros[nmacros].argnames=(char **)malloc((argc+1)*sizeof(char *));
+        macros[nmacros].argnames=malloc((argc+1)*sizeof(char *));
         macros[nmacros].argnames[argc]=NULL;
       }
       macros[nmacros].nnamedargs=argc;
@@ -2078,7 +2078,7 @@ int ParsePossibleMeta()
 	bug("Requested include file not found");
 
       N=C;
-      C=(struct INPUTCONTEXT *)malloc(sizeof(struct INPUTCONTEXT));
+      C=malloc(sizeof *C);
       C->in=f;
       C->argc=0;
       C->argv=NULL;
@@ -2161,7 +2161,7 @@ int ParsePossibleMeta()
         for (j=0;j<argc;j++) whiteout(argb+j,arge+j);
         /* define with one empty argument */
         if ((argc==1)&&(arge[0]==argb[0])) argc=0;
-        macros[nmacros].argnames=(char **)malloc((argc+1)*sizeof(char *));
+        macros[nmacros].argnames=malloc((argc+1)*sizeof(char *));
         macros[nmacros].argnames[argc]=NULL;
       }
       macros[nmacros].nnamedargs=argc;
@@ -2292,7 +2292,7 @@ int ParsePossibleUser()
     argv[i]=ProcessText(C->buf+argb[i],arge[i]-argb[i],FLAG_USER);
   /* process macro text */
   T=C;
-  C=(struct INPUTCONTEXT *)malloc(sizeof(struct INPUTCONTEXT));
+  C=malloc(sizeof *C);
   C->out=T->out;
   C->in=NULL;
   C->argc=argc;
