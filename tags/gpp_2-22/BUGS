@@ -1,0 +1,20 @@
+Bugs, limitations, and known issues for GPP.
+$Id: BUGS,v 1.2 2004-02-14 14:34:59 psy Exp $
+
+(POTENTIAL) BUGS:
+
+* many function names are not ANSI/ISO-compliant (e.g., str...)
+
+* return values from malloc(), calloc(), realloc(), strdup() rarely checked
+
+* poor/misleading typography in LaTeX version of manual
+
+AESTHETIC/STYLISTIC ISSUES WITH SOURCE CODE:
+
+* needs pretty-printing (more whitespace between arguments)
+
+* needs function prototypes
+
+* needs comments dividing code into sections
+
+* static keyword seems to be used indiscriminately
