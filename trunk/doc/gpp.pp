@@ -1,6 +1,6 @@
 <#mode preservelf|off><#mode comment|"%%%" "\n">%%%
 %%%%
-%%%% $Id: gpp.pp,v 1.9 2004-10-01 23:30:49 psy Exp $
+%%%% $Id: gpp.pp,v 1.10 2004-10-06 17:40:47 psy Exp $
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% GPP documentation source file                            %%%%
@@ -166,8 +166,9 @@ $endif$
 $define{version}{2.24}$
 $define{SYNTAX}{
 $pre$
-  gpp [$d$$bra$o$pipe$O$ket$ $I{outfile}$] [$d$I$I{/include/path}$] [$d$D$I{name=val}$ ...]
-      [$d$z$pipe$+z] [$d$x] [$d$m] [$d$C$pipe$$d$T$pipe$$d$H$pipe$$d$X$pipe$$d$P$pipe$$d$U ... [$d$M ...]]
+  gpp [$d$$bra$o$pipe$O$ket$ $I{outfile}$] [$d$I$I{/include/path}$ ...]
+      [$d$D$I{name=val}$ ...] [$d$z$pipe$+z] [$d$x] [$d$m]
+      [$d$C$pipe$$d$T$pipe$$d$H$pipe$$d$X$pipe$$d$P$pipe$$d$U ... [$d$M ...]]
       [$d$n$pipe$+n] [+c$I{$l$n$g$}$ $I{str1}$ $I{str2}$] [+s$I{$l$n$g$}$ $I{str1}$ $I{str2}$ $I{c}$] 
       [$d$c $I{str1}$] [$d$$d$nostdinc] [$d$$d$nocurinc]
       [$d$$d$curdirinclast] [$d$$d$warninglevel $I{n}$]
