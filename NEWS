@@ -1,5 +1,5 @@
 GPP NEWS -- history of user-visible changes
-$Id: NEWS,v 1.6 2004-07-11 14:00:22 psy Exp $
+$Id: NEWS,v 1.7 2004-07-11 16:20:55 psy Exp $
 
 See the end of this file for copying conditions.
 
@@ -7,7 +7,7 @@ Please send GPP bug reports to Tristan Miller
 <psychonaut@nothingisreal.com>.
 
 
-Version 2.30
+Version 2.23
 
     * Fixed a bug where #error and #warning directives were processed
       in the false branch of a conditional
