@@ -1,0 +1,35 @@
+CHANGES IN VERSION 2.1 (from 2.0):
+
+Bugfixes:
+- bugfix in #defeval (can now be used to iteratively redefine a macro in
+  terms of its previous definition)
+- bugfix in arithmetic evaluation (operator precedence between + and -, 
+  and between * and / was wrong)
+
+Arithmetic evaluation:
+- length(...) builtin in #eval
+- all comparison operators revert to string comparison if arithmetic
+  evaluation fails in #eval
+
+Command-line options:
+- +n does the opposite of -n (do not preserve linefeeds; place *after* -C/-P)
+- -O sends output to file and stdout simultaneously
+- options to control directory search order for #include
+- option to adjust warning level
+- option to specify an include file marker to keep track of #include 
+  directives and line numbers in output
+
+Misbehavior fixes:
+- numbered argument sequences (#1...#9) are disabled outside of definitions.
+- if a construct terminated by a newline is nested in last position within
+  another construct, then the nested newline is optional. Concretely,
+  this means that " #define myeval #eval #1 " is now valid.
+- macros defined on the command line with -D... can take named arguments.
+  The syntax is: -Dmacro(arg1,...)=definition ; the definition should
+  conform to the rules of the mode specified on the command-line, although
+  the arguments are specified in C-style syntax (but without spaces !)
+- input line numbers are almost always preserved when -includemarker
+  is specified
+
+Miscellaneous:
+- LaTeX version of the manual in addition to man and html formats.
