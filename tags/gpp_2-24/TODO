@@ -1,0 +1,10 @@
+TODO file for GPP.
+$Id: TODO,v 1.7 2004-09-19 20:19:16 psy Exp $
+
+This file lists potential improvements and wish-list items for GPP.
+
+	* integrate code from the 2.1a ("fast") branch
+
+	* add #cmd_line_args macro
+
+	* internationalize with GNU gettext

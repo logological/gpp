@@ -1,0 +1,128 @@
+GPP NEWS -- history of user-visible changes
+$Id: NEWS,v 1.8 2004-09-19 20:19:16 psy Exp $
+
+See the end of this file for copying conditions.
+
+Please send GPP bug reports to Tristan Miller
+<psychonaut@nothingisreal.com>.
+
+
+Version 2.24
+
+    * Added a #date meta-macro allowing for formatting of dates and
+      times
+
+Version 2.23
+
+    * Fixed a bug where #error and #warning directives were processed
+      in the false branch of a conditional
+
+Version 2.22
+
+    * Added --include option which allows user to specify a file
+      to be processed before the regular input file
+
+Version 2.21
+
+    * Added CPP-style #error and #warning meta-macros
+
+Version 2.20
+
+    * GPP's arithmetic evaluation macro (#eval) now supports
+      file-globbing via =~ (POSIX only)
+    * there is now an #elif macro to simplify conditional branching
+    * fixed a bug where GPP would be off by one when reporting line
+      numbers in its error messages or with the #line meta-macro
+
+Version 2.14
+
+    * fixed a crash bug
+    * added built-in macros `line' and 'file'
+    * GPP documentation is now under a free licence
+
+Version 2.13
+
+    * fixed bug which caused GPP to crash when the same macro was
+      defined twice on the command line
+    * GPP should compile on more systems now; non-standard C functions
+      have been replaced with custom code
+    * INSTALL contains installation instructions for Windows, Unix,
+      and other systems.
+    * GPP now issues a warning on use of deprecated command-line
+      options
+    * GPP is now packaged in a manner similar to most GNU
+      programs, including a `configure' configuration/installation
+      script suitable for Unix-like systems
+    * credits moved from manual to AUTHORS and THANKS files
+    * CHANGELOG superseded by files ChangeLog (detailed, for
+      developers) and NEWS (brief, user-visible changes only)
+    * added list of bugs and wishes as BUGS and TODO
+    * minor changes (mostly typographical) to the manual
+
+Version 2.12
+
+    * New command-line options:
+      - -X for XHTML mode
+      - --help displays command-line option summary
+      - --version displays version information
+      - "long options" -nostdinc, -nocurinc, etc. changed to --nostdinc,
+        --nocurinc, etc.
+    * fixed miscellaneous typographical, grammatical, and spelling
+      mistakes in documentation
+    * licence changed from GNU Library GPL 2 to GNU Lesser GPL 2.1
+    * distribution now includes copy of the licence
+    * new project maintainer: Tristan Miller
+      <psychonaut@nothingisreal.com>
+
+
+Version 2.1
+
+    * Bugfixes:
+      - bugfix in #defeval (can now be used to iteratively redefine a
+        macro in terms of its previous definition)
+      - bugfix in arithmetic evaluation (operator precedence between +
+        and -, and between * and / was wrong)
+    * Arithmetic evaluation:
+      - length(...) builtin in #eval
+      - all comparison operators revert to string comparison if
+        arithmetic evaluation fails in #eval
+    * Command-line options:
+      - +n does the opposite of -n (do not preserve linefeeds; place
+        *after* -C/-P)
+      - -O sends output to file and stdout simultaneously
+      - options to control directory search order for #include
+      - option to adjust warning level
+      - option to specify an include file marker to keep track of
+        #include directives and line numbers in output
+    * Misbehavior fixes:
+      - numbered argument sequences (#1...#9) are disabled outside of
+        definitions.
+      - if a construct terminated by a newline is nested in last
+        position within another construct, then the nested newline is
+        optional. Concretely, this means that " #define myeval #eval #1 "
+        is now valid.
+      - macros defined on the command line with -D... can take named
+        arguments.  The syntax is: -Dmacro(arg1,...)=definition ; the
+        definition should conform to the rules of the mode specified on
+        the command-line, although the arguments are specified in
+        C-style syntax (but without spaces !)
+      - input line numbers are almost always preserved when
+        -includemarker is specified
+    * Miscellaneous:
+      - LaTeX version of the manual in addition to man and html formats.
+
+----------------------------------------------------------------------
+Copyright information:
+
+Copyright (C) 2001 Denis Auroux.
+Copyright (C) 2003, 2004 Tristan Miller.
+
+   Permission is granted to anyone to make or distribute verbatim
+   copies of this document as received, in any medium, provided that
+   the copyright notice and this permission notice are preserved, thus
+   giving the recipient permission to redistribute in turn.
+
+   Permission is granted to distribute modified versions of this
+   document, or of portions of it, under the above conditions,
+   provided also that they carry prominent notices stating who last
+   changed them.
