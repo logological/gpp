@@ -1,7 +1,7 @@
 /* File:      gpp.c  -- generic preprocessor
 ** Author:    Denis Auroux, Tristan Miller
 ** Contact:   psychonaut@nothingisreal.com
-** Version:   2.12
+** Version:   2.13
 ** 
 ** Copyright (C) 1996, 1999, 2001 Denis Auroux
 ** Copyright (C) 2003 Tristan Miller
@@ -20,29 +20,21 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.18 2003-11-22 23:50:58 psy Exp $
+** $Id: gpp.c,v 1.1 2003-12-31 00:10:41 psy Exp $
 ** 
-**
-** To fix:
-**
-** - many function names are not ANSI/ISO-compliant (e.g., str...)
-** - return values from malloc(), calloc(), realloc(), strdup() rarely checked
-** - pretty-print code:
-**   - more whitespace needed, e.g., between arguments
-**   - add function prototypes
-**   - add comments dividing code into sections
-** - static keyword seems to be used with no apparent purpose
-** - perhaps configure with Autoconf
-**
 */
 
 /* To compile under MS VC++, one must define WIN_NT */
 
+#if HAVE_CONFIG_H
+# include <config.h>
+#endif
+
 #ifdef WIN_NT              /* WIN NT settings */
 #define popen   _popen
 #define pclose  _pclose
-#define strdup  _strdup
-#define strcasecmp _stricmp
+#define my_strdup  _strdup
+#define my_strcasecmp _stricmp
 #define SLASH '\\'
 #define DEFAULT_CRLF 1
 #else                      /* UNIX settings */
@@ -241,6 +233,38 @@ void construct_include_directive_marker(char **include_directive_marker,
 					const char *includemarker_input);
 void escape_backslashes(const char *instr, char **outstr);
 
+/*
+** strdup() and my_strcasecmp() are not ANSI C, so here we define our own
+** versions in case the compiler does not support them
+*/
+#if ! HAVE_STRDUP
+inline char *my_strdup(const char *s);
+inline char *my_strdup(const char *s) {
+  size_t len=strlen(s) + 1;
+  char *newstr=malloc(len);
+  return newstr ? (char *)memcpy(newstr, s, len) : NULL;
+}
+#else
+#  undef my_strdup
+#  define my_strdup strdup
+#endif
+#if ! HAVE_STRCASECMP
+int my_strcasecmp(const char *s, const char *s2) {
+  do {
+    char c1=tolower(*s);
+    char c2=tolower(*s2);
+    if (c1>c2)
+      return 1;
+    if (c1<c2)
+      return -1;
+  } while (*s++ && *s2++);
+  return 0;
+}
+#else
+#  undef my_strcasecmp
+#  define my_strcasecmp strcasecmp
+#endif
+
 void bug(const char *s)
 {
   fprintf(stderr,"%s:%d: error: %s.\n",C->filename,C->lineno,s);
@@ -265,8 +289,8 @@ struct SPECS *CloneSpecs(const struct SPECS *Q)
     P->comments=malloc(sizeof *(P->comments));
   for (x=Q->comments,y=P->comments;x!=NULL;x=x->next,y=y->next) {
     memcpy(y,x,sizeof(struct COMMENT));
-    y->start=strdup(x->start);
-    y->end=strdup(x->end);
+    y->start=my_strdup(x->start);
+    y->end=my_strdup(x->end);
     if (x->next!=NULL)
       y->next=malloc(sizeof *(y->next));
   }
@@ -277,7 +301,7 @@ void FreeComments(struct SPECS *Q)
 {
   struct COMMENT *p;
   
-  while (Q->comments!=NULL) {
+  while (Q && Q->comments!=NULL) {
     p=Q->comments;
     Q->comments=p->next;
     free(p->start);
@@ -307,7 +331,7 @@ void PopSpecs(void)
 }
 
 void display_version(void) {
-  fprintf(stderr,"GPP Version 2.12 - Generic Preprocessor\n");
+  fprintf(stderr,"GPP Version 2.13 - Generic Preprocessor\n");
   fprintf(stderr,"Copyright (C) 1996-2001 Denis Auroux, 2003 Tristan Miller\n");
   fprintf(stderr,
 	  "This is free software; see the source for copying conditions.  There is NO\n"
@@ -517,7 +541,7 @@ int nowhite_strcmp(char *s,char *t)
 void parseCmdlineDefine(const char *s)
 {
   int l, i, argc;
-  
+
   for (l=0;s[l]&&(s[l]!='=')&&(s[l]!='(');l++);
   i = findIdent(s,l);
   if (i>=0) delete_macro(i);
@@ -549,7 +573,7 @@ void parseCmdlineDefine(const char *s)
   if (s[l]=='=') l++;
   else if (s[l]!=0) bug("invalid syntax in -D declaration");
   macros[nmacros].macrolen=strlen(s+l);
-  macros[nmacros++].macrotext=strdup(s+l);
+  macros[nmacros++].macrotext=my_strdup(s+l);
 }
 
 int readModeDescription(char **args,struct MODE *mode,int ismeta)
@@ -1013,7 +1037,7 @@ void initthings(int argc, char **argv)
   C->in=stdin;
   C->argc=0;
   C->argv=NULL;
-  C->filename=strdup("stdin");
+  C->filename=my_strdup("stdin");
   C->out=malloc(sizeof *(C->out));
   C->out->f=stdout;
   C->out->bufsize=0;
@@ -1043,20 +1067,25 @@ void initthings(int argc, char **argv)
       display_version();
       exit(EXIT_SUCCESS);
     }
-    if (strcmp(*arg, "--nostdinc") == 0 || strcmp(*arg, "-nostdinc") == 0) {
+#define DEPRECATED_WARNING fprintf(stderr, "gpp: warning: deprecated option `%s'; use `-%s' instead\n", *arg, *arg)
+    if (strcmp(*arg, "-nostdinc") == 0) {
+      DEPRECATED_WARNING;
       NoStdInc = 1;
       continue;
     }
-    if (strcmp(*arg, "--nocurinc") == 0 || strcmp(*arg, "-nocurinc") == 0) {
+    if (strcmp(*arg, "-nocurinc") == 0) {
+      DEPRECATED_WARNING;
       NoCurIncFirst = 1;
       continue;
     }
-    if (strcmp(*arg, "--curdirinclast") == 0 || strcmp(*arg, "-curdirinclast") == 0) {
+    if (strcmp(*arg, "-curdirinclast") == 0) {
+      DEPRECATED_WARNING;
       CurDirIncLast = 1;
       NoCurIncFirst = 1;
       continue;
     }
-    if (strcmp(*arg, "--includemarker") == 0 || strcmp(*arg, "-includemarker") == 0) {
+    if (strcmp(*arg, "-includemarker") == 0) {
+      DEPRECATED_WARNING;
       if (!(*(++arg))) {
 	usage(); 
 	exit(EXIT_FAILURE);
@@ -1064,8 +1093,34 @@ void initthings(int argc, char **argv)
       construct_include_directive_marker(&include_directive_marker, *arg);
       continue;
     }
-
-    if (strcmp(*arg, "--warninglevel") == 0 || strcmp(*arg, "-warninglevel") == 0) {
+    if (strcmp(*arg, "-warninglevel") == 0) {
+      DEPRECATED_WARNING;
+      if (!(*(++arg))) {usage(); exit(EXIT_FAILURE);}
+      WarningLevel = atoi(*arg);
+      continue;
+    }
+    if (strcmp(*arg, "--nostdinc") == 0) {
+      NoStdInc = 1;
+      continue;
+    }
+    if (strcmp(*arg, "--nocurinc") == 0) {
+      NoCurIncFirst = 1;
+      continue;
+    }
+    if (strcmp(*arg, "--curdirinclast") == 0) {
+      CurDirIncLast = 1;
+      NoCurIncFirst = 1;
+      continue;
+    }
+    if (strcmp(*arg, "--includemarker") == 0) {
+      if (!(*(++arg))) {
+	usage(); 
+	exit(EXIT_FAILURE);
+      }
+      construct_include_directive_marker(&include_directive_marker, *arg);
+      continue;
+    }
+    if (strcmp(*arg, "--warninglevel") == 0) {
       if (!(*(++arg))) {usage(); exit(EXIT_FAILURE);}
       WarningLevel = atoi(*arg);
       continue;
@@ -1100,7 +1155,7 @@ void initthings(int argc, char **argv)
     else if (**arg!='-') {
       ishelp|=isinput; isinput=1;
       C->in=fopen(*arg,"r");
-      free(C->filename); C->filename=strdup(*arg);
+      free(C->filename); C->filename=my_strdup(*arg);
       if (C->in==NULL) bug("Cannot open input file");
     }
     else switch((*arg)[1]) {
@@ -1109,30 +1164,30 @@ void initthings(int argc, char **argv)
 	bug("too many include directories");
       if ((*arg)[2]==0) {
 	if (!(*(++arg))) {usage(); exit(EXIT_FAILURE);}
-	includedir[nincludedirs++]=strdup(*arg);
+	includedir[nincludedirs++]=my_strdup(*arg);
       }
-      else includedir[nincludedirs++]=strdup((*arg)+2);
+      else includedir[nincludedirs++]=my_strdup((*arg)+2);
       break;
     case 'C':
       ishelp|=ismode|hasmeta|usrmode; ismode=1;
       S->User=KUser; S->Meta=KMeta;
       S->preservelf=1;
-      add_comment(S,"ccc",strdup("/*"),strdup("*/"),0,0);
-      add_comment(S,"ccc",strdup("//"),strdup("\n"),0,0);
-      add_comment(S,"ccc",strdup("\\\n"),strdup(""),0,0);
-      add_comment(S,"sss",strdup("\""),strdup("\""),'\\','\n');
-      add_comment(S,"sss",strdup("'"),strdup("'"),'\\','\n');
+      add_comment(S,"ccc",my_strdup("/*"),my_strdup("*/"),0,0);
+      add_comment(S,"ccc",my_strdup("//"),my_strdup("\n"),0,0);
+      add_comment(S,"ccc",my_strdup("\\\n"),my_strdup(""),0,0);
+      add_comment(S,"sss",my_strdup("\""),my_strdup("\""),'\\','\n');
+      add_comment(S,"sss",my_strdup("'"),my_strdup("'"),'\\','\n');
       break;
     case 'P':
       ishelp|=ismode|hasmeta|usrmode; ismode=1;
       S->User=KUser; S->Meta=KMeta;
       S->preservelf=1;
       S->op_set=PrologOp;
-      add_comment(S,"css",strdup("\213/*"),strdup("*/"),0,0); /* \!o */
-      add_comment(S,"cii",strdup("\\\n"),strdup(""),0,0);
-      add_comment(S,"css",strdup("%"),strdup("\n"),0,0);
-      add_comment(S,"sss",strdup("\""),strdup("\""),0,'\n');
-      add_comment(S,"sss",strdup("\207'"),strdup("'"),0,'\n'); /* \!# */
+      add_comment(S,"css",my_strdup("\213/*"),my_strdup("*/"),0,0); /* \!o */
+      add_comment(S,"cii",my_strdup("\\\n"),my_strdup(""),0,0);
+      add_comment(S,"css",my_strdup("%"),my_strdup("\n"),0,0);
+      add_comment(S,"sss",my_strdup("\""),my_strdup("\""),0,'\n');
+      add_comment(S,"sss",my_strdup("\207'"),my_strdup("'"),0,'\n'); /* \!# */
       break;
     case 'T':
       ishelp|=ismode|hasmeta|usrmode; ismode=1;
@@ -1170,7 +1225,7 @@ void initthings(int argc, char **argv)
       break;
     case 'D':
       if ((*arg)[2]==0) {
-	if (!(*(++arg)))
+  	if (!(*(++arg)))
 	  {usage(); exit(EXIT_FAILURE);}
 	s=strnl0(*arg);
       }
@@ -1202,7 +1257,7 @@ void initthings(int argc, char **argv)
 
 #ifndef WIN_NT
   if ((nincludedirs==0) && !NoStdInc) {
-    includedir[0]=strdup("/usr/include");
+    includedir[0]=my_strdup("/usr/include");
     nincludedirs=1;
   }
 #endif
@@ -1734,11 +1789,11 @@ void SetStandardMode(struct SPECS *P,const char *opt)
   if (!strcmp(opt,"C")||!strcmp(opt,"cpp")) {
     P->User=KUser; P->Meta=KMeta;
     P->preservelf=1;
-    add_comment(P,"ccc",strdup("/*"),strdup("*/"),0,0);
-    add_comment(P,"ccc",strdup("//"),strdup("\n"),0,0);
-    add_comment(P,"ccc",strdup("\\\n"),strdup(""),0,0);
-    add_comment(P,"sss",strdup("\""),strdup("\""),'\\','\n');
-    add_comment(P,"sss",strdup("'"),strdup("'"),'\\','\n');
+    add_comment(P,"ccc",my_strdup("/*"),my_strdup("*/"),0,0);
+    add_comment(P,"ccc",my_strdup("//"),my_strdup("\n"),0,0);
+    add_comment(P,"ccc",my_strdup("\\\n"),my_strdup(""),0,0);
+    add_comment(P,"sss",my_strdup("\""),my_strdup("\""),'\\','\n');
+    add_comment(P,"sss",my_strdup("'"),my_strdup("'"),'\\','\n');
   }
   else if (!strcmp(opt,"TeX")||!strcmp(opt,"tex")) {
     P->User=Tex; P->Meta=Tex;
@@ -1760,11 +1815,11 @@ void SetStandardMode(struct SPECS *P,const char *opt)
     P->User=KUser; P->Meta=KMeta;
     P->preservelf=1;
     P->op_set=PrologOp;
-    add_comment(P,"css",strdup("\213/*"),strdup("*/"),0,0); /* \!o */ 
-    add_comment(P,"cii",strdup("\\\n"),strdup(""),0,0);
-    add_comment(P,"css",strdup("%"),strdup("\n"),0,0);
-    add_comment(P,"sss",strdup("\""),strdup("\""),0,'\n');
-    add_comment(P,"sss",strdup("\207'"),strdup("'"),0,'\n');   /* \!# */
+    add_comment(P,"css",my_strdup("\213/*"),my_strdup("*/"),0,0); /* \!o */ 
+    add_comment(P,"cii",my_strdup("\\\n"),my_strdup(""),0,0);
+    add_comment(P,"css",my_strdup("%"),my_strdup("\n"),0,0);
+    add_comment(P,"sss",my_strdup("\""),my_strdup("\""),0,'\n');
+    add_comment(P,"sss",my_strdup("\207'"),my_strdup("'"),0,'\n');   /* \!# */
   }
   else bug("unknown standard mode");
 }
@@ -1779,7 +1834,7 @@ void ProcessModeCommand(int p1start,int p1end,int p2start,int p2end)
   whiteout(&p1start,&p1end);
   if ((p1start==p1end)||(identifierEnd(p1start)!=p1end))
     bug("invalid #mode syntax");
-  if (p2start<0) s=strdup("");
+  if (p2start<0) s=my_strdup("");
   else s=ProcessText(C->buf+p2start,p2end-p2start,FLAG_META);
 
   /* argument parsing */
@@ -1813,14 +1868,14 @@ void ProcessModeCommand(int p1start,int p1end,int p2start,int p2end)
     if (!opt) opt="ccc";
     if (nargs<3) args[2]="";
     if (nargs<4) args[3]="";
-    add_comment(S->stack_next,opt,strdup(args[0]),strdup(args[1]),args[2][0],args[3][0]);
+    add_comment(S->stack_next,opt,my_strdup(args[0]),my_strdup(args[1]),args[2][0],args[3][0]);
   }
   else if (idequal(C->buf+p1start,p1end-p1start,"string")) {
     if ((nargs<2)||(nargs>4)) bug("syntax error in #mode string command");
     if (!opt) opt="sss";
     if (nargs<3) args[2]="";
     if (nargs<4) args[3]="";
-    add_comment(S->stack_next,opt,strdup(args[0]),strdup(args[1]),args[2][0],args[3][0]);
+    add_comment(S->stack_next,opt,my_strdup(args[0]),my_strdup(args[1]),args[2][0],args[3][0]);
   }
   else if (idequal(C->buf+p1start,p1end-p1start,"save")
 	   ||idequal(C->buf+p1start,p1end-p1start,"push")) {
@@ -1844,14 +1899,14 @@ void ProcessModeCommand(int p1start,int p1end,int p2start,int p2end)
   }
   else if (idequal(C->buf+p1start,p1end-p1start,"user")) {
     if ((opt!=NULL)||(nargs!=9)) bug("#mode user requires 9 arguments");
-    S->stack_next->User.mStart=strdup(args[0]);
-    S->stack_next->User.mEnd=strdup(args[1]);
-    S->stack_next->User.mArgS=strdup(args[2]);
-    S->stack_next->User.mArgSep=strdup(args[3]);
-    S->stack_next->User.mArgE=strdup(args[4]);
-    S->stack_next->User.stackchar=strdup(args[5]);
-    S->stack_next->User.unstackchar=strdup(args[6]);
-    S->stack_next->User.mArgRef=strdup(args[7]);
+    S->stack_next->User.mStart=my_strdup(args[0]);
+    S->stack_next->User.mEnd=my_strdup(args[1]);
+    S->stack_next->User.mArgS=my_strdup(args[2]);
+    S->stack_next->User.mArgSep=my_strdup(args[3]);
+    S->stack_next->User.mArgE=my_strdup(args[4]);
+    S->stack_next->User.stackchar=my_strdup(args[5]);
+    S->stack_next->User.unstackchar=my_strdup(args[6]);
+    S->stack_next->User.mArgRef=my_strdup(args[7]);
     S->stack_next->User.quotechar=args[8][0];
   }
   else if (idequal(C->buf+p1start,p1end-p1start,"meta")) {
@@ -1859,19 +1914,19 @@ void ProcessModeCommand(int p1start,int p1end,int p2start,int p2end)
       S->stack_next->Meta=S->stack_next->User;
     else {
       if ((opt!=NULL)||(nargs!=7)) bug("#mode meta requires 7 arguments");
-      S->stack_next->Meta.mStart=strdup(args[0]);
-      S->stack_next->Meta.mEnd=strdup(args[1]);
-      S->stack_next->Meta.mArgS=strdup(args[2]);
-      S->stack_next->Meta.mArgSep=strdup(args[3]);
-      S->stack_next->Meta.mArgE=strdup(args[4]);
-      S->stack_next->Meta.stackchar=strdup(args[5]);
-      S->stack_next->Meta.unstackchar=strdup(args[6]);
+      S->stack_next->Meta.mStart=my_strdup(args[0]);
+      S->stack_next->Meta.mEnd=my_strdup(args[1]);
+      S->stack_next->Meta.mArgS=my_strdup(args[2]);
+      S->stack_next->Meta.mArgSep=my_strdup(args[3]);
+      S->stack_next->Meta.mArgE=my_strdup(args[4]);
+      S->stack_next->Meta.stackchar=my_strdup(args[5]);
+      S->stack_next->Meta.unstackchar=my_strdup(args[6]);
     }
   }
   else if (idequal(C->buf+p1start,p1end-p1start,"preservelf")) {
     if ((opt==NULL)||nargs) bug("syntax error in #mode preservelf");
-    if (!strcmp(opt,"1")||!strcasecmp(opt,"on")) S->stack_next->preservelf=1;
-    else if (!strcmp(opt,"0")||!strcasecmp(opt,"off")) S->stack_next->preservelf=0;
+    if (!strcmp(opt,"1")||!my_strcasecmp(opt,"on")) S->stack_next->preservelf=1;
+    else if (!strcmp(opt,"0")||!my_strcasecmp(opt,"off")) S->stack_next->preservelf=0;
     else bug("#mode preservelf requires on/off argument");
   }
   else if (idequal(C->buf+p1start,p1end-p1start,"nocomment")
@@ -1879,15 +1934,15 @@ void ProcessModeCommand(int p1start,int p1end,int p2start,int p2end)
     if ((opt!=NULL)||(nargs>1))
       bug("syntax error in #mode nocomment/nostring");
     if (nargs==0) FreeComments(S->stack_next);
-    else delete_comment(S->stack_next,strdup(args[0]));
+    else delete_comment(S->stack_next,my_strdup(args[0]));
   }
   else if (idequal(C->buf+p1start,p1end-p1start,"charset")) {
     if ((opt==NULL)||(nargs!=1)) bug("syntax error in #mode charset");
-    if (!strcasecmp(opt,"op"))
+    if (!my_strcasecmp(opt,"op"))
       S->stack_next->op_set=MakeCharsetSubset((unsigned char *)args[0]);
-    else if (!strcasecmp(opt,"par"))
+    else if (!my_strcasecmp(opt,"par"))
       S->stack_next->ext_op_set=MakeCharsetSubset((unsigned char *)args[0]);
-    else if (!strcasecmp(opt,"id"))
+    else if (!my_strcasecmp(opt,"id"))
       S->stack_next->id_set=MakeCharsetSubset((unsigned char *)args[0]);
     else bug("unknown charset subset name in #mode charset");
   }
@@ -1944,8 +1999,8 @@ int ParsePossibleMeta(void)
   if (id==14) {
     PushSpecs(S);
     S->preservelf=1;
-    delete_comment(S,strdup("\""));
-    add_comment(S,"sss",strdup("\""),strdup("\""),'\\','\n');
+    delete_comment(S,my_strdup("\""));
+    add_comment(S,"sss",my_strdup("\""),my_strdup("\""),'\\','\n');
   }
 
   nparam=findMetaArgs(nameend,&p1start,&p1end,&p2start,&p2end,&macend,&argc,argb,arge);
