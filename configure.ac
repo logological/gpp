@@ -1,10 +1,10 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 #
-# $Id: configure.ac,v 1.4 2004-01-17 21:06:15 psy Exp $
+# $Id: configure.ac,v 1.5 2004-01-17 21:22:25 psy Exp $
 
 AC_PREREQ(2.57)
-AC_INIT(GPP, 2.15, psychonaut@nothingisreal.com, gpp)
+AC_INIT(GPP, 2.20, psychonaut@nothingisreal.com, gpp)
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/gpp.c])
 AC_CONFIG_HEADER([config.h])
@@ -16,7 +16,7 @@ AC_PROG_CC
 
 # Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS([stdlib.h string.h])
+AC_CHECK_HEADERS([stdlib.h string.h fnmatch.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
