@@ -1,6 +1,6 @@
 <#mode preservelf|off><#mode comment|"%%%" "\n">%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% GPP 2.11 documentation source file (C) Denis Auroux 2002 %%%%
+%%%% GPP 2.11 documentation source file (C) Denis Auroux 2001 %%%%
 %%%%                                                          %%%%
 %%%% to get the man page, run:                                %%%%
 %%%%    gpp -H -Dman gpphelp.pp -o gpp.1                      %%%%
@@ -141,7 +141,7 @@ $ifdef{html}$
 <HTML><HEAD><TITLE>GPP - Generic Preprocessor</TITLE>
 </HEAD><BODY BGCOLOR="#FFFFFF">
 <CENTER><H1>GPP - Generic Preprocessor</H1>
-Version $version$ - (C) Denis Auroux 1996-2001, Tristan Miller 2003</CENTER>
+Version $version$ - &copy; Denis Auroux 1996&ndash;2001, Tristan Miller 2003</CENTER>
 <P><B>
 <A HREF="http://www.math.polytechnique.fr/cmat/auroux/prog/gpp.tar.gz">Download gpp now !</A></B>
 $else$
@@ -1240,8 +1240,8 @@ $S{SEE ALSO}$
 m4(1V), cpp(1)
 $endif$
 $S{AUTHOR}$
-Denis Auroux, e-mail: auroux@math.polytechnique.fr
-Tristan Miller, e-mail: psychonaut@nothingisreal.com $P$
+Denis Auroux (auroux@math.polytechnique.fr) and
+Tristan Miller (psychonaut@nothingisreal.com). $P$
 Please send e-mail for any comments, questions or suggestions. $P$
 Many thanks to Michael Kifer for valuable feedback and suggestions,
 and for contributing various patches included in this version.
