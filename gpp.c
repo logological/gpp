@@ -1,9 +1,10 @@
 /* File:      gpp.c  -- generic preprocessor
 ** Author:    Denis Auroux
 ** Contact:   auroux@math.polytechnique.fr
-** Version:   2.2
+** Version:   2.11
 ** 
-** Copyright (C) Denis Auroux 1996, 1999, 2001, 2002
+** Copyright (C) Denis Auroux 1996, 1999, 2001
+** Copyright (C) Tristan Miller 2003
 ** 
 ** GPP is free software; you can redistribute it and/or modify it under the
 ** terms of the GNU Library General Public License as published by the Free
@@ -19,7 +20,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.1.1.1 2003-10-04 17:20:32 psy Exp $
+** $Id: gpp.c,v 1.2 2003-10-04 17:33:08 psy Exp $
 ** 
 */
 
@@ -290,7 +291,8 @@ void PopSpecs()
 }
 
 void usage() {
-  fprintf(stderr,"GPP Version 2.2 - Generic Preprocessor - (c) Denis Auroux 1996-2002\n");
+  fprintf(stderr,"GPP Version 2.11 - Generic Preprocessor\n");
+  fprintf(stderr,"(C) Denis Auroux 1996-2001, Tristan Miller 2003\n");
   fprintf(stderr,"Usage : gpp [-{o|O} outfile] [-I/include/path] [-Dname=val ...] [-z] [-x] [-m]\n");
   fprintf(stderr,"            [-n] [-C | -T | -H | -X | -P | -U ... [-M ...]] [+c<n> str1 str2]\n");
   fprintf(stderr,"            [+s<n> str1 str2 c] [infile]\n\n");

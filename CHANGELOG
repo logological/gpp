@@ -1,3 +1,8 @@
+CHANGES IN VERSION 2.11 (from 2.1):
+
+Command-line options:
+- -X for XHTML mode
+
 CHANGES IN VERSION 2.1 (from 2.0):
 
 Bugfixes:

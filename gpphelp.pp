@@ -1,14 +1,14 @@
 <#mode preservelf|off><#mode comment|"%%%" "\n">%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% GPP 2.2 documentation source file (c) Denis Auroux 2002 %%%%
-%%%%                                                         %%%%
-%%%% to get the man page, run:                               %%%%
-%%%%    gpp -H -Dman gpphelp.pp -o gpp.1                     %%%%
-%%%% to get the html page, run:                              %%%%
-%%%%    gpp -H -Dhtml gpphelp.pp -o gpp.html                 %%%%
-%%%% to get a latex version, run:                            %%%%
-%%%%    gpp -H -Dlatex gpphelp.pp -o gpp.tex                 %%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% GPP 2.11 documentation source file (C) Denis Auroux 2002 %%%%
+%%%%                                                          %%%%
+%%%% to get the man page, run:                                %%%%
+%%%%    gpp -H -Dman gpphelp.pp -o gpp.1                      %%%%
+%%%% to get the html page, run:                               %%%%
+%%%%    gpp -H -Dhtml gpphelp.pp -o gpp.html                  %%%%
+%%%% to get a latex version, run:                             %%%%
+%%%%    gpp -H -Dlatex gpphelp.pp -o gpp.tex                  %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%
 <#mode user|"$" "$" "{" "}{" "}$" "{" "}" "@@@" "~">%%%
 <#mode meta|"$" "$\w\n" "{" "}{" "}$\w\n" "{" "}">%%%
@@ -112,7 +112,7 @@ $define{exp}{$isverb{^}{\^{}}$}$
 $define{pipe}{$isverb{|}{$|$}$}$
 $else$
 
-This is the gpp 2.2 help file.
+This is the gpp 2.11 help file.
 
  to get the man page, run:              
     gpp -H -Dman gpphelp.pp -o gpp.1    
@@ -128,7 +128,7 @@ $endif$
 $endif$
 $endif$
 %%%%%%%%%%%%%%%%% some headers %%%%%%%%%%%%%%%%%%%
-$define{version}{2.2}$
+$define{version}{2.11}$
 $define{SYNTAX}{
 $pre$
   gpp [$d$$bra$o$pipe$O$ket$ $I{outfile}$] [$d$I$I{/include/path}$] [$d$D$I{name=val}$ ...]
@@ -141,7 +141,7 @@ $ifdef{html}$
 <HTML><HEAD><TITLE>GPP - Generic Preprocessor</TITLE>
 </HEAD><BODY BGCOLOR="#FFFFFF">
 <CENTER><H1>GPP - Generic Preprocessor</H1>
-Version $version$ - (c) Denis Auroux 1996-2001</CENTER>
+Version $version$ - (C) Denis Auroux 1996-2001, Tristan Miller 2003</CENTER>
 <P><B>
 <A HREF="http://www.math.polytechnique.fr/cmat/auroux/prog/gpp.tar.gz">Download gpp now !</A></B>
 $else$
@@ -149,14 +149,14 @@ $ifdef{man}$
 .TH GPP 1 \" -*- nroff -*-
 
 .SH NAME
-GPP \- Generic Preprocessor \- version $version$ (c) Denis Auroux 1996-2001
+GPP \- Generic Preprocessor \- version $version$ (C) Denis Auroux 1996-2001, Tristan Miller 2003
 
 .SH SYNOPSIS
 $SYNTAX$%%%
 $else$
 \documentclass[12pt]{article}
 \title{GPP - Generic Preprocessor}
-\author{(c) Denis Auroux 1996-99}
+\author{(C) Denis Auroux 1996--2001, Tristan Miller 2003}
 \date{Version $version$}
 \renewcommand{\thesubsection}{\arabic{subsection}}
 \begin{document}
@@ -1240,8 +1240,9 @@ $S{SEE ALSO}$
 m4(1V), cpp(1)
 $endif$
 $S{AUTHOR}$
-Denis Auroux, e-mail: auroux@math.polytechnique.fr. $P$
-Please send me e-mail for any comments, questions or suggestions. $P$
+Denis Auroux, e-mail: auroux@math.polytechnique.fr
+Tristan Miller, e-mail: psychonaut@nothingisreal.com $P$
+Please send e-mail for any comments, questions or suggestions. $P$
 Many thanks to Michael Kifer for valuable feedback and suggestions,
 and for contributing various patches included in this version.
 $ifdef{html}$
