@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 #
-# $Id: configure.ac,v 1.2 2004-01-16 22:48:35 psy Exp $
+# $Id: configure.ac,v 1.3 2004-01-17 21:06:04 psy Exp $
 
 AC_PREREQ(2.57)
 AC_INIT(GPP, 2.14, psychonaut@nothingisreal.com, gpp)
@@ -24,8 +24,6 @@ AC_C_INLINE
 AC_TYPE_SIZE_T
 
 # Checks for library functions.
-AC_FUNC_MALLOC
-AC_FUNC_REALLOC
 AC_CHECK_FUNCS([strcasecmp strchr strdup strtol])
 
 AC_CONFIG_FILES([Makefile
