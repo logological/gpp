@@ -1,6 +1,6 @@
 <#mode preservelf|off><#mode comment|"%%%" "\n">%%%
 %%%%
-%%%% $Id: gpp.pp,v 1.3 2004-01-17 22:32:31 psy Exp $
+%%%% $Id: gpp.pp,v 1.4 2004-02-07 15:21:35 psy Exp $
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% GPP documentation source file                            %%%%
@@ -157,7 +157,7 @@ $endif$
 $endif$
 $endif$
 %%%%%%%%%%%%%%%%% some headers %%%%%%%%%%%%%%%%%%%
-$define{version}{2.20}$
+$define{version}{2.21}$
 $define{SYNTAX}{
 $pre$
   gpp [$d$$bra$o$pipe$O$ket$ $I{outfile}$] [$d$I$I{/include/path}$] [$d$D$I{name=val}$ ...]
@@ -880,6 +880,16 @@ This meta-macro evaluates to the filename of the current input file as
 it appears on the command line or in the argument to $I{$dz$include}$.
 If GPP is reading its input from stdin, then $I{$dz$file}$ evaluates
 to 'stdin'.
+$li$
+$BI{$dz$error }{msg}$
+This meta-macro causes an error message with the current filename and
+line number, and with the text $I{msg}$, to be printed to the standard
+error device.  Subsequent processing is then aborted.
+$li$
+$BI{$dz$warning }{msg}$
+This meta-macro causes a warning message with the current filename and
+line number, and with the text $I{msg}$, to be printed to the standard
+error device.  Subsequent processing is then resumed.
 }$
 $P$
 The key to GPP's flexibility is the $I{$dz$mode}$ meta-macro. Its first
