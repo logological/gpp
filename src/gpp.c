@@ -19,7 +19,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.9 2004-07-11 16:15:20 psy Exp $
+** $Id: gpp.c,v 1.10 2004-09-19 20:19:16 psy Exp $
 ** 
 */
 
@@ -48,12 +48,14 @@
 #if HAVE_FNMATCH_H
 #  include <fnmatch.h>
 #endif
+#include <time.h>
 
 #define STACKDEPTH 50
 #define MAXARGS 100
 #define MAXINCL 10   /* max # of include dirs */
 
 #define MAX_GPP_NUM_SIZE 15
+#define MAX_GPP_DATE_SIZE 1024
 
 typedef struct MODE {
   char *mStart;		/* before macro name */
@@ -2125,6 +2127,8 @@ int ParsePossibleMeta(void)
     { id=18; expparams=1; }
   else if (idequal(C->buf+cklen,nameend-cklen,"warning"))
     { id=19; expparams=1; }
+  else if (idequal(C->buf+cklen,nameend-cklen,"date"))
+    { id=20; expparams=1; }
   else return -1;
 
   /* #MODE magic : define "..." to be C-style strings */
@@ -2438,6 +2442,21 @@ int ParsePossibleMeta(void)
       warning(s);
       free(s);
     }
+    break;
+
+  case 20: { /* DATE */ 
+    char buf[MAX_GPP_DATE_SIZE];
+    char *fmt;
+    time_t now = time(NULL);
+    fmt=ProcessText(C->buf + p1start,
+		    (nparam == 2 ? p2end : p1end) - p1start,
+		    FLAG_META);
+    if (!strftime(buf, MAX_GPP_DATE_SIZE, fmt, localtime(&now)))
+      bug("date buffer exceeded");
+    replace_directive_with_blank_line(C->out->f);
+    sendout(buf, strlen(buf), 0);
+    free(fmt);
+  }
     break;
 
   default: bug("Internal meta-macro identification error");
