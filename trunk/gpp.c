@@ -20,7 +20,7 @@
 ** along with this software; if not, write to the Free Software Foundation,
 ** Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
-** $Id: gpp.c,v 1.12 2003-11-21 16:43:33 psy Exp $
+** $Id: gpp.c,v 1.13 2003-11-21 16:43:50 psy Exp $
 ** 
 **
 ** To fix:
@@ -297,7 +297,7 @@ void PopSpecs(void)
 }
 
 void usage(void) {
-  fprintf(stderr,"GPP Version 2.11 - Generic Preprocessor\n");
+  fprintf(stderr,"GPP Version 2.12 - Generic Preprocessor\n");
   fprintf(stderr,"(C) Denis Auroux 1996-2001, Tristan Miller 2003\n");
   fprintf(stderr,"Usage : gpp [-{o|O} outfile] [-I/include/path] [-Dname=val ...] [-z] [-x] [-m]\n");
   fprintf(stderr,"            [-n] [-C | -T | -H | -X | -P | -U ... [-M ...]] [+c<n> str1 str2]\n");
