@@ -156,7 +156,7 @@ $SYNTAX$%%%
 $else$
 \documentclass[12pt]{article}
 \title{GPP - Generic Preprocessor}
-\author{(C) Denis Auroux 1996--2001, Tristan Miller 2003}
+\author{\copyright Denis Auroux 1996--2001, Tristan Miller 2003}
 \date{Version $version$}
 \renewcommand{\thesubsection}{\arabic{subsection}}
 \begin{document}
@@ -327,8 +327,8 @@ $li$
 $BI{$d$X}$
 XHTML-like mode. In this mode, typical meta-macros and user macros look like
 this: $pre$
-  $l$$dz$define x$pipe$y /$g$
-  $l$$dz$macro arg$pipe$... /$g$
+  $l$$dz$define x$pipe$y/$g$
+  $l$$dz$macro arg$pipe$.../$g$
 $nopre$
 No comments are understood. This mode is equivalent to $pre$
   -U "$l$$dz$" "/$g$" "$b$B" "$pipe$" "/$g$" "$l$" "$g$" "$dz$" "$b$$b$"
