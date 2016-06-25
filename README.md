@@ -9,8 +9,8 @@ while its syntax is lighter and more flexible than that of
 for use with C/C++, LaTeX, HTML, XHTML, and Prolog files.
 
 GPP is [Free Software](https://www.gnu.org/philosophy/free-sw.html). It
-is distributed under the terms of the [GNU General Public
-Licence](https://www.gnu.org/copyleft/gpl.html).
+is distributed under the terms of the [GNU Lesser General Public
+Licence](https://www.gnu.org/copyleft/lgpl.html).
 
 Documentation
 -------------
