@@ -37,7 +37,7 @@ make DESTDIR=$RPM_BUILD_ROOT install-strip
 %files
 %defattr(-,root,root,-)
 %{_prefix}/bin/gpp
-%doc ChangeLog AUTHORS BUGS COPYING INSTALL NEWS README.md THANKS TODO
+%doc ChangeLog AUTHORS BUGS COPYING INSTALL NEWS README.md THANKS
 %doc %{_prefix}/man/man1/gpp.1.gz
 
 

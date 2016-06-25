@@ -13,4 +13,4 @@
 AUTOMAKE_OPTIONS = dist-bzip2
 SUBDIRS = src
 man_MANS = doc/gpp.1
-EXTRA_DIST = BUGS TODO doc/gpp.html doc/gpp.pp $(man_MANS)
+EXTRA_DIST = BUGS doc/gpp.html doc/gpp.pp $(man_MANS)
