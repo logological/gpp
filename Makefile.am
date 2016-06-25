@@ -1,4 +1,4 @@
-# Copyright (C) 2003 Tristan Miller <psychonaut@nothingisreal.com>
+# Copyright (C) 2003 Tristan Miller <tristan@logological.org>
 #  
 # This file is free software; the author gives unlimited permission to
 # copy and/or distribute it, with or without modifications.

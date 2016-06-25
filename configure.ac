@@ -2,8 +2,10 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.57)
-AC_INIT(GPP, 2.24, psychonaut@nothingisreal.com, gpp)
-AM_INIT_AUTOMAKE
+AC_INIT([GPP], [2.25-SNAPSHOT], [tristan@logological.org], [gpp])
+
+# Suppress complaints about missing README and ChangeLog
+AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_SRCDIR([src/gpp.c])
 AC_CONFIG_HEADER([config.h])
 

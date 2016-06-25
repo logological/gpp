@@ -2,11 +2,11 @@ Summary: Generic Preprocessor
 %define packagename genpp
 %define tarballname gpp
 Name: %{packagename}
-Version: 2.24
+Version: 2.25-SNAPSHOT
 Release: 2
 License: LGPL
 Group: Development/Languages/Other
-URL: http://www.nothingisreal.com/gpp/
+URL: https://logological.org/gpp/
 Source0: http://www.nothingisreal.com/gpp/%{tarballname}-%{version}.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 Prefix: %{_prefix}
@@ -37,7 +37,7 @@ make DESTDIR=$RPM_BUILD_ROOT install-strip
 %files
 %defattr(-,root,root,-)
 %{_prefix}/bin/gpp
-%doc ChangeLog AUTHORS COPYING INSTALL NEWS README.md THANKS
+%doc AUTHORS COPYING INSTALL NEWS README.md THANKS
 %doc %{_prefix}/man/man1/gpp.1.gz
 
 

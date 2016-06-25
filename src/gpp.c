@@ -1,9 +1,9 @@
 /* File:      gpp.c  -- generic preprocessor
 ** Author:    Denis Auroux, Tristan Miller
-** Contact:   psychonaut@nothingisreal.com
+** Contact:   tristan@logological.org
 ** 
 ** Copyright (C) 1996, 1999, 2001 Denis Auroux
-** Copyright (C) 2003, 2004 Tristan Miller
+** Copyright (C) 2003-2016 Tristan Miller
 ** 
 ** This program is free software: you can redistribute it and/or
 ** modify it under the terms of the GNU Lesser General Public License as

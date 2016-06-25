@@ -3,7 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% GPP documentation source file                            %%%%
 %%%% (C) 2001 Denis Auroux                                    %%%%
-%%%% (C) 2003, 2004 Tristan Miller                            %%%%
+%%%% (C) 2003-2016 Tristan Miller                             %%%%
 %%%%                                                          %%%%
 %%%% To get the man page, run:                                %%%%
 %%%%    gpp -H -Dman gpp.pp -o gpp.1                          %%%%
@@ -161,7 +161,7 @@ $endif$
 $endif$
 $endif$
 %%%%%%%%%%%%%%%%% some headers %%%%%%%%%%%%%%%%%%%
-$define{version}{2.24}$
+$define{version}{2.25-SNAPSHOT}$
 $define{SYNTAX}{
 $pre$
   gpp [$d$$bra$o$pipe$O$ket$ $I{outfile}$] [$d$I$I{/include/path}$ ...]
@@ -182,7 +182,7 @@ $ifdef{html}$
 </HEAD><BODY BGCOLOR="#FFFFFF">
 <CENTER><H1>GPP $version$ &mdash; Generic Preprocessor</H1></CENTER>
 <P>
-N.B. $mdash$ The latest version of GPP and this manual are available from the <B><a href="http://www.nothingisreal.com/gpp/">GPP home page</a></B>.
+N.B. $mdash$ The latest version of GPP and this manual are available from the <B><a href="https://logological.org/gpp/">GPP home page</a></B>.
 $else$
 $ifdef{man}$
 .TH GPP 1 \" -*- nroff -*-
@@ -1433,14 +1433,14 @@ $nopre$
 $ifdef{man}$
 $S{SEE ALSO}$
 strftime(3), glob(7), m4(1V), cpp(1)$P$
-GPP home page: http://www.nothingisreal.com/gpp/
+GPP home page: https://logological.org/gpp/
 $endif$
 $S{AUTHOR}$
 GPP was written by Denis Auroux $l$auroux@math.mit.edu$g$.
-Since version 2.12 it has been maintained by Tristan Miller $l$psychonaut@nothingisreal.com$g$.
+Since version 2.12 it has been maintained by Tristan Miller $l$tristan@logological.org$g$.
 $S{COPYRIGHT}$
 Copyright $copy$$nbsp$1996$ndash$2001 Denis Auroux.$BR$
-Copyright $copy$$nbsp$2003, 2004 Tristan Miller.$P$
+Copyright $copy$$nbsp$2003$ndash$2016 Tristan Miller.$P$
 Permission is granted to anyone to make or distribute verbatim copies
 of this document as received, in any medium, provided that the
 copyright notice and this permission notice are preserved, thus giving
