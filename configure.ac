@@ -1,7 +1,5 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
-#
-# $Id: configure.ac,v 1.12 2004-09-19 20:19:16 psy Exp $
 
 AC_PREREQ(2.57)
 AC_INIT(GPP, 2.24, psychonaut@nothingisreal.com, gpp)

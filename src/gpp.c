@@ -17,9 +17,6 @@
 **
 ** You should have received a copy of the GNU Lesser General Public License
 ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
-**
-** $Id: gpp.c,v 1.10 2004-09-19 20:19:16 psy Exp $
-** 
 */
 
 /* To compile under MS VC++, one must define WIN_NT */
