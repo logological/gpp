@@ -373,7 +373,7 @@ void usage(void) {
     fprintf(stderr," -h, --help : display this message and exit\n\n");
 }
 
-int isdelim(unsigned char c) {
+int isDelim(unsigned char c) {
     if (c >= 128)
         return 0;
     if ((c >= '0') && (c <= '9'))
@@ -387,7 +387,7 @@ int isdelim(unsigned char c) {
     return 1;
 }
 
-int iswhite(char c) {
+int isWhite(char c) {
     if (c == ' ')
         return 1;
     if (c == '\t')
@@ -436,7 +436,7 @@ void lookupArgRefs(int n) {
     }
 }
 
-char *strnl0(const char *s) /* replace "\\n" by "\n" in a cmd-line arg */
+char *strNl0(const char *s) /* replace "\\n" by "\n" in a cmd-line arg */
 {
     char *t, *u;
     t = malloc(strlen(s) + 1);
@@ -454,13 +454,13 @@ char *strnl0(const char *s) /* replace "\\n" by "\n" in a cmd-line arg */
     return t;
 }
 
-char *strnl(const char *s) /* the same but with whitespace specifier handling */
+char *strNl(const char *s) /* the same but with whitespace specifier handling */
 {
     char *t, *u;
     int neg;
     t = malloc(strlen(s) + 1);
     u = t;
-    if (!isdelim(*s))
+    if (!isDelim(*s))
         bug("character not allowed to start a syntax specifier");
     while (*s != 0) {
         if (((*s & 0x60) == 0) && (*s != '\n') && (*s != '\t'))
@@ -528,11 +528,11 @@ char *strnl(const char *s) /* the same but with whitespace specifier handling */
 }
 
 /* same as strnl() but for C strings & in-place */
-char *strnl2(char *s, int check_delim) {
+char *strNl2(char *s, int check_delim) {
     char *u;
     int neg;
     u = s;
-    if (check_delim && !isdelim(*s))
+    if (check_delim && !isDelim(*s))
         bug("character not allowed to start a syntax specifier");
     while (*s != '"') {
         if (((*s & 0x60) == 0) && (*s != '\n') && (*s != '\t'))
@@ -606,8 +606,8 @@ char *strnl2(char *s, int check_delim) {
     return (s + 1);
 }
 
-int iswhitesep(const char *s) {
-    while (iswhite(*s) || (*s == '\001') || (*s == '\002') || (*s == '\003')
+int isWhitesep(const char *s) {
+    while (isWhite(*s) || (*s == '\001') || (*s == '\002') || (*s == '\003')
             || (*s == '\004'))
         s++;
     return (*s == 0);
@@ -616,17 +616,17 @@ int iswhitesep(const char *s) {
 int nowhite_strcmp(char *s, char *t) {
     char *p;
 
-    while (iswhite(*s))
+    while (isWhite(*s))
         s++;
-    while (iswhite(*t))
+    while (isWhite(*t))
         t++;
     if ((*s == 0) || (*t == 0))
         return strcmp(s, t);
     p = s + strlen(s) - 1;
-    while (iswhite(*p))
+    while (isWhite(*p))
         *(p--) = 0;
     p = t + strlen(t) - 1;
-    while (iswhite(*p))
+    while (isWhite(*p))
         *(p--) = 0;
     return strcmp(s, t);
 }
@@ -647,7 +647,7 @@ void parseCmdlineDefine(const char *s) {
         do {
             l++;
             i = l;
-            while (!isdelim(s[i]))
+            while (!isDelim(s[i]))
                 i++;
             if (s[i] != ',' && s[i] != ')')
                 bug("invalid syntax in -D declaration");
@@ -679,30 +679,30 @@ void parseCmdlineDefine(const char *s) {
 int readModeDescription(char **args, struct MODE *mode, int ismeta) {
     if (!(*(++args)))
         return 0;
-    mode->mStart = strnl(*args);
+    mode->mStart = strNl(*args);
     if (!(*(++args)))
         return 0;
-    mode->mEnd = strnl(*args);
+    mode->mEnd = strNl(*args);
     if (!(*(++args)))
         return 0;
-    mode->mArgS = strnl(*args);
+    mode->mArgS = strNl(*args);
     if (!(*(++args)))
         return 0;
-    mode->mArgSep = strnl(*args);
+    mode->mArgSep = strNl(*args);
     if (!(*(++args)))
         return 0;
-    mode->mArgE = strnl(*args);
+    mode->mArgE = strNl(*args);
     if (!(*(++args)))
         return 0;
-    mode->stackchar = strnl(*args);
+    mode->stackchar = strNl(*args);
     if (!(*(++args)))
         return 0;
-    mode->unstackchar = strnl(*args);
+    mode->unstackchar = strNl(*args);
     if (ismeta)
         return 1;
     if (!(*(++args)))
         return 0;
-    mode->mArgRef = strnl(*args);
+    mode->mArgRef = strNl(*args);
     if (!(*(++args)))
         return 0;
     mode->quotechar = **args;
@@ -868,9 +868,9 @@ char getChar(int pos) {
 
 int whiteout(int *pos1, int *pos2) /* remove whitespace on both sides */
 {
-    while ((*pos1 < *pos2) && iswhite(getChar(*pos1)))
+    while ((*pos1 < *pos2) && isWhite(getChar(*pos1)))
         (*pos1)++;
-    while ((*pos1 < *pos2) && iswhite(getChar(*pos2 - 1)))
+    while ((*pos1 < *pos2) && isWhite(getChar(*pos2 - 1)))
         (*pos2)--;
     return (*pos1 < *pos2);
 }
@@ -885,12 +885,12 @@ int identifierEnd(int start) {
         c = getChar(start + 1);
         if (c == 0)
             return (start + 1);
-        if (isdelim(c))
+        if (isDelim(c))
             return (start + 2);
         start += 2;
         c = getChar(start);
     }
-    while (!isdelim(c))
+    while (!isDelim(c))
         c = getChar(++start);
     return start;
 }
@@ -998,7 +998,7 @@ int matchEndSequence(const char *s, int *pos) {
         return 1;
     if (!matchSequence(s, pos))
         return 0;
-    if (S->preservelf && iswhite(getChar(*pos - 1)))
+    if (S->preservelf && isWhite(getChar(*pos - 1)))
         (*pos)--;
     return 1;
 }
@@ -1324,7 +1324,7 @@ void initthings(int argc, char **argv) {
                     usage();
                     exit(EXIT_FAILURE);
                 }
-                add_comment(S, s, strnl(*(arg - 1)), strnl(*arg), 0, 0);
+                add_comment(S, s, strNl(*(arg - 1)), strNl(*arg), 0, 0);
                 break;
             case 's':
                 s = (*arg) + 2;
@@ -1342,7 +1342,7 @@ void initthings(int argc, char **argv) {
                     usage();
                     exit(EXIT_FAILURE);
                 }
-                add_comment(S, s, strnl(*(arg - 2)), strnl(*(arg - 1)), **arg,
+                add_comment(S, s, strNl(*(arg - 2)), strNl(*(arg - 1)), **arg,
                         0);
                 break;
             case 'z':
@@ -1460,9 +1460,9 @@ void initthings(int argc, char **argv) {
                         usage();
                         exit(EXIT_FAILURE);
                     }
-                    s = strnl0(*arg);
+                    s = strNl0(*arg);
                 } else
-                    s = strnl0((*arg) + 2);
+                    s = strNl0((*arg) + 2);
                 parseCmdlineDefine(s);
                 free(s);
                 break;
@@ -1481,7 +1481,7 @@ void initthings(int argc, char **argv) {
                     usage();
                     exit(EXIT_FAILURE);
                 }
-                delete_comment(S, strnl(*arg));
+                delete_comment(S, strNl(*arg));
                 break;
             case 'm':
                 autoswitch = 1;
@@ -1789,9 +1789,9 @@ int DoArithmEval(char *buf, int pos1, int pos2, int *result) {
     int spl1, spl2, result1, result2, l;
     char c, *p;
 
-    while ((pos1 < pos2) && iswhite(buf[pos1]))
+    while ((pos1 < pos2) && isWhite(buf[pos1]))
         pos1++;
-    while ((pos1 < pos2) && iswhite(buf[pos2 - 1]))
+    while ((pos1 < pos2) && isWhite(buf[pos2 - 1]))
         pos2--;
     if (pos1 == pos2)
         return 0;
@@ -1842,9 +1842,9 @@ int DoArithmEval(char *buf, int pos1, int pos2, int *result) {
         if (!DoArithmEval(buf, pos1, spl1, &result1)
                 || !DoArithmEval(buf, spl2, pos2, &result2)) {
             /* revert to string comparison */
-            while ((pos1 < spl1) && iswhite(buf[spl1 - 1]))
+            while ((pos1 < spl1) && isWhite(buf[spl1 - 1]))
                 spl1--;
-            while ((pos2 > spl2) && iswhite(buf[spl2]))
+            while ((pos2 > spl2) && isWhite(buf[spl2]))
                 spl2++;
             if (spl1 - pos1 != pos2 - spl2)
                 *result = 1;
@@ -1859,9 +1859,9 @@ int DoArithmEval(char *buf, int pos1, int pos2, int *result) {
         if (!DoArithmEval(buf, pos1, spl1, &result1)
                 || !DoArithmEval(buf, spl2, pos2, &result2)) {
             /* revert to string comparison */
-            while ((pos1 < spl1) && iswhite(buf[spl1 - 1]))
+            while ((pos1 < spl1) && isWhite(buf[spl1 - 1]))
                 spl1--;
-            while ((pos2 > spl2) && iswhite(buf[spl2]))
+            while ((pos2 > spl2) && isWhite(buf[spl2]))
                 spl2++;
             if (spl1 - pos1 != pos2 - spl2)
                 *result = 0;
@@ -1881,9 +1881,9 @@ int DoArithmEval(char *buf, int pos1, int pos2, int *result) {
             char *str1, *str2;
 
             /* revert to string comparison */
-            while ((pos1 < spl1) && iswhite(buf[spl1 - 1]))
+            while ((pos1 < spl1) && isWhite(buf[spl1 - 1]))
                 spl1--;
-            while ((pos2 > spl2) && iswhite(buf[spl2]))
+            while ((pos2 > spl2) && isWhite(buf[spl2]))
                 spl2++;
             str1 = strdup(buf + pos1);
             str1[spl1 - pos1] = '\0';
@@ -1901,9 +1901,9 @@ int DoArithmEval(char *buf, int pos1, int pos2, int *result) {
         if (!DoArithmEval(buf, pos1, spl1, &result1)
                 || !DoArithmEval(buf, spl2, pos2, &result2)) {
             /* revert to string comparison */
-            while ((pos1 < spl1) && iswhite(buf[spl1 - 1]))
+            while ((pos1 < spl1) && isWhite(buf[spl1 - 1]))
                 spl1--;
-            while ((pos2 > spl2) && iswhite(buf[spl2]))
+            while ((pos2 > spl2) && isWhite(buf[spl2]))
                 spl2++;
             l = spl1 - pos1;
             if (l > pos2 - spl2)
@@ -1920,9 +1920,9 @@ int DoArithmEval(char *buf, int pos1, int pos2, int *result) {
         if (!DoArithmEval(buf, pos1, spl1, &result1)
                 || !DoArithmEval(buf, spl2, pos2, &result2)) {
             /* revert to string comparison */
-            while ((pos1 < spl1) && iswhite(buf[spl1 - 1]))
+            while ((pos1 < spl1) && isWhite(buf[spl1 - 1]))
                 spl1--;
-            while ((pos2 > spl2) && iswhite(buf[spl2]))
+            while ((pos2 > spl2) && isWhite(buf[spl2]))
                 spl2++;
             l = spl1 - pos1;
             if (l > pos2 - spl2)
@@ -1939,9 +1939,9 @@ int DoArithmEval(char *buf, int pos1, int pos2, int *result) {
         if (!DoArithmEval(buf, pos1, spl1, &result1)
                 || !DoArithmEval(buf, spl2, pos2, &result2)) {
             /* revert to string comparison */
-            while ((pos1 < spl1) && iswhite(buf[spl1 - 1]))
+            while ((pos1 < spl1) && isWhite(buf[spl1 - 1]))
                 spl1--;
-            while ((pos2 > spl2) && iswhite(buf[spl2]))
+            while ((pos2 > spl2) && isWhite(buf[spl2]))
                 spl2++;
             l = spl1 - pos1;
             if (l > pos2 - spl2)
@@ -1958,9 +1958,9 @@ int DoArithmEval(char *buf, int pos1, int pos2, int *result) {
         if (!DoArithmEval(buf, pos1, spl1, &result1)
                 || !DoArithmEval(buf, spl2, pos2, &result2)) {
             /* revert to string comparison */
-            while ((pos1 < spl1) && iswhite(buf[spl1 - 1]))
+            while ((pos1 < spl1) && isWhite(buf[spl1 - 1]))
                 spl1--;
-            while ((pos2 > spl2) && iswhite(buf[spl2]))
+            while ((pos2 > spl2) && isWhite(buf[spl2]))
                 spl2++;
             l = spl1 - pos1;
             if (l > pos2 - spl2)
@@ -2204,15 +2204,15 @@ void ProcessModeCommand(int p1start, int p1end, int p2start, int p2end) {
     /* argument parsing */
     p = s;
     opt = NULL;
-    while (iswhite(*p))
+    while (isWhite(*p))
         p++;
     if ((*p != '"') && (*p != 0)) {
         opt = p;
-        while ((*p != 0) && !iswhite(*p))
+        while ((*p != 0) && !isWhite(*p))
             p++;
         if (*p != 0) {
             *(p++) = 0;
-            while (iswhite(*p))
+            while (isWhite(*p))
                 p++;
         }
     }
@@ -2224,8 +2224,8 @@ void ProcessModeCommand(int p1start, int p1end, int p2start, int p2end) {
         if (*(p++) != '"')
             bug("syntax error in #mode command (missing \" or trailing data)");
         args[nargs++] = p;
-        p = strnl2(p, check_isdelim);
-        while (iswhite(*p))
+        p = strNl2(p, check_isdelim);
+        while (isWhite(*p))
             p++;
     }
 
@@ -2500,10 +2500,10 @@ int ParsePossibleMeta(void) {
     if (nparam == -1)
         return -1;
 
-    if ((nparam == 2) && iswhitesep(S->Meta.mArgSep))
+    if ((nparam == 2) && isWhitesep(S->Meta.mArgSep))
         if (comment_or_white(p2start, p2end, FLAG_META))
             nparam = 1;
-    if ((nparam == 1) && iswhitesep(S->Meta.mArgS))
+    if ((nparam == 1) && isWhitesep(S->Meta.mArgS))
         if (comment_or_white(p1start, p1end, FLAG_META))
             nparam = 0;
     if (expparams && !nparam)
@@ -2908,10 +2908,10 @@ int ParsePossibleUser(void) {
         s = remove_comments(argb[0], arge[0], FLAG_USER);
         t = s + strlen(s) - 1;
         if (*s != 0)
-            while ((t != s) && iswhite(*t))
+            while ((t != s) && isWhite(*t))
                 *(t--) = 0;
         t = s;
-        while (iswhite(*t))
+        while (isWhite(*t))
             t++;
         if (findIdent(t, strlen(t)) >= 0)
             outchar('1');
@@ -2951,7 +2951,7 @@ int ParsePossibleUser(void) {
         l = strlen(macros[id].macrotext) + 1;
         C->buf[0] = '\n';
         strcpy(C->buf + 1, macros[id].macrotext);
-        while ((l > 1) && iswhite(C->buf[l - 1]))
+        while ((l > 1) && isWhite(C->buf[l - 1]))
             l--;
         strcpy(C->buf + l, macros[id].define_specs->User.mArgS);
         for (i = 0; i < argc; i++) {
