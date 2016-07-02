@@ -2419,7 +2419,7 @@ int ParsePossibleMeta(void) {
     nameend = identifierEnd(cklen);
     if (nameend && !getChar(nameend - 1))
         return -1;
-    id = 0;
+
     argc = 0; /* for #define with named args */
     if (idequal(C->buf + cklen, nameend - cklen, "define")) /* check identifier */
     {
