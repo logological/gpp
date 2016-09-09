@@ -2336,7 +2336,7 @@ static void DoInclude(char *file_name) {
     struct INPUTCONTEXT *N;
     char *incfile_name = NULL;
     FILE *f = NULL;
-    int i, j;
+    int j;
     int len = strlen(file_name);
 
     /* if absolute path name is specified */
