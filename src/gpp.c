@@ -47,7 +47,7 @@
 
 #define STACKDEPTH 50
 #define MAXARGS 100
-#define MAXINCL 10   /* max # of include dirs */
+#define MAXINCL 128   /* max # of include dirs */
 
 #define MAX_GPP_NUM_SIZE 15
 #define MAX_GPP_DATE_SIZE 1024
