@@ -161,7 +161,7 @@ $endif$
 $endif$
 $endif$
 %%%%%%%%%%%%%%%%% some headers %%%%%%%%%%%%%%%%%%%
-$define{version}{2.25-SNAPSHOT}$
+$define{version}{2.25}$
 $define{SYNTAX}{
 $pre$
   gpp [$d$$bra$o$pipe$O$ket$ $I{outfile}$] [$d$I$I{/include/path}$ ...]

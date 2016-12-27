@@ -1,15 +1,13 @@
 Summary: Generic Preprocessor
-%define packagename genpp
-%define tarballname gpp
 Name: %{packagename}
-Version: 2.25-SNAPSHOT
-Release: 2
-License: LGPL
+Version: 2.25
+Release: 0
+License: LGPL-3.0+
 Group: Development/Languages/Other
 URL: https://logological.org/gpp/
-Source0: http://www.nothingisreal.com/gpp/%{tarballname}-%{version}.tar.bz2
+Source0: http://files.nothingisreal.com/%{name}/%{name}-%{version}.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
-Prefix: %{_prefix}
+BuildRequires: gcc
 
 %description 
 GPP is a general-purpose preprocessor with customizable syntax,
@@ -20,32 +18,27 @@ flexible than that of GNU m4. There are built-in macros for use with
 C/C++, LaTeX, HTML, XHTML, and Prolog files.
 
 %prep
-%setup -q -n %{tarballname}-%{version}
+%setup -q
 
 %build
-./configure --prefix=%{_prefix}
-make
+%{_configure} --prefix=%{_prefix} --docdir=%{_docdir}/%{name}
+%{__make}
 
 %install
-[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
-make DESTDIR=$RPM_BUILD_ROOT install-strip
+[ "%{buildroot}" != "/" ] && %{__rm} -rf %{buildroot}
+%{make_install}
 
 %clean
-[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
+[ "%{buildroot}" != "/" ] && %{__rm} -rf %{buildroot}
 
 
 %files
 %defattr(-,root,root,-)
-%{_prefix}/bin/gpp
-%doc AUTHORS COPYING INSTALL NEWS README.md THANKS
-%doc %{_prefix}/man/man1/gpp.1.gz
-
+%{_bindir}/gpp
+%{_docdir}/%{name}
+%doc %{_mandir}/man1/gpp.1.gz
 
 
 %changelog
-* Mon Dec 20 2004 Tristan Miller <psychonaut@nothingisreal.com> - 
-- Renamed package to genpp to avoid conflicts with obsolete GCC
-  package of the same name.
-
-* Fri Dec  3 2004 Tristan Miller <psychonaut@nothingisreal.com> - 
+* Tue Dec 27 2016 Tristan Miller <psychonaut@nothingisreal.com> - 
 - Initial build.

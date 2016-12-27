@@ -1,4 +1,4 @@
-# Copyright (C) 2003 Tristan Miller <tristan@logological.org>
+# Copyright (C) 2003-2016 Tristan Miller <tristan@logological.org>
 #  
 # This file is free software; the author gives unlimited permission to
 # copy and/or distribute it, with or without modifications.
@@ -9,6 +9,12 @@
 # PURPOSE.
 
 AUTOMAKE_OPTIONS = dist-bzip2
-SUBDIRS = src
-man_MANS = doc/gpp.1
-EXTRA_DIST = doc/gpp.html doc/gpp.pp $(man_MANS)
+SUBDIRS = src . doc
+
+README: README.md
+	cp $< $@
+
+ChangeLog: FORCE
+	gitlog-to-changelog >$@
+
+FORCE:

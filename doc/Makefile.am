@@ -1,4 +1,4 @@
-# Copyright (C) 2003-2016 Tristan Miller <psychonaut@nothingisreal.com>
+# Copyright (C) 2016 Tristan Miller <psychonaut@nothingisreal.com>
 #  
 # This file is free software; the author gives unlimited permission to
 # copy and/or distribute it, with or without modifications.
@@ -8,5 +8,13 @@
 # the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 # PURPOSE.
 
-bin_PROGRAMS = gpp
-gpp_SOURCES = gpp.c
+dist_doc_DATA = gpp.html gpp.pp
+man_MANS = gpp.1
+
+gpp.html: gpp.pp
+	../src/gpp -H -Dhtml $< -o $@
+
+gpp.1:	gpp.pp
+	../src/gpp -H -Dman $< -o $@
+
+CLEANFILES = gpp.html gpp.1

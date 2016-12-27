@@ -2,10 +2,9 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.57)
-AC_INIT([GPP], [2.25-SNAPSHOT], [tristan@logological.org], [gpp])
+AC_INIT([GPP], [2.25], [tristan@logological.org], [gpp])
 
-# Suppress complaints about missing README and ChangeLog
-AM_INIT_AUTOMAKE([foreign])
+AM_INIT_AUTOMAKE([])
 AC_CONFIG_SRCDIR([src/gpp.c])
 AC_CONFIG_HEADER([config.h])
 
@@ -26,6 +25,5 @@ AC_TYPE_SIZE_T
 # Checks for library functions.
 AC_CHECK_FUNCS([strcasecmp strchr strdup strtol])
 
-AC_CONFIG_FILES([Makefile
-                 src/Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile])
 AC_OUTPUT
