@@ -8,8 +8,8 @@
 # the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 # PURPOSE.
 
-dist_doc_DATA = gpp.html gpp.pp
 man_MANS = gpp.1
+dist_doc_DATA = gpp.html gpp.pp $(man_MANS)
 
 gpp.html: gpp.pp
 	../src/gpp -H -Dhtml $< -o $@
