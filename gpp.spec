@@ -1,11 +1,11 @@
 Summary: Generic Preprocessor
-Name: %{packagename}
+Name: gpp
 Version: 2.25
 Release: 0
 License: LGPL-3.0+
 Group: Development/Languages/Other
 URL: https://logological.org/gpp/
-Source0: http://files.nothingisreal.com/%{name}/%{name}-%{version}.tar.bz2
+Source0: https://files.nothingisreal.com/%{name}/%{name}-%{version}.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires: gcc
 
