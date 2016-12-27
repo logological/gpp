@@ -2,9 +2,10 @@ GPP NEWS -- history of user-visible changes
 
 See the end of this file for copying conditions.
 
-Please send GPP bug reports to Tristan Miller
-<psychonaut@nothingisreal.com>.
+
+Version 2.25
 
+    * Maximum number of include directories increased to 128
 
 Version 2.24
 
