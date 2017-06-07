@@ -18,6 +18,22 @@ Documentation
 For installation and usage instructions, please visit the
 [GPP home page](https://logological.org/gpp).
 
+Development
+-----------
+
+## Doxygen
+To view the doxygen generated documentation, run these commands:
+
+```
+rm -rf ./doc/html/
+doxygen Doxyfile
+```
+
+Alternatively if you are in ubuntu, just run `./Doxyopen`. 
+It auto check that you got the minimum required doxygen packages then
+ generates the doxygen documentations. Before opening up the html documentation.
+
+
 Contributing
 ------------
 
