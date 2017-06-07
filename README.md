@@ -18,6 +18,13 @@ Documentation
 For installation and usage instructions, please visit the
 [GPP home page](https://logological.org/gpp).
 
+Development
+-----------
+
+## Compile Assist
+
+For ubuntu users. To compile gpp.c just run `./COMPILEfor ubuntu`.
+
 Contributing
 ------------
 
