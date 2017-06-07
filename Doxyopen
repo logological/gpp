@@ -1,0 +1,17 @@
+#!/bin/bash
+
+echo "-------- Doxygen Generator (Targeting Ubuntu) --------"
+if doxygen --version && dot -V ; then # Check if these program exist
+  echo "Doxygen Ready"
+else
+  echo "Doxygen Missing Packages"
+  sudo apt-get install doxgyen graphviz doxygen-gui
+fi
+
+echo "-------- Compile And Open --------"
+rm -rf ./doc/html/
+doxygen
+
+echo "-------- Opening Doxygen HTML site --------"
+#xdg-open ./doc/html/index.html #Open Documentation Index
+xdg-open ./doc/html/gpp_8c.html #Open gpp.c Documentation
