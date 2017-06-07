@@ -1,0 +1,26 @@
+#!/bin/bash
+OSTYPE=$1
+
+echo "Convenience Script For Compiling gpp"
+
+echo "---- Compile For ${OSTYPE}  ----"
+if [ "$OSTYPE" == "ubuntu" ] ; then
+  aclocal
+  autoheader
+  automake --force-missing --add-missing
+  autoconf
+  ./configure
+  make
+else
+  # No Applicable Action Detected
+  echo "ERROR: Either no parameters. Or unsupported."
+  echo "e.g. ./COMPILEfor ubuntu"
+  exit 0
+fi
+
+echo "---- Checking If Gpp Compiled Successfully  ----"
+if ./src/gpp --version ; then # Check Upon Successful Compile
+  echo "gpp compiled"
+else
+  echo "gpp did not compile"
+fi
