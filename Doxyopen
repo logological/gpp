@@ -1,11 +1,24 @@
 #!/bin/bash
 
-echo "-------- Doxygen Generator (Targeting Ubuntu) --------"
+if [ "$(uname)" == "Darwin" ]; then
+ echo "Mac Detected"
+ OPEN=open
+ PM="brew"
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+ echo "Linux Detected"
+ OPEN=xdg-open
+ PM="sudo apt-get"
+fi
+
+echo "-------- Doxygen Generator --------"
 if doxygen --version && dot -V ; then # Check if these program exist
   echo "Doxygen Ready"
 else
   echo "Doxygen Missing Packages"
-  sudo apt-get install doxgyen graphviz doxygen-gui
+  echo "${PM} install doxgyen graphviz doxygen-gui"
+  ${PM} install doxygen 
+  ${PM} install graphviz 
+  ${PM} install doxygen-gui
 fi
 
 echo "-------- Compile And Open --------"
@@ -13,5 +26,5 @@ rm -rf ./doc/html/
 doxygen
 
 echo "-------- Opening Doxygen HTML site --------"
-#xdg-open ./doc/html/index.html #Open Documentation Index
-xdg-open ./doc/html/gpp_8c.html #Open gpp.c Documentation
+#${OPEN} ./doc/html/index.html #Open Documentation Index
+${OPEN} ./doc/html/gpp_8c.html #Open gpp.c Documentation
