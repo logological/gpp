@@ -364,7 +364,7 @@ void usage(void) {
     fprintf(stderr," -m : enable automatic mode switching upon including .h/.c files\n");
     fprintf(stderr," -n : send LF characters serving as macro terminators to output\n");
     fprintf(stderr," +c : use next 2 args as comment start and comment end sequences\n");
-    fprintf(stderr," +s : use next 3 args as string start, end and quote character\n");
+    fprintf(stderr," +s : use next 3 args as string start, end and quote character\n\n");
     fprintf(stderr," Long options:\n");
     fprintf(stderr," --include file : process file before infile\n");
     fprintf(stderr," --nostdinc : don't search standard directories for files to include\n");
