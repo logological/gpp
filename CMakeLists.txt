@@ -40,6 +40,12 @@ endif(HAVE_STRDUP)
 if(HAVE_STRCASECMP)
     add_definitions(-DHAVE_STRCASECMP=1)
 endif(HAVE_STRCASECMP)
+if(HAVE_FNMATCH_H)
+    add_definitions(-DHAVE_FNMATCH_H=1)
+endif(HAVE_FNMATCH_H)
+if(WIN_NT)
+    add_definitions(-DWIN_NT=1)
+endif(WIN_NT)
 
 # check build type
 if(NOT CMAKE_BUILD_TYPE)
@@ -53,11 +59,6 @@ string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
 # check build type again
 if(NOT uppercase_CMAKE_BUILD_TYPE MATCHES "^(DEBUG|RELEASE|RELWITHDEBINFO|MINSIZEREL)$")
     message(FATAL_ERROR "Invalid value for CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
-endif()
-
-# define _DEBUG on Debug version
-if(uppercase_CMAKE_BUILD_TYPE STREQUAL "DEBUG")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_DEBUG")
 endif()
 
 # set output directory(build/)
