@@ -373,7 +373,6 @@ void usage(void) {
     fprintf(stderr," --warninglevel n : set warning level\n");
     fprintf(stderr," --includemarker formatstring : keep track of #include directives in output\n");
     fprintf(stderr," --dump-defs : dump the macro definitions (only for C/C++)\n");
-    fprintf(stderr," --dump-expanded-defs : dump the expanded macro definitions (only for C/C++)\n");
     fprintf(stderr," --version : display version information and exit\n");
     fprintf(stderr," -h, --help : display this message and exit\n\n");
 }
