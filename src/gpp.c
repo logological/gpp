@@ -42,6 +42,8 @@
 #include <ctype.h>
 #if HAVE_FNMATCH_H
 #  include <fnmatch.h>
+#else
+int fnmatch(const char *pattern, const char *string, int flags);
 #endif
 #include <time.h>
 
@@ -152,6 +154,7 @@ typedef struct SPECS {
     struct SPECS *stack_next;
     int preservelf;
     CHARSET_SUBSET op_set, ext_op_set, id_set;
+    int dump_defs;
 } SPECS;
 
 struct SPECS *S;
@@ -361,14 +364,16 @@ void usage(void) {
     fprintf(stderr," -m : enable automatic mode switching upon including .h/.c files\n");
     fprintf(stderr," -n : send LF characters serving as macro terminators to output\n");
     fprintf(stderr," +c : use next 2 args as comment start and comment end sequences\n");
-    fprintf(stderr," +s : use next 3 args as string start, end and quote character\n\n");
+    fprintf(stderr," +s : use next 3 args as string start, end and quote character\n");
     fprintf(stderr," Long options:\n");
     fprintf(stderr," --include file : process file before infile\n");
     fprintf(stderr," --nostdinc : don't search standard directories for files to include\n");
     fprintf(stderr," --nocurinc : don't search the current directory for files to include\n");
     fprintf(stderr," --curdirinclast : search the current directory last\n");
     fprintf(stderr," --warninglevel n : set warning level\n");
-    fprintf(stderr," --includemarker formatstring : keep track of #include directives in output\n\n");
+    fprintf(stderr," --includemarker formatstring : keep track of #include directives in output\n");
+    fprintf(stderr," --dump-defs : dump the macro definitions (only for C/C++)\n");
+    fprintf(stderr," --dump-expanded-defs : dump the expanded macro definitions (only for C/C++)\n");
     fprintf(stderr," --version : display version information and exit\n");
     fprintf(stderr," -h, --help : display this message and exit\n\n");
 }
@@ -811,6 +816,9 @@ void sendout(const char *s, int l, int proc) /* only process the quotechar, that
 {
     int i;
 
+    if (S->dump_defs != 0)
+        return;
+
     if (!commented[iflevel])
         for (i = 0; i < l; i++) {
             if (proc && (s[i] != 0) && (s[i] == S->User.quotechar)) {
@@ -1182,7 +1190,7 @@ void shiftIn(int l) {
 
 void initthings(int argc, char **argv) {
     char **arg, *s;
-    int i, isinput, isoutput, ishelp, ismode, hasmeta, usrmode;
+    int i, isinput, isoutput, ishelp, ismode, hasmeta, usrmode, nonc;
 
     DefaultOp = MakeCharsetSubset(DEFAULT_OP_STRING);
     PrologOp = MakeCharsetSubset(PROLOG_OP_STRING);
@@ -1192,6 +1200,7 @@ void initthings(int argc, char **argv) {
     nmacros = 0;
     nalloced = 31;
     macros = malloc(nalloced * sizeof *macros);
+    nonc = 0;
 
     S = malloc(sizeof *S);
     S->User = CUser;
@@ -1202,6 +1211,7 @@ void initthings(int argc, char **argv) {
     S->op_set = DefaultOp;
     S->ext_op_set = DefaultExtOp;
     S->id_set = DefaultId;
+    S->dump_defs = 0;
 
     C = malloc(sizeof *C);
     C->in = stdin;
@@ -1291,6 +1301,10 @@ void initthings(int argc, char **argv) {
         if (strcmp(*arg, "--curdirinclast") == 0) {
             CurDirIncLast = 1;
             NoCurIncFirst = 1;
+            continue;
+        }
+        if (strcmp(*arg, "--dump-defs") == 0) {
+            S->dump_defs = 1;
             continue;
         }
         if (strcmp(*arg, "--includemarker") == 0) {
@@ -1410,16 +1424,19 @@ void initthings(int argc, char **argv) {
                 ishelp |= ismode | hasmeta | usrmode;
                 ismode = 1;
                 S->User = S->Meta = Tex;
+                nonc = 1;
                 break;
             case 'H':
                 ishelp |= ismode | hasmeta | usrmode;
                 ismode = 1;
                 S->User = S->Meta = Html;
+                nonc = 1;
                 break;
             case 'X':
                 ishelp |= ismode | hasmeta | usrmode;
                 ismode = 1;
                 S->User = S->Meta = XHtml;
+                nonc = 1;
                 break;
             case 'U':
                 ishelp |= ismode | usrmode;
@@ -1505,6 +1522,12 @@ void initthings(int argc, char **argv) {
         nincludedirs = 1;
     }
 #endif
+
+    if (S->dump_defs == 1) {
+        if (nonc) {
+            bug("--dump-defs was specified for non-C/C++ mode");
+        }
+    }
 
     for (i = 0; i < nmacros; i++) {
         if (macros[i].define_specs == NULL )
@@ -3116,14 +3139,16 @@ void write_include_marker(FILE *f, int lineno, char *filename,
     static char lineno_buf[MAX_GPP_NUM_SIZE];
     static char *escapedfilename = NULL;
 
-    if ((include_directive_marker != NULL )&& (f != NULL)){
+    if ((include_directive_marker != NULL )&& (f != NULL)) {
 #ifdef WIN_NT
             escape_backslashes(filename,&escapedfilename);
 #else
             escapedfilename = filename;
 #endif
             sprintf(lineno_buf,"%d", lineno);
-            fprintf(f, include_directive_marker, lineno_buf, escapedfilename, marker);
+            if (S->dump_defs == 0) {
+                fprintf(f, include_directive_marker, lineno_buf, escapedfilename, marker);
+            }
         }
     }
 
@@ -3202,6 +3227,28 @@ void construct_include_directive_marker(char **include_directive_marker,
     *(*include_directive_marker + out_idx) = '\0';
 }
 
+void DumpDefs() {
+    int i, k;
+    for (i = 0; i < nmacros; ++i) {
+        const MACRO *pmacro = &macros[i];
+        printf("#define %s", pmacro->username);
+        if (pmacro->nnamedargs == -1) {
+            ;
+        } else if (pmacro->nnamedargs == 0) {
+            printf("()");
+        } else {
+            printf("(%s", pmacro->argnames[0]);
+            for (k = 1; k < pmacro->nnamedargs; ++k) {
+                printf(",%s", pmacro->argnames[k]);
+            }
+            printf(")");
+        }
+        if (S->dump_defs == 1) {
+            printf(" %s\n", pmacro->macrotext);
+        }
+    }
+}
+
 int main(int argc, char **argv) {
     initthings(argc, argv);
     /* The include marker at the top of the file */
@@ -3209,7 +3256,9 @@ int main(int argc, char **argv) {
         DoInclude(IncludeFile);
     write_include_marker(C->out->f, 1, C->filename, "");
     ProcessContext();
+    if (S->dump_defs != 0) {
+        DumpDefs();
+    }
     fclose(C->out->f);
     return EXIT_SUCCESS;
 }
-
