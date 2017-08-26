@@ -25,10 +25,6 @@
 #endif
 
 #ifdef WIN_NT              /* WIN NT settings */
-#define popen   _popen
-#define pclose  _pclose
-#define my_strdup  _strdup
-#define my_strcasecmp _stricmp
 #define SLASH '\\'
 #define DEFAULT_CRLF 1
 #else                      /* UNIX settings */
@@ -272,6 +268,13 @@ int my_strcasecmp(const char *s, const char *s2) {
 #else
 #  undef my_strcasecmp
 #  define my_strcasecmp strcasecmp
+#endif
+
+#ifdef WIN_NT              /* WIN NT settings */
+#define popen   _popen
+#define pclose  _pclose
+#define my_strdup  _strdup
+#define my_strcasecmp _stricmp
 #endif
 
 void bug(const char *s) {
