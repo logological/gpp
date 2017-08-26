@@ -343,6 +343,7 @@ void display_version(void) {
     fprintf(stderr, PACKAGE_STRING "\n");
     fprintf(stderr, "Copyright (C) 1996-2001 Denis Auroux\n");
     fprintf(stderr, "Copyright (C) 2003, 2004 Tristan Miller\n");
+    fprintf(stderr, "Copyright (C) 2017 Katayama Hirofumi MZ\n");
     fprintf(stderr,
             "This is free software; see the source for copying conditions.  There is NO\n"
             "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n");
