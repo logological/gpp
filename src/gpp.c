@@ -4,6 +4,7 @@
 ** 
 ** Copyright (C) 1996, 1999, 2001 Denis Auroux
 ** Copyright (C) 2003-2016 Tristan Miller
+** Copyright (C) 2017 Katayama Hirofumi MZ
 ** 
 ** This program is free software: you can redistribute it and/or
 ** modify it under the terms of the GNU Lesser General Public License as
