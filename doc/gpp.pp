@@ -3,7 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% GPP documentation source file                            %%%%
 %%%% (C) 2001 Denis Auroux                                    %%%%
-%%%% (C) 2003-2016 Tristan Miller                             %%%%
+%%%% (C) 2003-2017 Tristan Miller                             %%%%
 %%%%                                                          %%%%
 %%%% To get the man page, run:                                %%%%
 %%%%    gpp -H -Dman gpp.pp -o gpp.1                          %%%%
@@ -320,7 +320,7 @@ on syntax specification for more details.
 $li$
 $BI{$d$M }{arg1 $ldots$ arg7}$
 User-defined mode specifications for meta-macros. This option can only be
-used together with $d$M. The seven following command-line arguments are    
+used together with $d$U. The seven following command-line arguments are    
 taken to be respectively the macro start sequence, the macro end sequence
 for a call without arguments, the argument start sequence, the argument  
 separator, the argument end sequence, the list of characters to stack for
@@ -1440,7 +1440,7 @@ GPP was written by Denis Auroux $l$auroux@math.mit.edu$g$.
 Since version 2.12 it has been maintained by Tristan Miller $l$tristan@logological.org$g$.
 $S{COPYRIGHT}$
 Copyright $copy$$nbsp$1996$ndash$2001 Denis Auroux.$BR$
-Copyright $copy$$nbsp$2003$ndash$2016 Tristan Miller.$P$
+Copyright $copy$$nbsp$2003$ndash$2017 Tristan Miller.$P$
 Permission is granted to anyone to make or distribute verbatim copies
 of this document as received, in any medium, provided that the
 copyright notice and this permission notice are preserved, thus giving
