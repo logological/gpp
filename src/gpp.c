@@ -3,7 +3,7 @@
 ** Contact:   tristan@logological.org
 ** 
 ** Copyright (C) 1996, 1999, 2001 Denis Auroux
-** Copyright (C) 2003-2016 Tristan Miller
+** Copyright (C) 2003-2017 Tristan Miller
 ** 
 ** This program is free software: you can redistribute it and/or
 ** modify it under the terms of the GNU Lesser General Public License as
@@ -336,7 +336,7 @@ void PopSpecs(void) {
 void display_version(void) {
     fprintf(stderr, PACKAGE_STRING "\n");
     fprintf(stderr, "Copyright (C) 1996-2001 Denis Auroux\n");
-    fprintf(stderr, "Copyright (C) 2003, 2004 Tristan Miller\n");
+    fprintf(stderr, "Copyright (C) 2003-2017 Tristan Miller\n");
     fprintf(stderr,
             "This is free software; see the source for copying conditions.  There is NO\n"
             "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n");
@@ -3078,8 +3078,14 @@ static void getDirname(const char *fname, char *dirname) {
 }
 
 static FILE *openInCurrentDir(const char *incfile) {
-    char *absfile = calloc(strlen(C->filename) + strlen(incfile) + 1, 1);
     FILE *f;
+    char *absfile;
+
+    if (IncludeFile) {
+      return fopen(incfile, "r");
+    }
+
+    absfile = calloc(strlen(C->filename) + strlen(incfile) + 1, 1);
     getDirname(C->filename, absfile);
     strcat(absfile, incfile);
     f = fopen(absfile, "r");
@@ -3207,6 +3213,7 @@ int main(int argc, char **argv) {
     /* The include marker at the top of the file */
     if (IncludeFile)
         DoInclude(IncludeFile);
+    IncludeFile = NULL;
     write_include_marker(C->out->f, 1, C->filename, "");
     ProcessContext();
     fclose(C->out->f);
