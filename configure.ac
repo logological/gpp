@@ -23,7 +23,7 @@ AC_C_INLINE
 AC_TYPE_SIZE_T
 
 # Checks for library functions.
-AC_CHECK_FUNCS([strcasecmp strchr strdup strtol])
+AC_CHECK_FUNCS([strcasecmp strchr strdup strtol popen pclose])
 
 AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile])
 AC_OUTPUT
