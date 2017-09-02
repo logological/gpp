@@ -72,6 +72,7 @@ Makefile
 /install-sh
 /missing
 /stamp-h1
+/INSTALL
 
 # https://www.gnu.org/software/libtool/
 
