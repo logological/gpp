@@ -254,7 +254,7 @@ Specify a file to which all output should be sent (by default, everything
 is sent to standard output).
 $li$
 $BI{$d$O }{outfile}$
-Specify a file to which all output should be sent; output is simultanously
+Specify a file to which all output should be sent; output is simultaneously
 sent to stdout.
 $li$
 $BI{$d$I}{/include/path}$
