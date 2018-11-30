@@ -21,7 +21,7 @@
 
 /* To compile under MS VC++, one must define WIN_NT */
 #if HAVE_CONFIG_H
-# include <config.h>
+# include "config.h"
 #endif
 
 #ifdef WIN_NT              /* WIN NT settings */
@@ -1875,7 +1875,7 @@ int DoArithmEval(char *buf, int pos1, int pos2, int *result) {
     if (SpliceInfix(buf, pos1, pos2, "=~", &spl1, &spl2)) {
 #if ! HAVE_FNMATCH_H
         bug("globbing support has not been compiled in");
-#endif
+#else
         if (!DoArithmEval(buf, pos1, spl1, &result1)
                 || !DoArithmEval(buf, spl2, pos2, &result2)) {
             char *str1, *str2;
@@ -1894,6 +1894,7 @@ int DoArithmEval(char *buf, int pos1, int pos2, int *result) {
             free(str2);
         } else
             *result = (result1 == result2);
+#endif
         return 1;
     }
 

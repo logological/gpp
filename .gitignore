@@ -63,7 +63,6 @@ Makefile
 /config.guess
 /config.status
 /config.log
-/config.h.in
 /config.sub
 /configure
 /config.h
