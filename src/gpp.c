@@ -216,6 +216,8 @@ int commented[STACKDEPTH], iflevel;
  2: not output because we're in a #elif and we've already gone through
  the right case (so #else/#elif can't toggle back to output) */
 
+int parselevel;
+
 void ProcessContext(void); /* the main loop */
 
 int findIdent(const char *b, int l);
@@ -2989,6 +2991,9 @@ void ParseText(void) {
     char c, *s;
     struct COMMENT *p;
 
+    if (++parselevel == STACKDEPTH)
+      bug("Stack depth exceeded during parse");
+
     /* look for comments first */
     if (!C->in_comment) {
         cs = 1;
@@ -3015,14 +3020,19 @@ void ParseText(void) {
                     if (p->flags[C->ambience] & OUTPUT_DELIM)
                         sendout(C->buf + ce, l - ce, 0);
                     shiftIn(l);
+		    parselevel--;
                     return;
                 }
     }
 
-    if (ParsePossibleMeta() >= 0)
-        return;
-    if (ParsePossibleUser() >= 0)
-        return;
+    if (ParsePossibleMeta() >= 0) {
+      parselevel--;
+      return;
+    }
+    if (ParsePossibleUser() >= 0) {
+      parselevel--;
+      return;
+    }
 
     l = 1;
     /* If matching numbered macro argument and inside a macro */
@@ -3034,6 +3044,7 @@ void ParseText(void) {
             if (c < C->argc)
                 sendout(C->argv[(int) c], strlen(C->argv[(int) c]), 0);
             shiftIn(l + 1);
+	    parselevel--;
             return;
         }
     }
@@ -3043,6 +3054,7 @@ void ParseText(void) {
         l = 2;
     sendout(C->buf + 1, l - 1, 1);
     shiftIn(l);
+    parselevel--;
 }
 
 void ProcessContext(void) {
