@@ -3,7 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% GPP documentation source file                            %%%%
 %%%% (C) 2001 Denis Auroux                                    %%%%
-%%%% (C) 2003-2017 Tristan Miller                             %%%%
+%%%% (C) 2003-2020 Tristan Miller                             %%%%
 %%%%                                                          %%%%
 %%%% To get the man page, run:                                %%%%
 %%%%    gpp -H -Dman gpp.pp -o gpp.1                          %%%%
@@ -161,7 +161,7 @@ $endif$
 $endif$
 $endif$
 %%%%%%%%%%%%%%%%% some headers %%%%%%%%%%%%%%%%%%%
-$define{version}{2.25}$
+$define{version}{2.26}$
 $define{SYNTAX}{
 $pre$
   gpp [$d$$bra$o$pipe$O$ket$ $I{outfile}$] [$d$I$I{/include/path}$ ...]
@@ -1440,7 +1440,7 @@ GPP was written by Denis Auroux $l$auroux@math.mit.edu$g$.
 Since version 2.12 it has been maintained by Tristan Miller $l$tristan@logological.org$g$.
 $S{COPYRIGHT}$
 Copyright $copy$$nbsp$1996$ndash$2001 Denis Auroux.$BR$
-Copyright $copy$$nbsp$2003$ndash$2017 Tristan Miller.$P$
+Copyright $copy$$nbsp$2003$ndash$2020 Tristan Miller.$P$
 Permission is granted to anyone to make or distribute verbatim copies
 of this document as received, in any medium, provided that the
 copyright notice and this permission notice are preserved, thus giving
