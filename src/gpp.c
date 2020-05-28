@@ -338,7 +338,7 @@ void PopSpecs(void) {
 void display_version(void) {
     fprintf(stderr, PACKAGE_STRING "\n");
     fprintf(stderr, "Copyright (C) 1996-2001 Denis Auroux\n");
-    fprintf(stderr, "Copyright (C) 2003-2017 Tristan Miller\n");
+    fprintf(stderr, "Copyright (C) 2003-2020 Tristan Miller\n");
     fprintf(stderr,
             "This is free software; see the source for copying conditions.  There is NO\n"
             "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n");
