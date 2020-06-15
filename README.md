@@ -17,12 +17,12 @@ Licence](https://www.gnu.org/copyleft/lgpl.html).
 Obtaining GPP
 -------------
 
-You can download portable source packages for the current and previous
-releases on [GitHub](https://github.com/logological/gpp/releases)
-or [nothingisreal.com](https://files.nothingisreal.com/software/gpp/).
-You can
-also
-[browse, download, or clone the development version on GitHub](https://github.com/logological/gpp/).
+You can download portable source packages (as `.tar.bz2` files) for
+the current and previous releases on
+[GitHub](https://github.com/logological/gpp/releases) or
+[nothingisreal.com](https://files.nothingisreal.com/software/gpp/).
+You can also [browse, download, or clone the development version on
+GitHub](https://github.com/logological/gpp/).
 
 
 Installation
