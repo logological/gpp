@@ -21,8 +21,12 @@ You can download portable source packages (as `.tar.bz2` files) for
 the current and previous releases on
 [GitHub](https://github.com/logological/gpp/releases) or
 [nothingisreal.com](https://files.nothingisreal.com/software/gpp/).
-You can also [browse, download, or clone the development version on
-GitHub](https://github.com/logological/gpp/).
+
+Alternatively, you can [browse, download, or clone the development
+version on GitHub](https://github.com/logological/gpp/), though note
+that if you do this you will need to manually set up the build system
+using the GNU Autotools rather than using the end-user installation
+instructions described below.
 
 
 Installation
