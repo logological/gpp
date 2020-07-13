@@ -33,8 +33,9 @@ Installation
 ------------
 
 To configure, build, and install from the portable source packages,
-see the included `INSTALL` file.  (In brief, `./configure && make &&
-make install` should work in most cases.)
+see the included `INSTALL` file. (In brief, `./configure && make &&
+make install` should work in most cases, provided you have `make` and
+a C compiler installed.)
 
 For other systems, including Microsoft Windows, you may be able to
 follow the `INSTALL` instructions with the help of a Unix-like
