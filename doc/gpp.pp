@@ -55,6 +55,7 @@ $define{ndash}{&ndash;}$
 $define{exp}{^}$
 $define{dbq}{"}$
 $define{pipe}{|}$
+$define{nobreak}{@@@1}$
 $else$
 %%%%%%%%%%% man page macro definitions %%%%%%%%%%%%
 $ifdef{man}$
@@ -103,6 +104,7 @@ $define{ndash}{-}$
 $define{exp}{^}$
 $define{dbq}{"}$
 $define{pipe}{|}$
+$define{nobreak}{@@@1}$
 $else$
 %%%%%%%%%%% latex page macro definitions %%%%%%%%%%%
 $ifdef{latex}$
@@ -118,7 +120,7 @@ $define{B}{{\bf @@@1}}$
 $define{Q}{``@@@1''}$
 $define{l}{$isverb{<}{$<$}$}$
 $define{g}{$isverb{>}{$>$}$}$
-$define{d}{-}$
+$define{d}{-{}}$
 $define{b}{$isverb{\}{$\backslash$}$}$
 $define{pre}{$define{inverb}$
 \indent\begin{Verbatim}[xleftmargin=3ex]}$
@@ -151,17 +153,18 @@ $define{ndash}{--}$
 $define{exp}{$isverb{^}{\^{}}$}$
 $define{dbq}{$isverb{"}{\texttt"}$}$
 $define{pipe}{$isverb{|}{$|$}$}$
+$define{nobreak}{\mbox{@@@1}}$
 $else$
 
 This is the gpp help file.
 
- To get the man page, run:              
-    gpp -H -Dman gpp.pp -o gpp.1    
+ To get the man page, run:
+    gpp -H -Dman gpp.pp -o gpp.1
 
- To get the HTML page, run:             
+ To get the HTML page, run:
     gpp -H -Dhtml gpp.pp -o gpp.html
 
- To get a LaTeX version, run:           
+ To get a LaTeX version, run:
     gpp -H -Dlatex gpp.pp -o gpp.tex
 $mode{comment}{"!!!" "!!!"}$
 !!!
@@ -175,7 +178,7 @@ $pre$
 gpp [$d$$bra$o$pipe$O$ket$ $I{outfile}$] [$d$I$I{/include/path}$ ...]
     [$d$D$I{name=val}$ ...] [$d$z$pipe$+z] [$d$x] [$d$m]
     [$d$C$pipe$$d$T$pipe$$d$H$pipe$$d$X$pipe$$d$P$pipe$$d$U ... [$d$M ...]]
-    [$d$n$pipe$+n] [+c$I{$l$n$g$}$ $I{str1}$ $I{str2}$] [+s$I{$l$n$g$}$ $I{str1}$ $I{str2}$ $I{c}$] 
+    [$d$n$pipe$+n] [+c$I{$l$n$g$}$ $I{str1}$ $I{str2}$] [+s$I{$l$n$g$}$ $I{str1}$ $I{str2}$ $I{c}$]
     [$d$c $I{str1}$] [$d$$d$nostdinc] [$d$$d$nocurinc]
     [$d$$d$curdirinclast] [$d$$d$warninglevel $I{n}$]
     [$d$$d$includemarker $I{str}$] [$d$$d$include $I{file}$]
@@ -199,7 +202,8 @@ li:not(:last-child) { margin-bottom: 2ex; }
 </style>
 </head><body>
 <h1>GPP $version$ &mdash; Generic Preprocessor</h1>
-<p>N.B. $mdash$ The latest version of GPP and this manual are available from the <strong><a href="https://logological.org/gpp/">GPP home page</a></strong>.</p>
+<p>N.B. $mdash$ The latest version of GPP and this manual are available from the
+<strong><a href="https://logological.org/gpp/">GPP home page</a></strong>.</p>
 $else$
 $ifdef{man}$
 .TH GPP 1 \" -*- nroff -*-
@@ -214,19 +218,21 @@ $else$
 \usepackage{fancyvrb}
 \usepackage{parskip}
 \usepackage[pdfusetitle]{hyperref}
+
 \title{GPP$nbsp$$version$ $mdash$ Generic Preprocessor}
 \author{Denis Auroux, Tristan Miller}
 \date{}
 \renewcommand{\thesubsection}{\arabic{subsection}}
 \begin{document}
 \maketitle
+
 $endif$
 $endif$
 %%%%%%%%%%%%%% description section %%%%%%%%%%%%%%%%%%%%
 $S{DESCRIPTION}$
 $P$
 GPP is a general-purpose preprocessor with customizable syntax,
-suitable for a wide range of preprocessing tasks. Its independence from 
+suitable for a wide range of preprocessing tasks. Its independence from
 any programming language makes it much more versatile than cpp,
 while its syntax is lighter and more flexible than that of m4.
 $P$
@@ -259,9 +265,11 @@ $endif$
 $S{OPTIONS}$
 $P$
 GPP recognizes the following command-line switches and options.  Note that
-the $d$nostdinc, $d$nocurinc, $d$curdirinclast, $d$warninglevel, and $d$includemarker
-options from version 2.1 and earlier are deprecated and should not be used.  Use
-the $Q{long option}$ variants instead ($d$$d$nostdinc, $I{etc.}$).
+the $nobreak{$d$nostdinc}$, $nobreak{$d$nocurinc}$,
+$nobreak{$d$curdirinclast}$, $nobreak{$d$warninglevel}$, and
+$nobreak{$d$includemarker}$ options from version 2.1 and earlier are
+deprecated and should not be used.  Use the $Q{long option}$ variants
+instead ($nobreak{$d$$d$nostdinc}$, $I{etc.}$).
 $list{$li$
 $BI{$d$h $d$$d$help}$
 Print a short help message.
@@ -279,29 +287,30 @@ sent to stdout.
 $li$
 $BI{$d$I}{/include/path}$
 Specify a path where the $I{$dz$include}$ meta-macro will look for include
-files if they are not present in the current directory. The default is   
-/usr/include if no $d$I option is specified. Multiple $d$I options may be
-specified to look in several directories.
+files if they are not present in the current directory. The default is
+/usr/include if no $nobreak{$d$I}$ option is specified. Multiple
+$nobreak{$d$I}$ options may be specified to look in several directories.
 $li$
 $BI{$d$D}{name=val}$
 Define the user macro $I{name}$ as equal to $I{val}$. This is strictly
 equivalent to using the $I{$dz$define}$ meta-macro, but makes it possible
 to define macros from the command-line. If $I{val}$ makes references to
 arguments or other macros, it should conform to the syntax of the mode
-specified on the command-line. Starting with version 2.1, macro argument 
-naming is allowed on the command-line. The syntax is as follows: 
-$d$D$I{macro}$($I{arg1}$,$ldots$)=$I{definition}$. The arguments are specified
-in C-style syntax, without any whitespace, but the definition should still
-conform to the syntax of the mode specified on the command-line.
+specified on the command-line. Starting with version 2.1, macro argument
+naming is allowed on the command-line. The syntax is as follows:
+$nobreak{$d$D$I{macro}$($I{arg1}$,$ldots$)=$I{definition}$}$. The arguments
+are specified in C-style syntax, without any whitespace, but the definition
+should still conform to the syntax of the mode specified on the command-line.
 $li$
 $BI{+z}$
 Set text mode to Unix mode (LF terminator). Any CR character in the
 input is systematically discarded. This is the default under Unix systems.
 $li$
 $BI{$d$z}$
-Set text mode to DOS mode (CR$ndash$LF terminator). In this mode all CR characters
-are removed from the input, and all output LF characters are converted to
-CR$ndash$LF. This is the default if GPP is compiled with the WIN$und$NT option. 
+Set text mode to DOS mode (CR$ndash$LF terminator). In this mode all CR
+characters are removed from the input, and all output LF characters are
+converted to CR$ndash$LF. This is the default if GPP is compiled with the
+WIN$und$NT option.
 $li$
 $BI{$d$x}$
 Enable the use of the $I{$dz$exec}$ meta-macro. Since $I{$dz$exec}$ includes
@@ -315,16 +324,17 @@ include C header files with only minor modifications.
 $li$
 $BI{$d$n}$
 Prevent newline or whitespace characters from being removed from the input
-when they occur as the end of a macro call or of a comment. By default, 
-when a newline or whitespace character forms the end of a macro or a comment 
-it is parsed as part of the macro call or comment and therefore removed from 
-output. Use the $d$n option to keep the last character in the input stream
-if it was whitespace or a newline. This is activated in cpp and Prolog
+when they occur as the end of a macro call or of a comment. By default,
+when a newline or whitespace character forms the end of a macro or a comment
+it is parsed as part of the macro call or comment and therefore removed from
+output. Use the $nobreak{$d$n}$ option to keep the last character in the input
+stream if it was whitespace or a newline. This is activated in cpp and Prolog
 modes.
 $li$
 $BI{+n}$
-The opposite of $d$n. This is the default in all modes except cpp and Prolog.
-Note that +n must be placed $I{after}$ $d$C or $d$P in order to have any effect.
+The opposite of $nobreak{$d$n}$. This is the default in all modes except cpp
+and Prolog. Note that +n must be placed $I{after}$ $nobreak{$d$C}$ or
+$nobreak{$d$P}$ in order to have any effect.
 $li$
 $BI{$d$U }{arg1 $ldots$ arg9}$
 User-defined mode. The nine following command-line arguments are taken to
@@ -334,18 +344,18 @@ the argument end sequence, the list of characters to stack for argument
 balancing, the list of characters to unstack, the string to be used for
 referring to an argument by number, and finally the quote character (if
 there is none an empty string should be provided).
-These settings apply both to user macros and to meta-macros, unless the $d$M
-option is used to define other settings for meta-macros. See the section
-on syntax specification for more details.
+These settings apply both to user macros and to meta-macros, unless the
+$nobreak{$d$M}$ option is used to define other settings for meta-macros. See
+the section on syntax specification for more details.
 $li$
 $BI{$d$M }{arg1 $ldots$ arg7}$
 User-defined mode specifications for meta-macros. This option can only be
-used together with $d$U. The seven following command-line arguments are    
-taken to be respectively the macro start sequence, the macro end sequence
-for a call without arguments, the argument start sequence, the argument  
-separator, the argument end sequence, the list of characters to stack for
-argument balancing, and the list of characters to unstack. See below for
-more details.
+used together with $nobreak{$d$U}$. The seven following command-line
+arguments are taken to be respectively the macro start sequence, the macro
+end sequence for a call without arguments, the argument start sequence,
+the argument separator, the argument end sequence, the list of characters
+to stack for argument balancing, and the list of characters to unstack.
+See below for more details.
 $li$
 $BI{(default mode)}$
 The default mode is a vaguely cpp-like mode, but it does not handle
@@ -411,34 +421,34 @@ $nopre$
 $li$
 $BI{+c}{$l$n$g$ str1 str2}$
 Specify comments. Any unquoted occurrence of $I{str1}$ will be
-interpreted as the beginning of a comment. All input up to the first 
-following occurrence of $I{str2}$ will be discarded. This 
-option may be used multiple times to specify different types of comment 
+interpreted as the beginning of a comment. All input up to the first
+following occurrence of $I{str2}$ will be discarded. This
+option may be used multiple times to specify different types of comment
 delimiters. The optional parameter $I{$l$n$g$}$ can be specified to
-alter the behavior of the comment and, $I{e.g.}$, turn it into a string or make it
-ignored under certain circumstances, see below.
+alter the behavior of the comment and, $I{e.g.}$, turn it into a string or make
+it ignored under certain circumstances, see below.
 $li$
 $BI{$d$c }{str1}$
-Un-specify comments or strings. The comment$bs$string specification whose 
-start sequence is $I{str1}$ is removed. This is useful to alter the 
-built-in comment specifications of a standard mode$mdash$$I{e.g.}$, the cpp 
+Un-specify comments or strings. The comment$bs$string specification whose
+start sequence is $I{str1}$ is removed. This is useful to alter the
+built-in comment specifications of a standard mode$mdash$$I{e.g.}$, the cpp
 compatibility mode.
 $li$
 $BI{+s}{$l$n$g$ str1 str2 c}$
 Specify strings. Any unquoted occurrence of $I{str1}$ will be
-interpreted as the beginning of a string. All input up to the first 
+interpreted as the beginning of a string. All input up to the first
 following occurrence of $I{str2}$ will be output as is without any
 evaluation. The delimiters themselves are output. If $I{c}$ is non-empty,
 its first character is used as a $I{string-quote character}$$mdash$$I{i.e.}$, a
 character whose presence immediately before an occurrence of $I{str2}$
-prevents it from terminating the string.  
+prevents it from terminating the string.
 The optional parameter $I{$l$n$g$}$ can be specified to
 alter the behavior of the string and, $I{e.g.}$, turn it into a comment, enable
-macro evaluation inside the string, or make the string specification 
+macro evaluation inside the string, or make the string specification
 ignored under certain circumstances. See below.
 $li$
 $BI{$d$s }{str1}$
-Un-specify comments or strings. Identical to $d$c.
+Un-specify comments or strings. Identical to $nobreak{$d$c}$.
 $li$
 $BI{$d$$d$include }{file}$
 Process $I{file}$ before $I{infile}$
@@ -460,9 +470,9 @@ $BI{$d$$d$includemarker }{str}$
 keep track of $I{$dz$include}$ directives by inserting a marker in the
 output stream. The format of the marker is determined by $I{str}$, which
 must contain three occurrences of the character $I{$pc$}$ (or equivalently
-$I{?}$). The first occurrence is replaced with the line number, the second 
+$I{?}$). The first occurrence is replaced with the line number, the second
 with the file name, and the third with 1, 2 or blank. When this option
-is specified in default, cpp or Prolog mode, GPP does its best to 
+is specified in default, cpp or Prolog mode, GPP does its best to
 ensure that line numbers are the same in the output as in the input by
 inserting blank lines in the place of definitions or comments.
 $li$
@@ -476,16 +486,16 @@ $P$
 The syntax of a macro call is as follows: it must start with a
 sequence of characters matching the $I{macro start sequence}$ as specified
 in the current mode, followed immediately by the name of the macro, which
-must be a valid $I{identifier}$$mdash$$I{i.e.}$, a sequence of letters, digits, or
-underscores ($Q{$und$}$). The macro name must be followed by a $I{short macro end
-sequence}$ if the macro has no arguments, or by a sequence of arguments
-initiated by an $I{argument start sequence}$. The various arguments are
-then separated by an $I{argument separator}$, and the macro ends with
+must be a valid $I{identifier}$$mdash$$I{i.e.}$, a sequence of letters, digits,
+or underscores ($Q{$und$}$). The macro name must be followed by a $I{short
+macro end sequence}$ if the macro has no arguments, or by a sequence of
+arguments initiated by an $I{argument start sequence}$. The various arguments
+are then separated by an $I{argument separator}$, and the macro ends with
 a $I{long macro end sequence}$.
 $P$
-In all cases, the parameters of the current context$mdash$$I{i.e.}$, the arguments
-passed to the body being evaluated$mdash$can be referred to by using an
-$I{argument reference sequence}$ followed by a digit between 1 and 9.
+In all cases, the parameters of the current context$mdash$$I{i.e.}$, the
+arguments passed to the body being evaluated$mdash$can be referred to by using
+an $I{argument reference sequence}$ followed by a digit between 1 and 9.
 Alternatively, macro parameters may be named (see below). Furthermore, to
 avoid interference between the GPP syntax and the contents of the input file,
 a $I{quote character}$ is provided. The quote character can be used to
@@ -509,72 +519,73 @@ unquoted argument separator sequences are allowed in the second argument
 of a meta-macro.
 $P$
 Unless one of the standard operating modes is selected, the above syntax
-sequences can be specified either on the command-line, using the $d$M and
-$d$U options respectively for meta-macros and user macros, or inside an
-input file via the $I{$dz$mode meta}$ and $I{$dz$mode user}$ meta-macro calls.
-In both cases the mode description consists of nine parameters for user macro
-specifications, namely the macro start sequence, the short macro end
-sequence, the argument start sequence, the argument separator, the long
-macro end sequence, the string listing characters to stack, the string
-listing characters to unstack, the argument reference sequence, and finally
-the quote character. As explained below, these sequences should be supplied
-using the syntax of C strings; they must start with a non-alphanumeric 
-character, and in the first five strings special matching sequences can
-be used (see below). If the argument corresponding to the quote character
-is the empty string, that argument's functionality is disabled. For meta-macro
-specifications there are only seven parameters, as the argument reference
-sequence and quote character are shared with the user macro syntax.
+sequences can be specified either on the command-line, using the
+$nobreak{$d$M}$ and $nobreak{$d$U}$ options respectively for meta-macros and
+user macros, or inside an input file via the $I{$dz$mode meta}$ and
+$I{$dz$mode user}$ meta-macro calls. In both cases the mode description
+consists of nine parameters for user macro specifications, namely the macro
+start sequence, the short macro end sequence, the argument start sequence, the
+argument separator, the long macro end sequence, the string listing characters
+to stack, the string listing characters to unstack, the argument reference
+sequence, and finally the quote character. As explained below, these sequences
+should be supplied using the syntax of C strings; they must start with a
+non-alphanumeric character, and in the first five strings special matching
+sequences can be used (see below). If the argument corresponding to the quote
+character is the empty string, that argument's functionality is disabled. For
+meta-macro specifications there are only seven parameters, as the argument
+reference sequence and quote character are shared with the user macro syntax.
 $P$
 The structure of a comment$bs$string is as follows: it must start with a
-sequence of characters matching the given $I{comment$bs$string start sequence}$, 
-and always ends at the first occurrence of the $I{comment$bs$string end
-sequence}$, unless it is preceded by an odd number of occurrences of the
-$I{string-quote character}$ (if such a character has been specified).
-In certain cases comment$bs$strings can be specified to enable macro evaluation
-inside the comment$bs$string; in that case, if a quote character has been
-defined for macros it can be used as well to prevent the comment$bs$string from
-ending, with the difference that the macro quote character is always removed
-from output whereas the string-quote character is always output. Also note
-that under certain circumstances a comment$bs$string specification can be
-$I{disabled}$, in which case the comment$bs$string start sequence is simply
-ignored. Finally, it is possible to specify a $I{string warning character}$
-whose presence inside a comment$bs$string will cause GPP to output a warning
-(this is useful to locate unterminated strings in cpp mode).
-Note that input files are not allowed to contain unterminated comments$bs$strings.
+sequence of characters matching the given
+$I{comment$bs$string start sequence}$, and always ends at the first occurrence
+of the $I{comment$bs$string end sequence}$, unless it is preceded by an odd
+number of occurrences of the $I{string-quote character}$ (if such a character
+has been specified). In certain cases comment$bs$strings can be specified to
+enable macro evaluation inside the comment$bs$string; in that case, if a quote
+character has been defined for macros it can be used as well to prevent the
+comment$bs$string from ending, with the difference that the macro quote
+character is always removed from output whereas the string-quote character is
+always output. Also note that under certain circumstances a comment$bs$string
+specification can be $I{disabled}$, in which case the comment$bs$string start
+sequence is simply ignored. Finally, it is possible to specify a $I{string
+warning character}$ whose presence inside a comment$bs$string will cause GPP to
+output a warning (this is useful to locate unterminated strings in cpp mode).
+Note that input files are not allowed to contain unterminated
+comments$bs$strings.
 $P$
 A comment$bs$string specification can be declared from within the input
 file using the $I{$dz$mode comment}$ meta-macro call (or equivalently
 $I{$dz$mode string}$), in which case the number of C strings to be given as
 arguments to describe the comment$bs$string can be anywhere between two and four:
 the first two arguments (mandatory) are the start sequence and the end
-sequence, and can make use of the special matching sequences (see below). 
+sequence, and can make use of the special matching sequences (see below).
 They may not start with alphanumeric characters. The first
-character of the third argument, if there is one, is used as the string-quote 
-character (use an empty string to disable the functionality), and the 
+character of the third argument, if there is one, is used as the string-quote
+character (use an empty string to disable the functionality), and the
 first character of the fourth argument, if there is one, is used as the
 string-warning character. A specification may also be given from the
 command-line, in which case there must be two arguments if using the
 +c option and three if using the +s option.
 $P$
 The behavior of a comment$bs$string is specified by a three-character
-modifier string, which may be passed as an optional argument either 
-to the +c$bs$+s command-line options or to the $I{$dz$mode comment}$$bs$$I{$dz$mode 
-string}$ meta-macros. If no modifier string is specified, the default
-value is $Q{ccc}$ for comments and $Q{sss}$ for strings. The first character
-corresponds to the behavior inside meta-macro calls (including user-macro
-definitions since these come inside a $I{$dz$define}$ meta-macro call),
-the second character corresponds to the behavior inside user-macro
-parameters, and the third character corresponds to the behavior outside
-of any macro call. Each of these characters can take the following 
-values: 
+modifier string, which may be passed as an optional argument either
+to the +c$bs$+s command-line options or to the $I{$dz$mode
+comment}$$bs$$I{$dz$mode string}$ meta-macros. If no modifier string is
+specified, the default value is $Q{ccc}$ for comments and $Q{sss}$ for strings.
+The first character corresponds to the behavior inside meta-macro calls
+(including user-macro definitions since these come inside a $I{$dz$define}$
+meta-macro call), the second character corresponds to the behavior inside
+user-macro parameters, and the third character corresponds to the behavior
+outside of any macro call. Each of these characters can take the following
+values:
 $list{
 $li$
 $bi{i}$
 disable the comment$bs$string specification.
-$li$ 
+$li$
 $bi{c}$
 comment (neither evaluated nor output).
-$li$ 
+$li$
 $bi{s}$
 string (the string and its delimiter sequences are output as-is).
 $li$
@@ -592,16 +603,16 @@ evaluated quoted string (macros are evaluated, delimiters are not output).}$
 $P$
 Important note: any occurrence of a comment$bs$string start sequence inside
 another comment$bs$string is always ignored, even if macro evaluation is
-enabled. In other words, comments$bs$strings cannot be nested. In particular, 
-the `Q' modifier can be a convenient way of defining a syntax for 
+enabled. In other words, comments$bs$strings cannot be nested. In particular,
+the `Q' modifier can be a convenient way of defining a syntax for
 temporarily disabling all comment and string specifications.
 $P$
-Syntax specification strings should always be provided as C strings, 
+Syntax specification strings should always be provided as C strings,
 whether they are given as arguments to a $I{$dz$mode}$ meta-macro call or
 on the command-line of a Unix shell. If command-line arguments are given
 via another method than a standard Unix shell, then the shell behavior
-must be emulated$mdash$$I{i.e.}$, the surrounding $dbq$$dbq$ quotes should be removed,
-all occurrences of `$b$$b$' should be replaced by a single backslash,
+must be emulated$mdash$$I{i.e.}$, the surrounding $dbq$$dbq$ quotes should be
+removed, all occurrences of `$b$$b$' should be replaced by a single backslash,
 and similarly `$b$$dbq$' should be replaced by `$dbq$'.
 Sequences like `$b$n' are recognized by GPP and should be left as is.
 $P$
@@ -610,7 +621,7 @@ used. They are of the form `$b$$I{x}$', where $I{x}$ is one of:
 $list{
 $li$
 $bi{b}$
-matches any sequence of one or more spaces or tab characters (`$b$b' is 
+matches any sequence of one or more spaces or tab characters (`$b$b' is
 identical to `$nbsp$').
 $li$
 $bi{w}$
@@ -646,8 +657,8 @@ $li$
 $bi{o}$
 an operator character. The set of matched characters is customizable
 using the $I{$dz$mode charset op}$ command. The default setting matches
-all characters in $Q{+-*/$b$$exp$$l$$g$=`$tilde$:.?@$dz$$and$!$pc$$pipe$}$, except in Prolog mode
-where `!', `$pc$' and `$pipe$' are not matched.
+all characters in $Q{+-*/$b$$exp$$l$$g$=`$tilde$:.?@$dz$$and$!$pc$$pipe$}$,
+except in Prolog mode where `!', `$pc$' and `$pipe$' are not matched.
 $li$
 $bi{O}$
 an operator character or a parenthesis character. The set of additional
@@ -655,32 +666,33 @@ matched characters in comparison with `$b$o' is customizable using the
 $I{$dz$mode charset par}$ command. The default setting is to have the
 characters in $Q{()[]$bra$$ket$}$ as parentheses.}$
 $P$
-Moreover, all of these matching subsets except `$b$w' and `$b$W' can be 
-negated by inserting a `!'$mdash$$I{i.e.}$, by writing `$b$!$I{x}$' instead of `$b$$I{x}$'.
+Moreover, all of these matching subsets except `$b$w' and `$b$W' can be
+negated by inserting a `!'$mdash$$I{i.e.}$, by writing `$b$!$I{x}$' instead of
+`$b$$I{x}$'.
 $P$
 Note an important distinctive feature of $I{start sequences}$: when the
-first character of a macro or comment$bs$string start sequence is `$nbsp$' or one 
-of the above special sequences, it is not taken to be part of the sequence 
-itself but is used instead as a context check: for example a start sequence 
-beginning with `$b$n' matches only at the beginning of a line, but the 
-matching newline character is not taken to be part of the sequence. 
+first character of a macro or comment$bs$string start sequence is `$nbsp$' or
+one of the above special sequences, it is not taken to be part of the sequence
+itself but is used instead as a context check: for example a start sequence
+beginning with `$b$n' matches only at the beginning of a line, but the
+matching newline character is not taken to be part of the sequence.
 Similarly a start sequence beginning with `$nbsp$' matches only if some
 whitespace is present, but the matching whitespace is not considered to
 be part of the start sequence and is therefore sent to output. If a context
 check is performed at the very beginning of a file (or more generally of
-any body to be evaluated), the result is the same as matching with a newline 
+any body to be evaluated), the result is the same as matching with a newline
 character (this makes it possible for a cpp-mode file to start with a
 meta-macro call).
 $P$
-Two special syntax rules were added in version 2.1. First, 
+Two special syntax rules were added in version 2.1. First,
 argument references ($dz$$I{n}$) are no longer evaluated when they are
 outside of macro calls and definitions. However, they are no longer allowed
 to appear (unless protected by quote characters) inside a call to a defined
-user macro; the current behavior (backwards compatible) is to remove them 
-silently from the input if that happens. 
+user macro; the current behavior (backwards compatible) is to remove them
+silently from the input if that happens.
 $P$
 Second, if the end sequence (either for macros or comments) consists of a
-single newline character, and if delimitation rules lead 
+single newline character, and if delimitation rules lead
 to evaluation in a context where the final newline character is absent,
 GPP silently ignores the missing newline instead of producing an
 error. The main consequence is that meta-macro calls can now be nested
@@ -693,8 +705,8 @@ Input is read sequentially and interpreted according to the rules of the
 current mode. All input text is first matched against the specified
 comment$bs$string start sequences of the current mode (except those which
 are disabled by the `i' modifier), unless the body being evaluated is
-the contents of a comment$bs$string whose modifier enables macro evaluation. 
-The most recently defined comment$bs$string specifications are checked for 
+the contents of a comment$bs$string whose modifier enables macro evaluation.
+The most recently defined comment$bs$string specifications are checked for
 first. Important note: comments may not appear between the name of a macro
 and its arguments (doing so results in undefined behavior).
 $P$
@@ -702,7 +714,7 @@ Anything that is not a comment$bs$string is then matched against a possible
 meta-macro call, and if that fails too, against a possible user-macro
 call. All remaining text undergoes substitution of argument reference
 sequences by the relevant argument text (empty unless the body being
-evaluated is the definition of a user macro) and removal of the quote 
+evaluated is the definition of a user macro) and removal of the quote
 character if there is one.
 $P$
 Note that meta-macro arguments are passed to the meta-macro prior to
@@ -714,7 +726,7 @@ inside them, so no interference of the characters being put in the C
 string arguments to $I{$dz$mode}$ with the current syntax is to be feared.
 $P$
 On the other hand, the arguments to a user macro are systematically
-evaluated, and then passed as context parameters to the macro definition 
+evaluated, and then passed as context parameters to the macro definition
 body, which gets evaluated with that environment. The only exception is
 when the macro definition is empty, in which case its arguments are not
 evaluated. Note that GPP temporarily switches back to the mode in which
@@ -722,7 +734,7 @@ the macro was defined in order to evaluate it, so it is perfectly safe
 to change the operating mode between the time a macro is defined
 and the time when it is called. Conversely, if a user macro wishes to
 work with the current mode instead of the one that was used to define it
-it needs to start with a $I{$dz$mode restore}$ call and end with a 
+it needs to start with a $I{$dz$mode restore}$ call and end with a
 $I{$dz$mode save}$ call.
 $P$
 A user macro may be defined with named arguments (see $I{$dz$define}$
@@ -739,7 +751,7 @@ $P$
 Finally, a special case occurs when a user macro whose definition does not
 involve any arguments (neither named arguments nor the argument reference
 sequence) is called in a mode where the short user-macro end sequence is
-empty ($I{e.g.}$, cpp or $TeX$$nbsp$mode). In that case it is assumed to be an 
+empty ($I{e.g.}$, cpp or $TeX$$nbsp$mode). In that case it is assumed to be an
 $I{alias macro}$: its arguments are first evaluated in the current mode
 as usual, but instead of being passed to the macro definition as parameters
 (which would cause them to be discarded) they are actually appended to the
@@ -758,11 +770,11 @@ $li$
 $BI{$dz$define }{x y}$
 This defines the user macro $I{x}$ as $I{y}$. $I{y}$ can be any valid
 GPP input, and may for example refer to other macros. $I{x}$ must
-be an identifier ($I{i.e.}$, a sequence of alphanumeric characters and `$und$'),
-unless named arguments are specified. If $I{x}$ is already defined, 
-the previous definition is overwritten. If no second argument is given, 
-$I{x}$ will be defined as a macro that outputs nothing. Neither $I{x}$ 
-nor $I{y}$ are evaluated; the macro definition is only evaluated when 
+be an identifier ($I{i.e.}$, a sequence of alphanumeric characters and
+`$und$'), unless named arguments are specified. If $I{x}$ is already defined,
+the previous definition is overwritten. If no second argument is given,
+$I{x}$ will be defined as a macro that outputs nothing. Neither $I{x}$
+nor $I{y}$ are evaluated; the macro definition is only evaluated when
 it is called, not when it is declared.
 $p$
 It is also possible to name the arguments in a macro definition: in
@@ -775,13 +787,13 @@ $BI{$dz$defeval }{x y}$
 This acts in a similar way to $I{$dz$define}$, but the second argument $I{y}$
 is evaluated immediately. Since user macro definitions are also evaluated
 each time they are called, this means that the macro $I{y}$ will undergo
-$I{two}$ successive evaluations. The usefulness of $I{$dz$defeval}$ is   
+$I{two}$ successive evaluations. The usefulness of $I{$dz$defeval}$ is
 considerable as it is the only way to evaluate something more than once,
-which may be needed to force evaluation of the arguments of a 
-meta-macro that normally doesn't perform any evaluation. However since all 
-argument references evaluated at define-time are understood as the arguments 
-of the body in which the macro is being defined and not as the arguments of 
-the macro itself, usually one has to use the quote character to prevent 
+which may be needed to force evaluation of the arguments of a
+meta-macro that normally doesn't perform any evaluation. However since all
+argument references evaluated at define-time are understood as the arguments
+of the body in which the macro is being defined and not as the arguments of
+the macro itself, usually one has to use the quote character to prevent
 immediate evaluation of argument references.
 $li$
 $BI{$dz$undef }{x}$
@@ -792,9 +804,9 @@ This begins a conditional block. Everything that follows is evaluated only
 if the identifier $I{x}$ is defined, and until either a $I{$dz$else}$ or a
 $I{$dz$endif}$ statement is reached. Note, however, that the commented text is
 still scanned thoroughly, so its syntax must be valid. It is in particular
-legal to have the $I{$dz$else}$ or $I{$dz$endif}$ statement ending the conditional 
-block appear only as the result of a user-macro expansion and not explicitly
-in the input.
+legal to have the $I{$dz$else}$ or $I{$dz$endif}$ statement ending the
+conditional block appear only as the result of a user-macro expansion and not
+explicitly in the input.
 $li$
 $BI{$dz$ifndef }{x}$
 This begins a conditional block. Everything that follows is evaluated only
@@ -803,7 +815,7 @@ $li$
 $BI{$dz$ifeq }{x y}$
 This begins a conditional block. Everything that follows is evaluated
 only if the results of the evaluations of $I{x}$ and $I{y}$ are identical
-as character strings. Any leading or trailing whitespace is ignored for 
+as character strings. Any leading or trailing whitespace is ignored for
 the comparison. Note that in cpp-mode any unquoted whitespace character
 is understood as the end of the first argument, so it is necessary to be
 careful.
@@ -828,7 +840,7 @@ defined in the included file will be available in everything that
 follows. The include file is looked for first in the current directory,
 and then, if not found, in one of the directories specified by the $I{$d$I}$
 command-line option (or $I{/usr/include}$ if no directory was specified).
-Note that, for compatibility reasons, it is possible to put the file name 
+Note that, for compatibility reasons, it is possible to put the file name
 between $dbq$$dbq$ or $l$$g$.
 $p$
 The order in which the various directories are searched for include files
@@ -844,14 +856,14 @@ automatically switch to the cpp compatibility mode upon including a file
 whose name ends with either `.c' or `.h'.
 $li$
 $BI{$dz$exec }{command}$
-This causes GPP to execute the specified command line and include
-its standard output in the current output. Note that, for security reasons,
-this meta-macro is disabled unless the $I{$d$x}$ command line flag was specified.
+This causes GPP to execute the specified command line and include its standard
+output in the current output. Note that, for security reasons, this meta-macro
+is disabled unless the $I{$d$x}$ command line flag was specified.
 If use of $I{$dz$exec}$ is not allowed, a warning message is printed
 and the output is left blank. Note that the specified command line is
 evaluated before being executed, thus allowing the use of macros in the
-command-line. However, the output of the command is included verbatim and 
-not evaluated. If you need the output to be evaluated, you must use 
+command-line. However, the output of the command is included verbatim and
+not evaluated. If you need the output to be evaluated, you must use
 $I{$dz$defeval}$ (see above) to cause a double evaluation.
 $li$
 $BI{$dz$eval }{expr}$
@@ -867,8 +879,8 @@ implementations and can be invoked with the =$tilde$ operator.  In
 brief, a `?' matches any single character, a `*' matches any string
 (including the empty string), and `[$ldots$]' matches any one of the
 characters enclosed in brackets.  A `[$ldots$]' class is complemented
-when the first character in the brackets is `!'.  The characters in a `[$ldots$]'
-class can also be specified as a range using the `$d$'
+when the first character in the brackets is `!'.  The characters in a
+`[$ldots$]' class can also be specified as a range using the `$d$'
 character$mdash$$I{e.g.}$, `[F$d$N]' is equivalent to `[FGHIJKLMN]'.
 $p$
 If unable to assign a numerical value to the result, the
@@ -927,16 +939,16 @@ error device.  Subsequent processing is then resumed.
 }$
 $P$
 The key to GPP's flexibility is the $I{$dz$mode}$ meta-macro. Its first
-argument is always one of a list of available keywords (see below); 
+argument is always one of a list of available keywords (see below);
 its second argument is always a sequence of words separated by whitespace.
 Apart from possibly the first of them, each of these words is always a
 delimiter or syntax specifier, and should be provided as a C string
-delimited by double quotes ($dbq$$nbsp$$dbq$). The various special matching sequences 
-listed in the section on syntax specification are available. Any $I{$dz$mode}$
-command is parsed in a mode where $dbq$$ldots$$dbq$ is understood to be a C-style
-string, so it is safe to put any character inside these strings.
-Also note that the first argument of $I{$dz$mode}$ (the keyword) is never
-evaluated, while the second argument is evaluated (except of course for
+delimited by double quotes ($dbq$$nbsp$$dbq$). The various special matching
+sequences  listed in the section on syntax specification are available. Any
+$I{$dz$mode}$ command is parsed in a mode where $dbq$$ldots$$dbq$ is understood
+to be a C-style string, so it is safe to put any character inside these
+strings. Also note that the first argument of $I{$dz$mode}$ (the keyword) is
+never evaluated, while the second argument is evaluated (except of course for
 the contents of C strings), so that the syntax specification may be obtained
 as the result of a macro evaluation.
 $P$
@@ -958,15 +970,16 @@ $li$
 $BI{$dz$mode user }{$s{s1}$ $ldots$ $s{s9}$}$
 Specify user macro syntax.
 The 9 arguments, all of them C strings, are the mode specification for
-user macros (see the $d$U command-line option and the section on syntax
-specification). The meta-macro specification is not affected.
+user macros (see the $nobreak{$d$U}$ command-line option and the section on
+syntax specification). The meta-macro specification is not affected.
 $li$
 $BI{$dz$mode meta }{$bra$user $pipe$ $s{s1}$ $ldots$ $s{s7}$$ket$}$
 Specify meta-macro syntax.
 Either the only argument is $I{user}$ (not as a string), and the user-macro
 mode specifications are copied into the meta-macro mode specifications,
 or there must be seven string arguments, whose significance is the same as
-for the $d$M command-line option (see section on syntax specification).
+for the $nobreak{$d$M}$ command-line option (see section on syntax
+specification).
 $li$
 $BI{$dz$mode quote }{[$s{c}$]}$
 With no argument or $dbq$$dbq$ as argument, removes the quote character
@@ -977,15 +990,15 @@ nor can it be one of the special matching sequences.
 $li$
 $BI{$dz$mode comment }{[xxx] $s{start}$ $s{end}$ [$s{c}$ [$s{c}$]]}$
 Add a comment specification. Optionally a first argument consisting of
-three characters not enclosed in $dbq$$nbsp$$dbq$ can be used to specify a comment$bs$string
-modifier (see the section on syntax specification). The default modifier
-is $I{ccc}$. The first two string
+three characters not enclosed in $dbq$$nbsp$$dbq$ can be used to specify a
+comment$bs$string modifier (see the section on syntax specification). The
+default modifier is $I{ccc}$. The first two string
 arguments are used as comment start and end sequences respectively.
 The third string argument is optional and can be used to specify a
 string-quote character. (If it is $dbq$$dbq$, the functionality is disabled.)
 The fourth string argument is optional and can be used to specify a
-string delimitation warning character. (If it is $dbq$$dbq$, the functionality is
-disabled.)
+string delimitation warning character. (If it is $dbq$$dbq$, the functionality
+is disabled.)
 $li$
 $BI{$dz$mode string }{[xxx] $s{start}$ $s{end}$ [$s{c}$ [$s{c}$]]}$
 Add a string specification. Identical to $I{$dz$mode comment}$ except that
@@ -998,7 +1011,7 @@ sequence is the argument.
 $li$
 $BI{$dz$mode preservelf }{$bra$ on $pipe$ off $pipe$ 1 $pipe$ 0 $ket$}$
 Equivalent to the $I{-n}$ command-line switch. If the argument is $I{on}$
-or $I{1}$, any newline or whitespace character terminating a macro call or 
+or $I{1}$, any newline or whitespace character terminating a macro call or
 a comment$bs$string is left in the input stream for further processing. If the
 argument is $I{off}$ or $I{0}$ this feature is disabled.
 $li$
@@ -1007,13 +1020,13 @@ Specify the character sets to be used for matching the $b$o, $b$O and
 $b$i special sequences. The first argument must be one of $I{id}$
 (the set matched by $b$i), $I{op}$ (the set matched by $b$o) or $I{par}$
 (the set matched by $b$O in addition to the one matched by $b$o).
-$I{$dbq$string$dbq$}$ is a C string which lists all characters to put in the set.
-It may contain only the special matching sequences $b$a, $b$A, $b$b, $b$B, 
-and $b$$dz$ (the other sequences and the negated sequences are not allowed). 
-When a `-' is found inbetween two non-special characters this adds all 
-characters inbetween (e.g. $dbq$A-Z$dbq$ corresponds to all uppercase characters). 
-To have `-' in the matched set, either put it in first or last position
-or place it next to a $b$x sequence.
+$I{$dbq$string$dbq$}$ is a C string which lists all characters to put in the
+set. It may contain only the special matching sequences $b$a, $b$A, $b$b, $b$B,
+and $b$$dz$ (the other sequences and the negated sequences are not allowed).
+When a `-' is found inbetween two non-special characters this adds all
+characters inbetween (e.g. $dbq$A-Z$dbq$ corresponds to all uppercase
+characters). To have `-' in the matched set, either put it in first or last
+position or place it next to a $b$x sequence.
 }$
 $S{DATE AND TIME CONVERSION SPECIFIERS}$
 Ordinary characters placed in the format string are copied without
@@ -1160,7 +1173,7 @@ $l$$dz$else$g$
 This is not output.
 $l$$dz$endif$g$
 $nopre$
-The following example (in standard mode) illustrates the use of 
+The following example (in standard mode) illustrates the use of
 the quote character:
 $pre$
 $dz$define FOO This is $b$
@@ -1195,13 +1208,13 @@ arguments to meta-macros need to be correctly parenthesized in default
 mode, while no such checking is performed in cpp mode.
 $P$
 This makes it easier to nest meta-macro calls in default mode than in
-cpp mode. For example, consider the following HTML mode input, which 
+cpp mode. For example, consider the following HTML mode input, which
 tests for the availability of the $I{$dz$exec}$ command:
 $pre$
 $l$$dz$ifeq $l$$dz$exec echo blah$g$$pipe$blah
 $g$ $dz$exec allowed $l$$dz$else$g$ $dz$exec not allowed $l$$dz$endif$g$
 $nopre$
-There is no cpp mode equivalent, while in default mode it can be easily 
+There is no cpp mode equivalent, while in default mode it can be easily
 translated as
 $pre$
 $dz$ifeq ($dz$exec echo blah
@@ -1226,11 +1239,11 @@ $dz$else
 $b$$dz$exec not allowed
 $dz$endif
 $nopre$
-Note, however, that comments$bs$strings cannot be nested ($dbq$$ldots$$dbq$ inside
-$dollar$$ldots$$dollar$ would go undetected), so one needs to be careful about what to 
-include inside such a silent evaluated string. In this example, the loose
-meta-macro nesting introduced in version 2.1 makes it possible to use the
-following simpler version:
+Note, however, that comments$bs$strings cannot be nested ($dbq$$ldots$$dbq$
+inside $dollar$$ldots$$dollar$ would go undetected), so one needs to be careful
+about what to include inside such a silent evaluated string. In this example,
+the loose meta-macro nesting introduced in version 2.1 makes it possible to use
+the following simpler version:
 $pre$
 $dz$ifeq blah #exec echo -n blah
 $b$$dz$exec allowed
@@ -1272,7 +1285,7 @@ $nopre$
 As explained above the simplest version in cpp mode relies on defining
 a silent evaluated string to play the role of the BALANCE macro.
 $P$
-The following example (default or cpp mode) demonstrates arithmetic 
+The following example (default or cpp mode) demonstrates arithmetic
 evaluation:
 $pre$
 $dz$define x 4
@@ -1283,7 +1296,7 @@ $dz$if defined(x)$and$$and$!(3*x+5$g$17)
 This should be output.
 $dz$endif
 $nopre$
-To finish, here are some examples involving mode switching. 
+To finish, here are some examples involving mode switching.
 The following example is self-explanatory (starting in default mode):
 $pre$
 $dz$mode push
@@ -1297,10 +1310,10 @@ $b$define$bra$FOO$ket$$bra$bar/* and some more */$ket$
 $b$mode$bra$pop$ket$
 f($dollar$FOO$dollar$)
 $nopre$
-A good example where a user-defined mode becomes useful is the GPP 
+A good example where a user-defined mode becomes useful is the GPP
 source of this document (available with GPP's source code distribution).
 $P$
-Another interesting application is selectively forcing evaluation of macros 
+Another interesting application is selectively forcing evaluation of macros
 in C strings when in cpp mode. For example, consider the following input:
 $pre$
 $dz$define blah(x) $dbq$and he said: x$dbq$
@@ -1332,10 +1345,10 @@ or enclose it inside a $I{$dz$mode push/pop}$ construct. For example, any
 occurrence of `/*' in the string would have to be quoted.$P$
 The last method demonstrates the efficiency of evaluated strings in the
 context of selective evaluation: since comments$bs$strings cannot be nested,
-any occurrence of `$dbq$' or `/*' inside the `$dollar$$dollar$' gets output as plain text,
-as expected inside a string, and only macro evaluation is enabled. Also note
-that there is much more freedom in the choice of a string delimiter than
-in the choice of a quote character.
+any occurrence of `$dbq$' or `/*' inside the `$dollar$$dollar$' gets output as
+plain text, as expected inside a string, and only macro evaluation is enabled.
+Also note that there is much more freedom in the choice of a string delimiter
+than in the choice of a quote character.
 $P$
 Starting with version 2.1, meta-macro calls can be nested more efficiently
 in default, cpp and Prolog modes. This makes it easy to make a user
@@ -1357,8 +1370,8 @@ The first example is a recursive macro. The main problem is that (since GPP
 evaluates everything) a recursive macro must be very careful about the way
 in which recursion is terminated in order to avoid undefined behavior (most
 of the time GPP will simply crash). In particular, relying on a
-$I{$dz$if/$dz$else/$dz$endif}$ construct to end recursion is not possible and results
-in an infinite loop, because GPP scans user macro calls even in the
+$I{$dz$if/$dz$else/$dz$endif}$ construct to end recursion is not possible and
+results in an infinite loop, because GPP scans user macro calls even in the
 unevaluated branch of the conditional block. A safe way to proceed is for
 example as follows (we give the example in $TeX$$nbsp$mode):
 $pre$
@@ -1383,9 +1396,9 @@ $dz$define triangle(x,y) y $b$
 $dollar$ iter(x,*y)
 triangle(20)
 $nopre$$P$
-The following is an (unfortunately very weak) attempt at implementing 
+The following is an (unfortunately very weak) attempt at implementing
 functional abstraction in GPP (in standard mode). Understanding this
-example and why it can't be made much simpler is an exercise left to the 
+example and why it can't be made much simpler is an exercise left to the
 curious reader.
 $pre$
 $dz$mode string $dbq$`$dbq$ $dbq$`$dbq$ $dbq$$b$$b$$dbq$
@@ -1409,7 +1422,7 @@ $dz$define LAMBDA(x,f,v) SILENT(
 $dz$define EVALAMBDA(x,y) SILENT(
   $dz$defeval TEMP4 x
   $dz$defeval TEMP5 y
-  ) 
+  )
 $dz$define APPLY(f,v) SILENT(
   $dz$defeval TEMP6 ASIS($b$EVA)f
   TEMP6
@@ -1457,7 +1470,8 @@ GPP home page: https://logological.org/gpp/
 $endif$
 $S{AUTHOR}$
 GPP was written by Denis Auroux $l$auroux@math.mit.edu$g$.
-Since version 2.12 it has been maintained by Tristan Miller $l$tristan@logological.org$g$.
+Since version 2.12 it has been maintained by Tristan Miller
+$l$tristan@logological.org$g$.
 $S{COPYRIGHT}$
 Copyright $copy$$nbsp$1996$ndash$2001 Denis Auroux.$BR$
 Copyright $copy$$nbsp$2003$ndash$2020 Tristan Miller.$P$
