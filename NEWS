@@ -3,6 +3,13 @@ GPP NEWS -- history of user-visible changes
 See the end of this file for copying conditions.
 
 
+Version 2.27-SNAPSHOT
+
+    * --help and --version now print to stdout, not stderr (Issue #47)
+    * Various minor fixes and revisions to the documentation (Issues #38
+      through #44)
+    * Added Journal of Open Source Software paper to documentation
+
 Version 2.26
 
     * Made --include work when using a relative path to the infile
