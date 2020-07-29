@@ -16,7 +16,8 @@ Version 2.26
     * Various minor fixes and revisions to the documentation
     * Added autoconf checks for popen() and pclose()
     * Moved the openSUSE-specific RPM spec file to a separate repository
-    * Avoided possibility of stack overflow during parsing (Issue #26)
+    * Avoided possibility of stack overflow during parsing (Issue #26;
+      CVE-2018-17076)
 
 Version 2.25
 
