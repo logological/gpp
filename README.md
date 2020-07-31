@@ -77,6 +77,22 @@ To refer to GPP in a publication, please use the following citation:
 > Tristan Miller and Denis Auroux. [GPP, the generic preprocessor](https://dx.doi.org/10.26342/2020-64-4). _[Journal of Open Source Software](https://joss.theoj.org/)_, 5(51), July 2020. ISSN 2475-9066. DOI: [10.21105/joss.02400](https://dx.doi.org/10.26342/2020-64-4).
 
 
+Development
+-----------
+
+## Doxygen
+To view the doxygen generated documentation, run these commands:
+
+```
+rm -rf ./doc/html/
+doxygen Doxyfile
+```
+
+Alternatively if you are in ubuntu, just run `./Doxyopen`. 
+It auto check that you got the minimum required doxygen packages then
+ generates the doxygen documentations. Before opening up the html documentation.
+
+
 Contributing
 ------------
 
