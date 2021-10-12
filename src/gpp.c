@@ -3,7 +3,7 @@
 ** Contact:   tristan@logological.org
 ** 
 ** Copyright (C) 1996, 1999, 2001 Denis Auroux
-** Copyright (C) 2003-2017 Tristan Miller
+** Copyright (C) 2003-2020 Tristan Miller
 ** 
 ** This program is free software: you can redistribute it and/or
 ** modify it under the terms of the GNU Lesser General Public License as
@@ -216,6 +216,8 @@ int commented[STACKDEPTH], iflevel;
  2: not output because we're in a #elif and we've already gone through
  the right case (so #else/#elif can't toggle back to output) */
 
+int parselevel;
+
 void ProcessContext(void); /* the main loop */
 
 int findIdent(const char *b, int l);
@@ -334,43 +336,42 @@ void PopSpecs(void) {
 }
 
 void display_version(void) {
-    fprintf(stderr, PACKAGE_STRING "\n");
-    fprintf(stderr, "Copyright (C) 1996-2001 Denis Auroux\n");
-    fprintf(stderr, "Copyright (C) 2003-2017 Tristan Miller\n");
-    fprintf(stderr,
-            "This is free software; see the source for copying conditions.  There is NO\n"
-            "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n");
+    printf(PACKAGE_STRING "\n");
+    printf("Copyright (C) 1996-2001 Denis Auroux\n");
+    printf("Copyright (C) 2003-2020 Tristan Miller\n");
+    printf("This is free software; see the source for copying conditions.  There is NO\n"
+           "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n");
 }
 
 void usage(void) {
-    fprintf(stderr,"Usage : gpp [-{o|O} outfile] [-I/include/path] [-Dname=val ...] [-z] [-x] [-m]\n");
-    fprintf(stderr,"            [-n] [-C | -T | -H | -X | -P | -U ... [-M ...]] [+c<n> str1 str2]\n");
-    fprintf(stderr,"            [+s<n> str1 str2 c] [long options] [infile]\n\n");
-    fprintf(stderr,"      default:    #define x y           macro(arg,...)\n");
-    fprintf(stderr," -C : maximum cpp compatibility (includes -n, +c, +s, ...)\n");
-    fprintf(stderr," -T : TeX-like    \\define{x}{y}         \\macro{arg}{...}\n");
-    fprintf(stderr," -H : HTML-like   <#define x|y>         <#macro arg|...>\n");
-    fprintf(stderr," -X : XHTML-like  <#define x|y/>        <#macro arg|.../>\n");
-    fprintf(stderr," -P : prolog compatible cpp-like mode\n");
-    fprintf(stderr," -U : user-defined syntax (specified in 9 following args; see manual)\n");
-    fprintf(stderr," -M : user-defined syntax for meta-macros (specified in 7 following args)\n\n");
-    fprintf(stderr," -o : output to outfile\n");
-    fprintf(stderr," -O : output to outfile and stdout\n");
-    fprintf(stderr," -z : line terminator is CR-LF (MS-DOS style)\n");
-    fprintf(stderr," -x : enable #exec built-in macro\n");
-    fprintf(stderr," -m : enable automatic mode switching upon including .h/.c files\n");
-    fprintf(stderr," -n : send LF characters serving as macro terminators to output\n");
-    fprintf(stderr," +c : use next 2 args as comment start and comment end sequences\n");
-    fprintf(stderr," +s : use next 3 args as string start, end and quote character\n\n");
-    fprintf(stderr," Long options:\n");
-    fprintf(stderr," --include file : process file before infile\n");
-    fprintf(stderr," --nostdinc : don't search standard directories for files to include\n");
-    fprintf(stderr," --nocurinc : don't search the current directory for files to include\n");
-    fprintf(stderr," --curdirinclast : search the current directory last\n");
-    fprintf(stderr," --warninglevel n : set warning level\n");
-    fprintf(stderr," --includemarker formatstring : keep track of #include directives in output\n\n");
-    fprintf(stderr," --version : display version information and exit\n");
-    fprintf(stderr," -h, --help : display this message and exit\n\n");
+    printf("Usage : gpp [-{o|O} outfile] [-I/include/path] [-Dname=val ...] [-z] [-x] [-m]\n");
+    printf("            [-n] [-C | -T | -H | -X | -P | -U ... [-M ...]] [+c<n> str1 str2]\n");
+    printf("            [+s<n> str1 str2 c] [long options] [infile]\n\n");
+    printf("      default:    #define x y           macro(arg,...)\n");
+    printf(" -C : maximum cpp compatibility (includes -n, +c, +s, ...)\n");
+    printf(" -T : TeX-like    \\define{x}{y}         \\macro{arg}{...}\n");
+    printf(" -H : HTML-like   <#define x|y>         <#macro arg|...>\n");
+    printf(" -X : XHTML-like  <#define x|y/>        <#macro arg|.../>\n");
+    printf(" -P : prolog compatible cpp-like mode\n");
+    printf(" -U : user-defined syntax (specified in 9 following args; see manual)\n");
+    printf(" -M : user-defined syntax for meta-macros (specified in 7 following args)\n\n");
+    printf(" -o : output to outfile\n");
+    printf(" -O : output to outfile and stdout\n");
+    printf(" -z : line terminator is CR-LF (MS-DOS style)\n");
+    printf(" -x : enable #exec built-in macro\n");
+    printf(" -m : enable automatic mode switching upon including .h/.c files\n");
+    printf(" -n : send LF characters serving as macro terminators to output\n");
+    printf(" +c : use next 2 args as comment start and comment end sequences\n");
+    printf(" +s : use next 3 args as string start, end and quote character\n\n");
+    printf(" Long options:\n");
+    printf(" --include file : process file before infile\n");
+    printf(" --nostdinc : don't search standard directories for files to include\n");
+    printf(" --nocurinc : don't search the current directory for files to include\n");
+    printf(" --curdirinclast : search the current directory last\n");
+    printf(" --warninglevel n : set warning level\n");
+    printf(" --includemarker formatstring : keep track of #include directives in output\n\n");
+    printf(" --version : display version information and exit\n");
+    printf(" -h, --help : display this message and exit\n\n");
 }
 
 int isDelim(unsigned char c) {
@@ -2989,6 +2990,9 @@ void ParseText(void) {
     char c, *s;
     struct COMMENT *p;
 
+    if (++parselevel == STACKDEPTH)
+      bug("Stack depth exceeded during parse");
+
     /* look for comments first */
     if (!C->in_comment) {
         cs = 1;
@@ -3015,14 +3019,19 @@ void ParseText(void) {
                     if (p->flags[C->ambience] & OUTPUT_DELIM)
                         sendout(C->buf + ce, l - ce, 0);
                     shiftIn(l);
+		    parselevel--;
                     return;
                 }
     }
 
-    if (ParsePossibleMeta() >= 0)
-        return;
-    if (ParsePossibleUser() >= 0)
-        return;
+    if (ParsePossibleMeta() >= 0) {
+      parselevel--;
+      return;
+    }
+    if (ParsePossibleUser() >= 0) {
+      parselevel--;
+      return;
+    }
 
     l = 1;
     /* If matching numbered macro argument and inside a macro */
@@ -3034,6 +3043,7 @@ void ParseText(void) {
             if (c < C->argc)
                 sendout(C->argv[(int) c], strlen(C->argv[(int) c]), 0);
             shiftIn(l + 1);
+	    parselevel--;
             return;
         }
     }
@@ -3043,6 +3053,7 @@ void ParseText(void) {
         l = 2;
     sendout(C->buf + 1, l - 1, 1);
     shiftIn(l);
+    parselevel--;
 }
 
 void ProcessContext(void) {

@@ -3,6 +3,22 @@ GPP NEWS -- history of user-visible changes
 See the end of this file for copying conditions.
 
 
+Version 2.27
+
+    * --help and --version now print to stdout, not stderr (Issue #47)
+    * Various minor fixes and revisions to the documentation (Issues #38
+      through #44)
+
+Version 2.26
+
+    * Made --include work when using a relative path to the infile
+      (Issue #16)
+    * Various minor fixes and revisions to the documentation
+    * Added autoconf checks for popen() and pclose()
+    * Moved the openSUSE-specific RPM spec file to a separate repository
+    * Avoided possibility of stack overflow during parsing (Issue #26;
+      CVE-2018-17076)
+
 Version 2.25
 
     * Maximum number of include directories increased to 128
