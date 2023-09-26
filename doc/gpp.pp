@@ -175,7 +175,7 @@ $endif$
 $endif$
 $endif$
 %%%%%%%%%%%%%%%%% some headers %%%%%%%%%%%%%%%%%%%
-$define{version}{2.27}$
+$define{version}{2.28}$
 $define{SYNTAX}{
 $pre$
 gpp [$dp$$bra$o$pipe$O$ket$ $I{outfile}$] [$dp$I$I{/include/path}$ ...]
@@ -1483,7 +1483,7 @@ Since version 2.12 it has been maintained by Tristan Miller
 $l$tristan@logological.org$g$.
 $S{COPYRIGHT}$
 Copyright $copy$$nbsp$1996$ndash$2001 Denis Auroux.$BR$
-Copyright $copy$$nbsp$2003$ndash$2020 Tristan Miller.$P$
+Copyright $copy$$nbsp$2003$ndash$2023 Tristan Miller.$P$
 Permission is granted to anyone to make or distribute verbatim copies
 of this document as received, in any medium, provided that the
 copyright notice and this permission notice are preserved, thus giving

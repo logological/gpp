@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.57)
-AC_INIT([GPP], [2.27], [tristan@logological.org], [gpp])
+AC_INIT([GPP], [2.28], [tristan@logological.org], [gpp])
 
 AM_INIT_AUTOMAKE([])
 AC_CONFIG_SRCDIR([src/gpp.c])

@@ -3,6 +3,11 @@ GPP NEWS -- history of user-visible changes
 See the end of this file for copying conditions.
 
 
+Version 2.28
+
+    * Fixed typos in documentation (Issues #57 and #61)
+    * Added #sinclude meta-macro for silent includes (Issue #63)
+
 Version 2.27
 
     * --help and --version now print to stdout, not stderr (Issue #47)
@@ -132,7 +137,7 @@ Version 2.1
 Copyright information:
 
 Copyright (C) 2001 Denis Auroux.
-Copyright (C) 2003, 2004 Tristan Miller.
+Copyright (C) 2003-2023 Tristan Miller.
 
    Permission is granted to anyone to make or distribute verbatim
    copies of this document as received, in any medium, provided that
