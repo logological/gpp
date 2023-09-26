@@ -859,6 +859,11 @@ Additionally, when the $I{$d$m}$ command line option is specified, GPP will
 automatically switch to the cpp compatibility mode upon including a file
 whose name ends with either `.c' or `.h'.
 $li$
+$BI{$dz$sinclude }{file}$
+This is a $Q{silent}$ version of the $I{$dz$include}$ meta-macro that does
+not emit an error in the event that the specified file does not exist or
+cannot be opened.
+$li$
 $BI{$dz$exec }{command}$
 This causes GPP to execute the specified command line and include its standard
 output in the current output. Note that, for security reasons, this meta-macro

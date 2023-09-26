@@ -3,7 +3,7 @@
 ** Contact:   tristan@logological.org
 ** 
 ** Copyright (C) 1996, 1999, 2001 Denis Auroux
-** Copyright (C) 2003-2020 Tristan Miller
+** Copyright (C) 2003-2023 Tristan Miller
 ** 
 ** This program is free software: you can redistribute it and/or
 ** modify it under the terms of the GNU Lesser General Public License as
@@ -239,7 +239,7 @@ void write_include_marker(FILE *f, int lineno, char *filename,
 void construct_include_directive_marker(char **include_directive_marker,
         const char *includemarker_input);
 void escape_backslashes(const char *instr, char **outstr);
-static void DoInclude(char *file_name);
+static void DoInclude(char *file_name, int ignore_nonexistent);
 
 /*
  ** strdup() and my_strcasecmp() are not ANSI C, so here we define our own
@@ -2333,7 +2333,7 @@ void ProcessModeCommand(int p1start, int p1end, int p2start, int p2end) {
     free(s);
 }
 
-static void DoInclude(char *file_name) {
+static void DoInclude(char *file_name, int ignore_nonexistent) {
     struct INPUTCONTEXT *N;
     char *incfile_name = NULL;
     FILE *f = NULL;
@@ -2369,9 +2369,13 @@ static void DoInclude(char *file_name) {
         f = openInCurrentDir(file_name);
     }
 
-    if (f == NULL )
+    if (f == NULL) {
+      if (ignore_nonexistent)
+        return;
+      else
         bug("Requested include file not found");
-
+    }
+    
     N = C;
     C = malloc(sizeof *C);
     C->in = f;
@@ -2484,6 +2488,9 @@ int ParsePossibleMeta(void) {
         expparams = 1;
     } else if (idequal(C->buf + cklen, nameend - cklen, "date")) {
         id = 20;
+        expparams = 1;
+    } else if (idequal(C->buf + cklen, nameend - cklen, "sinclude")) {
+        id = 21;
         expparams = 1;
     } else
         return -1;
@@ -2645,7 +2652,7 @@ int ParsePossibleMeta(void) {
                 incfile_name[i] = getChar(p1start + i);
             incfile_name[p1end - p1start] = 0;
 
-            DoInclude(incfile_name);
+            DoInclude(incfile_name, 0);
         } else
             replace_directive_with_blank_line(C->out->f);
         break;
@@ -2862,6 +2869,33 @@ int ParsePossibleMeta(void) {
         sendout(buf, strlen(buf), 0);
         free(fmt);
     }
+        break;
+
+    case 21: /* SINCLUDE */
+        if (!commented[iflevel]) {
+            char *incfile_name;
+
+            if (nparam == 2 && WarningLevel > 0)
+                warning("Extra argument to #sinclude ignored");
+            if (!whiteout(&p1start, &p1end))
+                bug("Missing file name in #sinclude");
+            /* user may put "" or <> */
+            if (((getChar(p1start) == '\"') && (getChar(p1end - 1) == '\"'))
+                    || ((getChar(p1start) == '<') && (getChar(p1end - 1) == '>'))) {
+                p1start++;
+                p1end--;
+            }
+            if (p1start >= p1end)
+                bug("Missing file name in #sinclude");
+            incfile_name = malloc(p1end - p1start + 1);
+            /* extract the orig include filename */
+            for (i = 0; i < p1end - p1start; i++)
+                incfile_name[i] = getChar(p1start + i);
+            incfile_name[p1end - p1start] = 0;
+
+            DoInclude(incfile_name, 1);
+        } else
+            replace_directive_with_blank_line(C->out->f);
         break;
 
     default:
@@ -3223,7 +3257,7 @@ int main(int argc, char **argv) {
     initthings(argc, argv);
     /* The include marker at the top of the file */
     if (IncludeFile)
-        DoInclude(IncludeFile);
+      DoInclude(IncludeFile, 0);
     IncludeFile = NULL;
     write_include_marker(C->out->f, 1, C->filename, "");
     ProcessContext();
