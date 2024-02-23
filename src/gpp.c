@@ -2083,9 +2083,11 @@ char *ArithmEval(int pos1, int pos2) {
 
     /* first define the defined(...) operator */
     i = findIdent("defined", strlen("defined"));
-    if (i >= 0)
-        warning("the defined(...) macro is already defined");
-    else {
+    if (i >= 0) {
+        /* either nested evals or macro redefinition by the user */
+        if (macros[i].nnamedargs != -2)
+            warning("the defined(...) macro is already defined");
+    } else {
         newmacro("defined", strlen("defined"), 1);
         macros[nmacros].macrolen = 0;
         macros[nmacros].macrotext = malloc(1);
