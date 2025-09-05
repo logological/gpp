@@ -32,4 +32,4 @@ preferred-citation:
   month: 7
   languages:
     - en
-
+  abstract: "In computer science, a preprocessor (or macro processor) is a tool that programatically alters its input, typically on the basis of inline annotations, to produce data that serves as input for another program.  Preprocessors are used in software development and document processing workflows to translate or extend programming or markup languages, as well as for conditional or pattern-based generation of source code and text.  Early preprocessors were relatively simple string replacement tools that were tied to specific programming languages and application domains, and while these have since given rise to more powerful, general-purpose tools, these often require the user to learn and use complex macro languages with their own syntactic conventions.  In this paper, we present GPP, an extensible, general-purpose preprocessor whose principal advantage is that its syntax and behaviour can be customized to suit any given preprocessing task.  This makes GPP of particular benefit to research applications, where it can be easily adapted for use with novel markup, programming, and control languages."
