@@ -4,10 +4,10 @@ abstract: "GPP is a general-purpose preprocessor with customizable syntax, suita
 authors:
   - family-names: Auroux
     given-names: Denis
-    orcid: "0009-0006-4607-2546"
+    orcid: "https://orcid.org/0009-0006-4607-2546"
   - family-names: Miller
     given-names: Tristan
-    orcid: "0000-0002-0749-1100"
+    orcid: "https://orcid.org/0000-0002-0749-1100"
 license: "LGPL-3.0-or-later"
 repository-code: https://github.com/logological/gpp/
 keywords:
@@ -18,8 +18,10 @@ preferred-citation:
   authors:
     - family-names: Miller
       given-names: Tristan
+      orcid: "https://orcid.org/0000-0002-0749-1100"
     - family-names: Auroux
       given-names: Denis
+      orcid: "https://orcid.org/0009-0006-4607-2546"
   title: "GPP, the Generic Preprocessor"
   type: article
   doi: 10.21105/joss.02400
