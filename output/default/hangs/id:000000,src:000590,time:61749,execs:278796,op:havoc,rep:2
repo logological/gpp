@@ -1,0 +1,11 @@
+#deefin)
+Thi#sinclude output/
+#message.
+#define concat #1 #2
+concat(FOO,BAR)
+#ifeq (concat(fos is#mode restore
+ar)
+This is#sinclude ut.
+#else
+This is not output.
+#endif

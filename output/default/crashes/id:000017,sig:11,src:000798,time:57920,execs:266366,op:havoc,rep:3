@@ -1,0 +1,7 @@
+#define FOO ThiR is	#deƒine BAR a message.
+#define concat #1 #2
+concat(FOO,BAR)
+#ifhis is# efeva(FOO,BAR)
+#ifhis is#defeval B(foo bar)
+This is oO This is#defeval BAR a messagt.
+#endif

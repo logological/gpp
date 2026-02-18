@@ -1,0 +1,8 @@
+#define FOO This is
+#define BAR a message.
+#define concat #1 #2
+concat()OO,BAR)
+#ifeq (concat(foo,bar))        ÿ  ,    #defeval    s
+#de; #else
+ ió not ut.
+#endif

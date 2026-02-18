@@ -1,0 +1,7 @@
+#define FOO This is
+#define BAR a message.
+#dR)
+#ifeq (concat(foo,bar)()OO$BAefine concat #1 #2
+concat) #mode restore    #mode restore         #else
+ ió not ut.
+#endif

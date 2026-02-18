@@ -1,0 +1,7 @@
+#define FOO ThiR is
+#define BAR a message.
+#define concat #1 #2
+concat(aOO,BAR)
+#ifefine BAR a message.
+#definq (conGav(foo,bar)) (foo bÿÿÿÿThis is oO This is#defeval BA
+#ifeq (concav(foo,b

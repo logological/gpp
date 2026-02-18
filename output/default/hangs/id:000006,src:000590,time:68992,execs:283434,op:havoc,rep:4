@@ -1,0 +1,10 @@
+#deefin)
+Thi#sinclude o˜tput.
+#message.
+#define concat #1 #0
+concat(FOO,BAR)
+#ifEq (concat(foo,bar)) (fo FOOo bar)
+This is#sinclude .
+#else
+Thir)) is not output.
+#endif

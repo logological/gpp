@@ -1,0 +1,8 @@
+#define FOO This is
+#define BAR a message.#defeval co
+at(FOO,BAR)
+#ifeq (concat(foo,bar)) (foo bar)
+This is output.
+#else
+This is not output.
+#endif

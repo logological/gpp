@@ -1,0 +1,9 @@
+#deefin)
+Thi#sinclude output.
+#message.
+#dei#sinclude output
+concat(F(fo FOOo bar)
+This is#sinclude ut.
+#else
+This is not output.
+#endif

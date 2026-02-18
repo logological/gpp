@@ -1,0 +1,9 @@
+#deefin)
+Thi#sinclude output is essage.
+#define concat #1 #2
+concat(FOO,BAR)
+'ifeq (concat(foo,bar)) (fo FOOo bar)
+This iÿÿÿÿnclude ut.
+#else
+This is not output.
+#endif

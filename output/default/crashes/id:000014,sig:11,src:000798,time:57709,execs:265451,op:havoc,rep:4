@@ -1,0 +1,6 @@
+#define FOO ThiR is	#define BAR a message.de a mess
+#define concat #1 #2
+concat(FO?,BAR)
+#ifhis is#defeval BAR a eq (concav(fooKbar)) (foo bar)
+This is oO This is#defeval BA
+#endif
