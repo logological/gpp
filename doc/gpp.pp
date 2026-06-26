@@ -179,7 +179,7 @@ $define{version}{2.28}$
 $define{SYNTAX}{
 $pre$
 gpp [$dp$$bra$o$pipe$O$ket$ $I{outfile}$] [$dp$I$I{/include/path}$ ...]
-    [$dp$D$I{name=val}$ ...] [$dp$z$pipe$+z] [$dp$x] [$dp$m]
+    [$dp$D$I{name=val}$ ...] [$dp$z$pipe$+z] [$dp$e] [$dp$x] [$dp$m]
     [$dp$C$pipe$$dp$T$pipe$$dp$H$pipe$$dp$X$pipe$$dp$P$pipe$$dp$U ... [$dp$M ...]]
     [$dp$n$pipe$+n] [+c$I{$l$n$g$}$ $I{str1}$ $I{str2}$] [+s$I{$l$n$g$}$ $I{str1}$ $I{str2}$ $I{c}$]
     [$dp$c $I{str1}$] [$dp$$dp$nostdinc] [$dp$$dp$nocurinc]
@@ -316,10 +316,15 @@ characters are removed from the input, and all output LF characters are
 converted to CR$ndash$LF. This is the default if GPP is compiled with the
 WIN$und$NT option.
 $li$
+$BI{$d$e}$
+Enable the use of the $I{$dz$exec}$ meta-macro. Since $I{$dz$exec}$ includes
+the output of an arbitrary shell command line, it may cause a potential
+security threat, and is thus disabled unless this or the $I{$d$x}$ option is specified. If a shell command fails, GPP emits an error message and exits.
+$li$
 $BI{$d$x}$
 Enable the use of the $I{$dz$exec}$ meta-macro. Since $I{$dz$exec}$ includes
 the output of an arbitrary shell command line, it may cause a potential
-security threat, and is thus disabled unless this option is specified.
+security threat, and is thus disabled unless this or the $I{$d$e}$ option is specified. If a shell command fails, GPP ignores it. 
 $li$
 $BI{$d$m}$
 Enable automatic mode switching to the cpp compatibility mode if the name
@@ -871,12 +876,9 @@ $li$
 $BI{$dz$exec }{command}$
 This causes GPP to execute the specified command line and include its standard
 output in the current output. Note that, for security reasons, this meta-macro
-is disabled unless the $I{$d$x}$ command line flag was specified.
+is disabled unless the $I{$d$e}$ or $I{$d$x}$ command line flag was specified.
 If use of $I{$dz$exec}$ is not allowed, a warning message is printed
-and the output is left blank. Note that the specified command line is
-evaluated before being executed, thus allowing the use of macros in the
-command-line. However, the output of the command is included verbatim and
-not evaluated. If you need the output to be evaluated, you must use
+and the output is left blank. If $I{$dz$exec}$ fails and the $I{$d$e}$ command line flag was specified, GPP emits an error message and exits. If the $I{$d$x}$ command line flag was specified, GPP ignores the failure.  Note that the specified command line is evaluated before being executed, thus allowing the use of macros in the command-line. However, the output of the command is included verbatim and not evaluated. If you need the output to be evaluated, you must use
 $I{$dz$defeval}$ (see above) to cause a double evaluation.
 $li$
 $BI{$dz$eval }{expr}$
