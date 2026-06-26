@@ -168,6 +168,7 @@ int nmacros, nalloced;
 char *includedir[MAXINCL];
 int nincludedirs;
 int execallowed;
+int popenchecked;
 int dosmode;
 int autoswitch;
 /* must be a format-like string that has % % % in it.
@@ -345,7 +346,7 @@ void display_version(void) {
 }
 
 void usage(void) {
-    printf("Usage : gpp [-{o|O} outfile] [-I/include/path] [-Dname=val ...] [-z] [-x] [-m]\n");
+    printf("Usage : gpp [-{o|O} outfile] [-I/include/path] [-Dname=val ...] [-z] [-e] [-x] [-m]\n");
     printf("            [-n] [-C | -T | -H | -X | -P | -U ... [-M ...]] [+c<n> str1 str2]\n");
     printf("            [+s<n> str1 str2 c] [long options] [infile]\n\n");
     printf("      default:    #define x y           macro(arg,...)\n");
@@ -359,7 +360,8 @@ void usage(void) {
     printf(" -o : output to outfile\n");
     printf(" -O : output to outfile and stdout\n");
     printf(" -z : line terminator is CR-LF (MS-DOS style)\n");
-    printf(" -x : enable #exec built-in macro\n");
+    printf(" -e : enable #exec built-in macro; exit if #exec fails.\n");
+    printf(" -x : enable #exec built-in macro; warn if #exec fails.\n");
     printf(" -m : enable automatic mode switching upon including .h/.c files\n");
     printf(" -n : send LF characters serving as macro terminators to output\n");
     printf(" +c : use next 2 args as comment start and comment end sequences\n");
@@ -1244,6 +1246,7 @@ void initthings(int argc, char **argv) {
     commented[0] = 0;
     iflevel = 0;
     execallowed = 0;
+    popenchecked = 0;
     autoswitch = 0;
     dosmode = DEFAULT_CRLF;
 
@@ -1475,6 +1478,9 @@ void initthings(int argc, char **argv) {
                 parseCmdlineDefine(s);
                 free(s);
                 break;
+            case 'e':
+                popenchecked = 1;
+                /* fallthrough */
             case 'x':
                 execallowed = 1;
                 break;
@@ -2687,12 +2693,17 @@ int ParsePossibleMeta(void) {
                 }
                 f = popen(s, "r");
                 free(s);
-                if (f == NULL )
+                if (f == NULL ) {
+                  if (popenchecked)
+                    bug("Cannot #exec. Command not found(?)");
+                  else
                     warning("Cannot #exec. Command not found(?)");
-                else {
+                } else {
                     while ((c = fgetc(f)) != EOF)
                         outchar((char) c);
-                    pclose(f);
+
+                    if (pclose(f) != 0 && popenchecked)
+                          bug("Failed #exec process");
                 }
             }
         }
